@@ -1,0 +1,14 @@
+# Render 靜態網站部署設定
+# 參考：https://render.com/docs/static-sites
+services:
+  - type: web
+    name: lionlead-sim
+    runtime: static
+    # 已內建編譯好的 sim/index.html，直接發佈；不需 build
+    staticPublishPath: ./sim
+    # 若日後想讓 Render 自動由原始碼重建，改用下面這行（需 Render build 環境有 python3）：
+    # buildCommand: python3 scratch/gen_pretour.py && python3 scratch/convert.py
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>發送簡訊 發送結果</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.card{background:#fff;border-radius:12px;padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px}
+.r{display:flex;gap:12px;font-size:19px;padding-left:12px}
+.r .k{color:#888;flex:none}
+.lb{font-size:19px;margin-top:6px}
+.box{background:#f0f0f0;border-radius:4px;padding:14px 12px;font-size:19px;line-height:1.6;white-space:pre-line}
+.fb{flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:#e5e5e5;color:#aaa;font-size:20px;font-weight:700}
+</style>
+</helmet>
+<div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
+<a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a>
+<h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">發送簡訊</h1>
+<div style="display:flex;gap:12px">
+<a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a>
+<button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button>
+</div>
+</header>
+<div style="display:flex;margin:6px 20px 0;background:#fff;border-radius:18px;height:34px">
+<a href="SmsSend.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;color:#E8363D;font-size:19px">發送簡訊</a>
+<a href="SmsResult.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;background:#E8363D;color:#fff;border-radius:18px;font-size:19px">發送結果</a>
+</div>
+<div style="height:1px;background:#e5e5e5;margin-top:10px"></div>
+<div style="display:flex;align-items:center;gap:14px;margin:14px 20px 0">
+<button type="button" style="display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border:1px solid #ddd;border-radius:21px;background:#fff;font-family:inherit;font-size:18px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>查找</button>
+<span style="font-size:18px;color:#999">輸入日期或選擇狀態查找</span>
+</div>
+<div style="margin:16px 20px 0;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{items}}" as="m" hint-placeholder-count="2">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center"><label style="display:flex;align-items:center;gap:8px;font-size:18px;padding-left:12px"><input type="checkbox" style="width:18px;height:18px;margin:0;accent-color:#E8363D">選取</label><span style="color:#E8363D;font-size:20px;font-weight:700">完成</span></div>
+<div class="r"><span class="k">團號公司</span><span>26PON14CI-T</span></div>
+<div class="r"><span class="k">產生時間</span><span>11/09&nbsp; 12:42</span></div>
+<div class="r"><span class="k">預約時間</span><span></span></div>
+<div class="lb">旅客電話</div>
+<div class="box">{{m.phone}}</div>
+<div class="lb">簡訊內容 <span style="color:#E8363D">*</span></div>
+<div class="box">{{m.body}}</div>
+</div>
+</sc-for>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#F5F5F5;display:flex;gap:14px;padding:0 20px;align-items:center">
+<span class="fb">結案</span><span class="fb">重新發送</span><span class="fb">取消發送</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() {
+  const body = '☆請務必於台灣兌換好充足之澳幣（建議大約500澳幣），攜帶2張可用之信用卡以備不時之需。\n☆領隊導遊非醫護人員，不得提供內服藥物，請攜帶常備藥物如消炎止痛、發燒感冒咳嗽、腸胃……等藥物，並建議維持原包裝備查（需英文註解）如您有服用慢性病藥品，也請先於台灣備妥處方箋備查。粉狀物品超過350ml都建議放置托運行李\n\n如有任何問題或需要幫忙的地方，皆可發問\n期待讓我們一起去探索南半球~~\n\n系統發送請勿回覆雄獅';
+  return { items: [ { phone: '0935175805', body }, { phone: '0972235626', body } ] };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>委任契約書</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.cscroll{position:absolute;top:80px;bottom:82px;left:0;right:0;overflow:auto;background:#fff;padding:18px 22px}
+.clogo{display:flex;align-items:center;gap:8px}
+.ctitle{text-align:center;font-size:26px;font-weight:700;margin:12px 0 16px}
+.cintro{font-size:14px;line-height:1.9;color:#222}
+.cfill{display:inline-block;min-width:70px;background:#f0f0f0;border-radius:4px;padding:1px 10px;text-align:center}
+.ch{font-size:16px;font-weight:700;margin:18px 0 6px}
+.cp{font-size:13px;line-height:1.9;color:#333}
+.fields{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+.fr{display:flex;align-items:center;gap:12px;font-size:15px}
+.fk{width:84px;flex:none;color:#222}
+.fv{background:#f0f0f0;border-radius:4px;padding:6px 12px}
+.sigrow{display:flex;align-items:center;gap:14px}
+.sigbox{width:180px;height:88px;border-radius:6px;background:#FDEBEE;color:#E8363D;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:17px;line-height:1.4;border:0;cursor:pointer}
+.sigbox.done{background:#fff;border:1px solid #ddd}
+.cbar{position:absolute;left:0;right:0;bottom:0;height:82px;background:#fff;border-top:1px solid #eee;display:flex;gap:14px;align-items:center;padding:0 20px}
+.cbar a,.cbar button{flex:1;height:48px;border-radius:8px;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:inherit;border:0}
+.cbar .cancel{background:#fff;border:1px solid #E8363D;color:#E8363D}
+.cbar .ok{background:#E5E5E5;color:#aaa}
+.cbar .ok.en{background:#E8363D;color:#fff;cursor:pointer}
+.cmodal{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:8}
+.cmodal.hide{display:none}
+.mbox{width:330px;background:#fff;border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:12px}
+.mhd{display:flex;justify-content:space-between;align-items:center}
+.mhd h2{margin:0;font-size:20px;font-weight:700}
+.mx{border:0;background:none;font-size:22px;cursor:pointer;padding:0}
+.mbox-chk{width:740px;max-height:1060px}
+.accscroll{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:2px 0}
+.accwrap{display:flex;flex-direction:column}
+.accitem{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 14px;border:0;border-radius:8px;background:#F0F0F0;font-family:inherit;font-size:18px;font-weight:700;cursor:pointer}
+.accitem.read{background:#FDEBEE;color:#E8363D}
+.accwrap.open .accitem .cv{transform:rotate(180deg)}
+.acccontent{display:none;padding:10px 10px 14px;font-size:15px;line-height:1.85;color:#333}
+.acccontent ol{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:7px}
+.accwrap.open .acccontent{display:block}
+.mhint{color:#E8363D;font-size:14px;text-align:center}
+.mbtn{height:46px;border-radius:8px;border:0;font-size:18px;font-weight:700;background:#E5E5E5;color:#aaa;font-family:inherit}
+.mbtn.en{background:#E8363D;color:#fff;cursor:pointer}
+.sigpad{height:190px;border:1px solid #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.sigpad.empty svg{display:none}
+.padrow{display:flex;gap:12px;justify-content:space-between}
+.padrow button{flex:1;height:44px;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;border:1px solid #E8363D;background:#fff;color:#E8363D;cursor:pointer}
+.padrow button.pri{background:#E8363D;color:#fff;border:0}
+.ctoast{position:absolute;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(50,50,50,.92);color:#fff;font-size:16px;padding:12px 22px;border-radius:24px;z-index:6;white-space:nowrap}
+.ctoast.hide{display:none}
+</style>
+</helmet>
+<div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative"><a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a><h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">委任契約書</h1><div style="display:flex;gap:12px"><a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a><button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button></div></header>
+<div class="cscroll">
+<div class="clogo"><svg aria-hidden="true" width="34" height="27" viewBox="0 0 80 64"><path d="M12 48c-6-10 0-30 16-34 8-2 18 2 26 10 6 6 8 14 6 22-2 8-10 12-18 12H20c-4 0-6-4-8-10z" fill="#E8363D"/></svg><span style="display:flex;flex-direction:column;line-height:1.1"><b style="font-size:16px;letter-spacing:1px">LION TRAVEL</b><span style="font-size:13px;letter-spacing:3px">雄獅旅遊</span></span></div>
+<div class="ctitle">領隊委任契約書</div>
+<div class="cintro">本公司茲委任 <span class="cfill">李小明</span> 君，身分證字號 <span class="cfill">A123456789</span>，擔任委任人旅遊團體之領隊人員，執行旅遊接待或引導觀光旅客之業務，提供行程所需之各項旅遊服務。雙方同意就委任業務履行下列協議事項：</div>
+<h3 class="ch">一、旅遊行程</h3><div class="cp">團名：沖繩旅遊|星野BANTA咖啡·雙樂園～美之海水族館～海豚秀＆DMM水族館～可愛企鵝·神宮祈福四日｜升等1晚星野OMO5<br>團號：25JO805BRE-T</div><h3 class="ch">二、委任期間</h3><div class="cp">自民國 104 年 10 月 10 日起至 104 年 10 月 15 日止。<br>團號：25JO805BRE-T<br>如遇有行程變更致行程日數增減，委任期間自動展延至團體返國之日止。</div><h3 class="ch">三、委任事務</h3><div class="cp">受任人應依據旅客與委任人簽訂之旅遊定型化契約書、行程表內容、說明會資料、領隊交班單、<b>領隊出團標準作業化流程規範 SOP</b> 及委任人所交付行程相關文件之指示，執行接待或引導觀光旅客旅遊業務，提供旅客全程隨團服務並協助處理必要之旅遊事務。</div><h3 class="ch">四、授權範圍</h3><div class="cp">受任人執行委任事務，應依據第三條之指示文件辦理。受任人與委任人均應受觀光法規及旅遊契約及其他為旅行事業、旅遊目的或保護旅客權益的等相關法規之限制，不得逕自變更委任事務項目。惟遇有不可抗力或不可歸責之事由，或因突發之緊急事故，或為維護旅客之生命、身體、財產之安全，受任人應依領隊專業職能判斷並為妥善處理，可依程度調整或變更委任事務項目，惟受任人需於第一時間通知委任人，徵求委任人之同意並由委任人提供必要之協助。</div><h3 class="ch">五、報酬給付</h3><div class="cp">受任人之報酬，由雙方另以書面約定之。</div><h3 class="ch">六、權利義務</h3><div class="cp"><div style="display:flex;flex-direction:column;gap:8px">
+<div>1. 受任人應以善良管理人之注意義務執行委任事務。如因故意、過失或逾越委任事務範圍致生損害，受任人應負損償之責任。受任人因不可抗力或不可歸責之情事，或為維護旅客之法益，而需變更或調整委任事務，非客觀上無法通知委任人，否則應先取得委任人之事前同意，且前述之變更或調整，應以旅客之權益為優先考量。</div>
+<div>2. 受任人執行委任事務，如委任人所提供之食宿、交通、行程、觀光點及旅遊覽內容與第三條所載之文件有品質或數量不符或有闕漏之情事，受任人應以旅客權益為優先考量並妥善處理，並應第一時間通知委任人，經委任人確認後之指示，協助與旅客進行溝通以取得圓滿的處理方案。</div>
+<div>3. 受任人執行委任事務如需代支付款項，委任人得預先撥付相關費用予受任人。</div>
+<div>4. 如旅客行使終止契約權而有墊付返國費用等必要支出款項，或因委任事務項目變更，或產生原定行程預算外之費用支出，受任人應於第一時間通知委任人並取得其同意。前述墊付費用等情形，經委任人通知委任人並取得同意後，受任人得要求委任人返還之。</div>
+<div>5. 為檢核暨驗收委任事務項目，受任人應於行程結束之三個工作天內提供下列文件：<br>　a「領隊返國報告書」及其它指定文件：向委任人說明團體進行之狀況以確認雙方就委任事務之完成。<br>　b.「領隊報帳單」：檢附收據或詳實憑証，結清相關代收代付金額，如代收代付金額產生爭議，受任人有配合委任人進行調查之義務。<br>　C.「顧客滿意度調查表」：為提升旅遊服務品質，受任人應協助旅客填寫並於完成後妥善封存避免個資外洩，若為線上填寫亦應主動告知。</div>
+<div>6. 除第三條委任事務外，受任人得委託受任人另為其他委任業務，例如行程中協助拍攝旅遊景點或餐食圖、文及相關資料收集之處理，惟其他委任業務不得阻礙或減損本委任契約書第三條之執行，亦不得違背本國或他國法令。受任人執行其他委任業務所取得之智慧財產權歸屬於委任人。</div>
+<div>7. 受任人執行接待或引導觀光旅客旅遊業務期間，應按雙方約定內容執行委任事務，非不可抗力或不可歸責之因素，受任人應本於委任人之意旨完成委任事務，不得擅自解約，如造成委任人商譽或旅客權益受損，應負損害賠償責任。</div>
+<div>8. 受任人於執行接待或引導觀光旅客旅遊業務因服務態度不佳、品德不良經查證屬實，委任人可隨時解約，受任人不得主張任何權利。</div>
+<div>9. 受任人於執行委任人交付之業務所知悉旅客參團資訊，包括但不限於個人資料、參團資訊及參團期間所發生之個人事務，未經委任人書面同意，受任人均不得以任何形式洩漏予第三人知悉，相關文件亦應於執行業務結束時交回，若有違反應負民、刑事責任。</div>
+<div>10. 交班資料內含有旅客個人資料之文件，應確實點收，結團時須全數繳回，交接人員會依簽收進行清點，該文件應妥善保管，倘若遺失、外洩、任意丟棄，或未經公司同意將該文件以任何形式交付予第三人或為其他利用，違者將追究相關民刑事責任。</div>
+</div></div>
+<div class="fields">
+<div class="fr sigrow"><span class="fk">受任人：</span><button type="button" class="sigbox" data-act="signPad">簽章處<br>(請點擊)</button><span>君（簽章）</span></div>
+<div class="fr"><span class="fk">身份證字號：</span><span class="fv">A123456789</span></div><div class="fr"><span class="fk">連絡電話：</span><span class="fv">A123456789</span></div><div class="fr"><span class="fk">通訊地址：</span><span class="fv">台北市內湖區石潭路151號</span></div><div class="fr"><span class="fk">戶籍地址：</span><span class="fv">台北市內湖區石潭路151號</span></div><div class="fr"><span class="fk">委任人：</span><span class="fv">雄獅旅行社股份有限公司</span></div><div class="fr"><span class="fk">法定代理人：</span><span class="fv">王文傑</span></div><div class="fr"><span class="fk">統一編號：</span><span class="fv">04655091</span></div><div class="fr"><span class="fk">地址：</span><span class="fv">台北市內湖區石潭路151號</span></div>
+</div>
+</div>
+<div class="cbar"><a href="#PreTour" class="cancel">取消</a><button type="button" class="ok" data-act="sign">完成</button></div>
+<div class="ctoast hide">請點擊簽章處，進行契約書簽署</div>
+<div class="cmodal checklist"><div class="mbox mbox-chk">
+<div class="mhd"><h2>自檢表(國內旅遊)</h2><button type="button" class="mx" data-act="closeChk">✕</button></div>
+<div class="accscroll"><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>出團前</span><span class="cv">⌄</span></button><div class="acccontent"><ol>
+<li>請與OP確認交團時間，若有卡團，請提早與OP確認。</li>
+<li>請確認交團資料夾資料(旅客名單、保險單、供應商預訂單、司機領隊簽收領據、車貼條、散客：上下車地點/特殊餐食)是否齊全，並於交班單上勾選；確認無誤後，交班單簽名後將白聯及約聘領隊需每團簽「領隊委任書」(專任領隊一年一簽「領隊委任書」)提供給OP留底。</li>
+<li>請確認交團資料點收完成，與該團線控/業務確認是否有特殊交辦事項；並和供應商確認預訂時間及數量。</li>
+<li>請與駕駛確認次日車輛報到時間、地點、礦泉水箱數；散客成團需另確認座位表遊覽車上座位排數。</li>
+<li>散客成團請進行電話說明會及再次確認旅客上下車地點及特殊餐食；若無人接聽請留言或發簡訊給旅客。</li>
+<li>團體包團請與旅客聯絡窗口確認次日出團相關事宜(是否有其他特殊需求及細節)。</li></ol></div></div><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>出團中</span><span class="cv">⌄</span></button><div class="acccontent"><ol>
+<li>出團當日領隊於集合時間前20分鐘抵達集合地點(台北車站雄獅站前門市請另找值班線控簽到，並於報到區就定位開始劃位)；遲到者請繳交300元罰金給導領部。</li>
+<li>確認團員特殊需求(含餐食、床型、團費含小費及特殊加價需求等)無誤。</li>
+<li>教學使用手機掃描QR CODE及從雄獅B2C網頁進入意調表入口畫面。</li></ol></div></div><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>出團後</span><span class="cv">⌄</span></button><div class="acccontent"><ol>
+<li>團體中支出款項，請帶回有公司統編/抬頭的三聯式發票、正式收據(需蓋有「有統編的免用統一發票」)及供應商的私章)。</li>
+<li>司領支出請簽署簽收紅白黃三聯單，凡現金支出均務必載明清楚款項明細，並將黃聯交由領款人留存，紅白聯隨團帳黏貼至收據黏貼表繳回公司。</li>
+<li>團體中支出款項，請回填在支出預算表；並協助載明結帳明細(桌數素食/票種人數)。</li>
+<li>團體中所有收據/發票/簽收單，請依照支出預算表浮貼至收據黏貼表。</li>
+<li>回團後，請於三天內返回公司交團；若遇連團(可先與OP拿回團資料寄送牛皮紙袋)，請協助將回團資料夾於雄獅各門市寄回，回團款項請與OP確認後，直接匯款回公司帳戶(通知OP匯款帳號後5碼)。</li></ol></div></div><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>注意事項</span><span class="cv">⌄</span></button><div class="acccontent"><ol>
+<li style="color:#E8363D">公司抬頭統編(請確認出團統編為甚麼公司別，請勿開錯)<br>統一編號：04655091<br>抬頭：雄獅旅行社股份有限公司<br>統一編號：23755606<br>抬頭：寶獅旅行社股份有限公司</li>
+<li>未取得公播權利影片時，均不得在遊覽車上播送、播放影片及音樂。</li>
+<li>未經公司同意，請勿使用私人信用卡刷卡結帳。</li>
+<li>非行程表上排定之旅遊活動、行程提早回程時間或取消行程，須向全團旅客取得同意書，方可進行。若未取得同意書進行發生意外事件，領隊及公司皆須負加重之責任，請領隊務必慎行！</li></ol></div></div><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>領團服儀標準規範</span><span class="cv">⌄</span></button><div class="acccontent"><ol>
+<li>應著有領白色上衣;襯衫、Polo衫皆可</li>
+<li>搭配雄獅新背心(紅面)</li>
+<li>應著深色西裝褲或長褲;不得穿著牛仔褲及運動褲</li>
+<li>應著深色包鞋</li>
+<li>應使用乾淨無破損之領隊旗</li>
+<li>髮型儀容整齊乾淨;髮色應為自然髮色。自帶工作包不宜太過花俏。</li></ol></div></div><div class="accwrap"><button type="button" class="accitem" data-act="acc"><span>帶團須知</span><span class="cv">⌄</span></button><div class="acccontent"><div style="margin-bottom:6px">須知：</div><ol>
+<li>非特殊情況時，說明會請領隊本人親自出席。</li>
+<li>確實按行程表督導、配合當地旅行社，完成既定的行程。</li>
+<li>確保旅途中團員及自身之生命財產安全。</li>
+<li>執行公司託付之角色與工作，收集通報旅行相關之資料及訊息。</li>
+<li>協助團員解決困難，提供適切之協助。</li>
+<li>隨機應變，掌握局勢，以求圓滿完成任務。</li>
+<li>早餐時間領隊一定要到餐廳，早上要比預定時間早一些起床，早一點到櫃檯結帳。</li>
+<li>帶團期間不得穿著運動服或無領衫、短褲、拖鞋等（海邊旅遊區除外）。</li>
+<li style="color:#E8363D;font-weight:700">認真操作體驗等等搶答有好禮喔～</li></ol></div></div></div>
+<div class="mhint">ⓘ 需展開內容並閱讀完後，點擊我已閱讀。</div>
+<button type="button" class="mbtn" data-act="ackList">我已閱讀</button>
+</div></div>
+<div class="cmodal signpad hide"><div class="mbox">
+<div class="mhd"><h2>簽名板</h2></div>
+<div class="sigpad"><svg viewBox="0 0 260 90" style="width:200px;height:70px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="padrow"><button type="button" data-act="closePad">取消</button><button type="button" data-act="padRedo">重寫</button><button type="button" class="pri" data-act="padOk">確認</button></div>
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

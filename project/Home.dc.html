@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>首頁 出團日期</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:54px;border-radius:27px;font-size:12px;color:#333;background:#fff}
+.tab.on{background:#E8363D;color:#fff}
+.tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.fn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:96px;height:70px;border:1px solid #777;border-radius:8px;background:#1c1c1c;color:#fff;font-size:16px}
+.fn svg{width:28px;height:28px;stroke:#E8363D;fill:none;stroke-width:1.8}
+</style>
+</helmet>
+<div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden;display:flex;flex-direction:column">
+<div style="background:linear-gradient(180deg,#5a1a22 0%,#2b2325 45%,#1e1e1e 100%);border-radius:0 0 40px 40px;height:320px;box-sizing:border-box;padding:24px 24px 0;position:relative">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;align-items:center;gap:10px">
+<svg role="img" aria-label="LION LEAD" width="42" height="30" viewBox="0 0 100 70"><path d="M8 8 L30 30 L52 8" stroke="#F7A233" stroke-width="16" fill="none"/><path d="M48 8 L70 30 L92 8" stroke="#E8235F" stroke-width="16" fill="none"/><path d="M30 30 L52 8 L66 22 L52 36 Z" fill="#F5386C"/></svg>
+<div style="font-size:19px;font-weight:700;color:#fff;letter-spacing:2px">LION LEAD</div>
+</div>
+<div style="display:flex;gap:12px">
+<a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a>
+<button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button>
+</div>
+</div>
+<div style="width:340px;margin:28px auto 0;border:1px solid #E8363D;border-radius:10px;background:rgba(30,30,30,.6);box-sizing:border-box;padding:12px 14px 12px">
+<div style="display:flex;align-items:center;gap:10px">
+<span style="background:#E8363D;color:#fff;font-size:17px;font-weight:700;padding:2px 10px;border-radius:14px">帶團中</span>
+<span style="color:#fff;font-size:17px">26JPN30BRA</span>
+</div>
+<div style="color:#fff;font-size:17px;margin-top:10px">日本東京迪士尼遊透透</div>
+<div style="display:flex;gap:12px;margin-top:28px">
+<a class="fn" href="Roster.dc.html"><svg viewBox="0 0 24 24"><path d="M5 3h11v18H5z"/><path d="M8 7h5M8 11h5"/><circle cx="17" cy="16" r="2.5"/><path d="M13 22c0-2 2-3 4-3s4 1 4 3"/></svg>團體大表</a>
+<a class="fn" href="Meeting.dc.html"><svg viewBox="0 0 24 24"><path d="M5 3h11v18H5z"/><path d="M8 7h5M8 11h5"/><circle cx="16" cy="16" r="3"/><path d="M18 18l3 3"/></svg>說明會資料</a>
+<a class="fn" href="Daily2.dc.html"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg>日報表</a>
+</div>
+</div>
+</div>
+<div style="display:flex;justify-content:center;margin-top:-20px;position:relative">
+<div style="display:flex;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.12)">
+<a href="Home.dc.html" style="padding:9px 32px;background:#E8363D;color:#fff;font-size:19px;font-weight:500;border-radius:22px">出團日期</a>
+<a href="HomeCalendar.dc.html" style="padding:9px 32px;color:#E8363D;font-size:19px;font-weight:500">出團月曆</a>
+</div>
+</div>
+<div style="width:360px;margin:32px auto 0;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:center;gap:10px"><span style="background:#222;color:#fff;font-size:17px;padding:3px 18px;border-radius:16px">11月</span><span style="color:#F5A5A5;font-size:19px">2026</span></div><a href="Tour.dc.html" style="display:flex;gap:18px;align-items:center;padding:12px 18px 10px;background:#fff;border:1px solid #F5B5B8;border-radius:10px"><div style="display:flex;flex-direction:column;align-items:center;color:#E8363D;width:40px"><span style="font-size:13px">週一</span><span style="font-size:30px;line-height:1.1">30</span></div><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:13px;color:#555">26JPN30BRA</span><span style="font-size:18px;line-height:1.4">日本東京迪士尼遊透透</span></div></a><div style="display:flex;align-items:center;gap:10px;margin-top:6px"><span style="background:#222;color:#fff;font-size:17px;padding:3px 18px;border-radius:16px">12月</span><span style="color:#F5A5A5;font-size:19px">2026</span></div><a href="PreTour.dc.html" style="display:flex;gap:18px;align-items:center;padding:12px 18px 10px;background:#fff;border:1px solid #F5B5B8;border-radius:10px"><div style="display:flex;flex-direction:column;align-items:center;color:#E8363D;width:40px"><span style="font-size:13px">週日</span><span style="font-size:30px;line-height:1.1">6</span></div><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:13px;color:#555">26JKD06BXE-T</span><span style="font-size:18px;line-height:1.4">ITF特選釜山雙樂園滑車塗鴉好好逛5日</span></div></a><a href="PreTour.dc.html" style="display:flex;gap:18px;align-items:center;padding:12px 18px 10px;background:#fff;border:1px solid #F5B5B8;border-radius:10px"><div style="display:flex;flex-direction:column;align-items:center;color:#E8363D;width:40px"><span style="font-size:13px">週四</span><span style="font-size:30px;line-height:1.1">10</span></div><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:13px;color:#555">26SKD01BRD-T</span><span style="font-size:18px;line-height:1.4">經典漫遊金邊吳哥(無購物)長榮6日</span></div></a><a href="PreTour.dc.html" style="display:flex;gap:18px;align-items:center;padding:12px 18px 10px;background:#fff;border:1px solid #F5B5B8;border-radius:10px"><div style="display:flex;flex-direction:column;align-items:center;color:#E8363D;width:40px"><span style="font-size:13px">週四</span><span style="font-size:30px;line-height:1.1">18</span></div><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:13px;color:#555">26EGD18BR-T</span><span style="font-size:18px;line-height:1.4">每月一物特選德國浪漫大道輕旅行8日</span></div></a></div>
+<nav aria-label="主選單" style="position:absolute;left:245px;bottom:26px;width:330px;height:64px;box-sizing:border-box;border-radius:40px;background:#3b3b3b;display:flex;align-items:center;justify-content:space-between;padding:3px">
+<a class="tab on" href="Home.dc.html"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg>首頁</a>
+<div style="display:flex;background:#fff;border-radius:27px;height:54px;align-items:center">
+<a class="tab" href="PreTour.dc.html"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM8 11h8M8 15h8"/></svg>出團前</a>
+<a class="tab" href="Tour.dc.html"><svg viewBox="0 0 24 24"><path d="M6 21V4h12l-3 4 3 4H6"/></svg>帶團中</a>
+<a class="tab" href="PostTour.dc.html"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg>回團後</a>
+</div>
+<a class="tab" href="Mine.dc.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>我的</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

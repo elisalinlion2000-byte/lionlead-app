@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>同意書</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:54px;border-radius:27px;font-size:12px;color:#333;background:#fff}
+.tab.on{background:#E8363D;color:#fff}
+.tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.ac-cb{appearance:none;-webkit-appearance:none;width:22px;height:22px;border:1.5px solid #c4c4c4;border-radius:5px;margin:0;flex:none;cursor:pointer;position:relative;background:#fff}
+.ac-cb:checked{background:#E8363D;border-color:#E8363D}
+.ac-cb:checked::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.ac-rad{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:1.5px solid #c4c4c4;border-radius:50%;margin:0;flex:none;cursor:pointer;position:relative;background:#fff}
+.ac-rad:checked{border-color:#E8363D}
+.ac-rad:checked::after{content:"";position:absolute;left:3.5px;top:3.5px;width:10px;height:10px;border-radius:50%;background:#E8363D}
+.seg{border:1px solid #d5d5d5;color:#555;background:#fff;border-radius:22px;padding:10px 0;text-align:center;font-size:16px;cursor:pointer;display:block}
+.seg:has(input:checked){border:1.5px solid #E8363D;color:#E8363D;font-weight:600}
+.typ{display:block;border:1px solid #ddd;color:#333;background:#fff;border-radius:10px;padding:14px 16px;font-size:17px;cursor:pointer}
+.typ:has(input:checked){border:1.5px solid #E8363D;color:#E8363D;font-weight:600}
+.shopname{display:none;width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8px;padding:11px 14px;font-size:16px;margin-top:12px;font-family:inherit}
+.verwrap:has(input[value="no"]:checked) .shopname{display:block}
+.ac-orow{display:flex;align-items:center;gap:10px;padding:12px 4px}
+.ac-cline{display:flex;align-items:center;gap:12px;flex:1;cursor:pointer;min-width:0}
+.ac-rc{display:flex;align-items:center;gap:5px;color:#555;font-size:15px;cursor:pointer}
+.ac-exp{width:26px;height:26px;border:1px solid #ccc;border-radius:50%;background:#fff;color:#888;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+.ac-sub{flex-direction:column;gap:2px;padding:0 4px 8px 34px}
+.ac-paxrow{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:16px;color:#333;cursor:pointer}
+.ac-divider{height:1px;background:#eee}
+</style>
+</helmet>
+<div style="width:820px;min-height:1180px;box-sizing:border-box;background:#fff;position:relative;padding:0 20px 60px">
+<header style="height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
+<a href="#back" aria-label="返回" style="width:40px;height:40px;border-radius:20px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a>
+<h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:21px;font-weight:700;color:#222;pointer-events:none">同意書</h1>
+<div style="display:flex;gap:10px"><a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a><button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button></div>
+</header>
+<div style="display:flex;margin:4px 20px 0;background:#ECECEC;border-radius:22px;padding:3px">
+<a href="Consent.dc.html" style="flex:1;text-align:center;padding:9px 0;border-radius:20px;font-size:17px;font-weight:600;text-decoration:none;background:#E8363D;color:#fff">同意書設定</a>
+<a href="ConsentView.dc.html" style="flex:1;text-align:center;padding:9px 0;border-radius:20px;font-size:17px;font-weight:600;text-decoration:none;color:#888">同意書檢視</a>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:24px"><span style="width:4px;height:19px;background:#E8363D;border-radius:2px"></span><span style="font-size:18px;font-weight:700;color:#222">Step-1：選擇版型</span></div><div style="color:#999;font-size:14px;line-height:1.6;margin-top:6px">為雄獅出團的團體有雄獅 logo 版；若自行輸入旅行社名稱則為無 logo 版。</div>
+<div class="verwrap"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px"><label class="seg"><input type="radio" name="ver" value="lion" hidden checked>雄獅 logo</label><label class="seg"><input type="radio" name="ver" value="no" hidden>無 Logo 版</label></div>
+<input class="shopname" placeholder="請輸入旅行社名稱"></div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:24px"><span style="width:4px;height:19px;background:#E8363D;border-radius:2px"></span><span style="font-size:18px;font-weight:700;color:#222">Step-2：選擇同意書</span></div>
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
+<label class="typ"><input type="radio" name="ac-type" hidden checked>行程變更同意書</label><label class="typ"><input type="radio" name="ac-type" hidden>脫隊確認書</label><label class="typ"><input type="radio" name="ac-type" hidden>不就醫同意書</label><label class="typ"><input type="radio" name="ac-type" hidden>不報案同意書</label><label class="typ"><input type="radio" name="ac-type" hidden>代金領取同意書</label>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:24px"><span style="width:4px;height:19px;background:#E8363D;border-radius:2px"></span><span style="font-size:18px;font-weight:700;color:#222">Step-3：選擇發送名單</span></div><div style="color:#999;font-size:14px;line-height:1.6;margin-top:6px">選擇訂單會生成該訂單旅客的同意書；選擇旅客可單獨指定旅客生成同意書。</div>
+<label class="ac-cline" style="padding:14px 4px 12px"><input type="checkbox" class="ac-cb ac-all"><span style="font-size:17px;color:#222;font-weight:600">訂單編號（全選）</span></label>
+<div class="ac-divider"></div>
+<div class="ac-orow"><label class="ac-cline"><input type="checkbox" class="ac-cb ord-chk"><span style="font-size:17px;color:#222">2026-111072</span></label><label class="ac-rc"><input type="radio" name="rc1" data-sub="sub1" data-role="order" class="ac-rad">訂單</label><label class="ac-rc"><input type="radio" name="rc1" data-sub="sub1" data-role="pax" class="ac-rad">旅客</label><button type="button" class="ac-exp" data-t="sub1">＋</button></div><div class="ac-sub" id="sub1" style="display:none"><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客1：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客2：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客3：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客4：李小明</label></div><div class="ac-divider"></div><div class="ac-orow"><label class="ac-cline"><input type="checkbox" class="ac-cb ord-chk"><span style="font-size:17px;color:#222">2026-111072</span></label><label class="ac-rc"><input type="radio" name="rc2" data-sub="sub2" data-role="order" class="ac-rad">訂單</label><label class="ac-rc"><input type="radio" name="rc2" data-sub="sub2" data-role="pax" class="ac-rad">旅客</label><button type="button" class="ac-exp" data-t="sub2">＋</button></div><div class="ac-sub" id="sub2" style="display:none"><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客1：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客2：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客3：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客4：李小明</label></div><div class="ac-divider"></div><div class="ac-orow"><label class="ac-cline"><input type="checkbox" class="ac-cb ord-chk"><span style="font-size:17px;color:#222">2026-111072</span></label><label class="ac-rc"><input type="radio" name="rc3" data-sub="sub3" data-role="order" class="ac-rad">訂單</label><label class="ac-rc"><input type="radio" name="rc3" data-sub="sub3" data-role="pax" class="ac-rad">旅客</label><button type="button" class="ac-exp" data-t="sub3">＋</button></div><div class="ac-sub" id="sub3" style="display:none"><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客1：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客2：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客3：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客4：李小明</label></div><div class="ac-divider"></div><div class="ac-orow"><label class="ac-cline"><input type="checkbox" class="ac-cb ord-chk"><span style="font-size:17px;color:#222">2026-111072</span></label><label class="ac-rc"><input type="radio" name="rc4" data-sub="sub4" data-role="order" class="ac-rad">訂單</label><label class="ac-rc"><input type="radio" name="rc4" data-sub="sub4" data-role="pax" class="ac-rad">旅客</label><button type="button" class="ac-exp" data-t="sub4">＋</button></div><div class="ac-sub" id="sub4" style="display:none"><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客1：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客2：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客3：李小明</label><label class="ac-paxrow"><input type="checkbox" class="ac-cb">旅客4：李小明</label></div><div class="ac-divider"></div>
+<div style="display:flex;gap:14px;margin:26px 4px 0">
+<a href="PreTour.dc.html" style="flex:1;text-align:center;padding:13px 0;border:1px solid #ccc;border-radius:10px;color:#555;font-size:18px;text-decoration:none">取消</a>
+<button type="button" class="ac-next" style="flex:1;padding:13px 0;background:#E8363D;border:0;border-radius:10px;color:#fff;font-size:18px;font-weight:600;font-family:inherit;cursor:pointer">下一步</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

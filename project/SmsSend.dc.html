@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>發送簡訊</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.sec{position:relative;background:#fff;border-radius:12px;padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px}
+.sec::before{content:"";position:absolute;left:0;top:20px;width:4px;height:26px;background:#E8363D;border-radius:0 2px 2px 0}
+.sec h2{margin:0;font-size:22px;font-weight:700}
+.hint{display:flex;align-items:center;gap:6px;font-size:16px;color:#888}
+.hint svg{width:16px;height:16px;stroke:#888;fill:none;stroke-width:1.8}
+.in{box-sizing:border-box;width:100%;height:48px;border:1px solid #bbb;border-radius:4px;padding:0 12px;font-size:18px;font-family:inherit;background:#fff}
+.in::placeholder{color:#999}
+.rad{display:flex;align-items:center;gap:10px;font-size:19px}
+.rad input{width:20px;height:20px;margin:0;accent-color:#E8363D}
+.rad small{font-size:15px;color:#888;margin-left:6px}
+.pr{display:flex;align-items:center;gap:8px;font-size:18px}
+.pr input{width:18px;height:18px;margin:0;accent-color:#E8363D}
+.pr span.u{width:140px;color:#222}
+.pr span.n{width:80px}
+.pr span.p{color:#222}
+</style>
+</helmet>
+<div style="width:820px;height:2560px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
+<a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a>
+<h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">發送簡訊</h1>
+<div style="display:flex;gap:12px">
+<a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a>
+<button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button>
+</div>
+</header>
+<div style="display:flex;margin:6px 20px 0;background:#fff;border-radius:18px;height:34px">
+<a href="SmsSend.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;background:#E8363D;color:#fff;border-radius:18px;font-size:19px">發送簡訊</a>
+<a href="SmsResult.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;color:#E8363D;font-size:19px">發送結果</a>
+</div>
+<div style="height:1px;background:#e5e5e5;margin-top:10px"></div>
+<div style="margin:14px 20px 0;display:flex;flex-direction:column;gap:18px">
+<section class="sec">
+<h2>Step-1：設定手機及發送時間</h2>
+<label class="rad"><input type="radio" name="when" checked>立即發送<small>按下發送後立即送出簡訊</small></label>
+<label class="rad"><input type="radio" name="when">預約發送<small>指定日期與時間發送</small></label>
+<div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;padding-left:28px">
+<div style="position:relative"><label for="d1" style="position:absolute;left:-9999px">日期</label><input class="in" id="d1" type="text" value="2026/11/16" style="background:#f0f0f0;color:#999;border-color:#ddd"><svg aria-hidden="true" style="position:absolute;right:12px;top:14px;width:18px;height:18px;stroke:#666;fill:none;stroke-width:1.8" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg></div>
+<div style="position:relative"><label for="t1" style="position:absolute;left:-9999px">時間</label><input class="in" id="t1" type="text" value="-- : --" style="background:#f0f0f0;color:#999;border-color:#ddd"><span aria-hidden="true" style="position:absolute;right:14px;top:18px;border:6px solid transparent;border-top-color:#666"></span></div>
+</div>
+</section>
+<section class="sec">
+<h2>Step-2：輸入簡訊內容</h2>
+<div class="hint"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/></svg>您可在「簡訊管理」新增30組常用簡訊</div>
+<div class="hint"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/></svg>簡訊內容需包含雄獅、旅天下、日華</div>
+<div style="position:relative"><label for="tpl" style="position:absolute;left:-9999px">範本</label><select id="tpl" class="in" style="appearance:none;-webkit-appearance:none"><option>系統預設</option><option>20200124團</option><option>常用簡訊</option></select><span aria-hidden="true" style="position:absolute;right:14px;top:20px;border:6px solid transparent;border-top-color:#222"></span></div>
+<label for="body" style="position:absolute;left:-9999px">簡訊內容</label>
+<textarea id="body" rows="14" style="box-sizing:border-box;width:100%;border:1px solid #bbb;border-radius:4px;padding:12px;font-size:19px;line-height:1.6;font-family:inherit;resize:none">雄獅貴賓您好，我是您11/14(六)-11/20(五)經典雪梨浪漫魅力城市7日的領隊薛永南，以下幾點關於行前小提醒：
+1. 當天06:50請準時於.........
+2. 建議帶........
+3. 建議帶........
+當天敬請保持手機通暢方便聯絡，謝謝您</textarea>
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px">139 / 300 字</span><button type="button" style="height:38px;padding:0 14px;border:1px solid #E8363D;border-radius:8px;background:#fff;color:#E8363D;font-size:18px;font-family:inherit">預覽</button></div>
+<label class="rad" style="font-size:18px"><input type="checkbox">系統發送請勿回覆</label>
+<label class="rad" style="font-size:18px"><input type="checkbox" disabled>儲存此次修改</label>
+</section>
+<section class="sec">
+<h2>Step-3：選擇發送名單</h2>
+<div style="background:#f0f0f0;border-radius:8px;padding:14px 12px;display:flex;flex-direction:column;gap:8px"><label for="lp" style="font-size:19px">領隊手機</label><input class="in" id="lp" type="text" placeholder="請輸入手機號碼"></div>
+<div class="hint" style="margin-top:6px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/></svg>至少要選擇1位才可發送簡訊</div>
+<label class="pr"><input type="checkbox">全選</label>
+<div class="pr" style="color:#888;font-size:16px"><span style="width:18px"></span><span class="u">單位</span><span class="n">姓名</span><span>手機</span></div>
+<sc-for list="{{pax}}" as="p" hint-placeholder-count="16"><label class="pr"><input type="checkbox"><span class="u">{{p.u}}</span><span class="n">{{p.n}}</span><span class="p">{{p.t}}</span></label></sc-for>
+</section>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#F5F5F5;display:flex;align-items:center;padding:0 20px">
+<a href="SmsResult.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:23px;background:#E8363D;color:#fff;font-size:21px;font-weight:700">發送簡訊</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":2560}}'>
+class Component extends DCLogic {
+renderVals() {
+  const rows = [['高雄 直客','K褚興','0926026492'],['高雄 直客','褚興馨','0926026492'],['高雄 直客','張淑芬','0975282711'],['板橋 直客','賴雯婷','0932279610'],['板橋 直客','賴義正','0928597390'],['高雄 直客','軒 黃郁','0968653125'],['高雄 直客','石盈','0979707240'],['台南 直客','高溥琪','0929861666'],['台南 直客','高溥琪','0929861666'],['斗六 直客','饒家瑜','0911758288'],['斗六 直客','劉玉滿','0918178699'],['斗六 直客','饒朝清','0920899329'],['台中 星斗雲-','徐挺嘉','0988355050'],['台中 星斗雲-','王詩穎','0988920515'],['屏東 直客','孫榕麋','0937998284'],['屏東 直客','李書靜','0972235626']];
+  return { pax: rows.map(r => ({ u: r[0], n: r[1], t: r[2] })) };
+}
+}
+</script>
+</body>
+</html>

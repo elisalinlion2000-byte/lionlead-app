@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>飯店</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.sec{position:relative;background:#fff;border-radius:12px;padding:20px 18px;display:flex;flex-direction:column;gap:8px}
+.sec::before{content:"";position:absolute;left:0;top:22px;width:4px;height:26px;background:#E8363D;border-radius:0 2px 2px 0}
+.sec h2{margin:0;font-size:24px;font-weight:700}
+.in{box-sizing:border-box;width:100%;height:50px;border:1px solid #bbb;border-radius:4px;padding:0 12px;font-size:18px;font-family:inherit;background:#fff}
+.in::placeholder{color:#999}
+.lb{font-size:19px;color:#222;margin-top:6px}
+.q{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.q .t{font-size:20px;font-weight:700}
+.q .d{font-size:15px;color:#777}
+.stars{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:#777;margin-top:4px}
+.stars button{border:0;background:none;padding:0;width:28px;height:28px}
+.stars svg{width:26px;height:26px;fill:#ddd}
+.tw{position:relative}
+.tw svg{position:absolute;right:12px;top:16px;width:18px;height:18px;stroke:#444;fill:none;stroke-width:1.8}
+.del{width:34px;height:34px;border-radius:17px;border:0;background:#E8363D;display:flex;align-items:center;justify-content:center;padding:0}
+</style>
+</helmet>
+<div style="width:820px;height:1960px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
+<a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a>
+<h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">飯店</h1>
+<div style="display:flex;gap:12px">
+<a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a>
+<button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button>
+</div>
+</header>
+<div style="margin:10px 20px 0;display:flex;flex-direction:column;gap:18px">
+<section class="sec">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>MERCURE SYDNEY PARRAMATTA</h2><button type="button" class="del" aria-label="刪除"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></button></div>
+<div style="text-align:center;margin-top:10px"><a href="#top" style="font-size:19px;text-decoration:underline">複製前一天</a></div>
+</section>
+<section class="sec">
+<h2>飯店</h2>
+<div class="q"><div class="t">服務配合度</div><div class="d">櫃台及房務服務態度，包括房間分配及入住安排</div><div class="stars"><span>最低</span><button type="button" aria-label="1 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="2 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="3 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="4 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><span>最高</span></div></div>
+<div class="q"><div class="t">房間整潔與設施狀況</div><div class="d">客房乾淨度、設施完好程度、衛浴水壓與溫度等</div><div class="stars"><span>最低</span><button type="button" aria-label="1 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="2 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="3 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="4 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><span>最高</span></div></div>
+<div class="q"><div class="t">安全與緊急應變設施</div><div class="d">逃生標示、火警設備、安全管理（門禁、監控）</div><div class="stars"><span>最低</span><button type="button" aria-label="1 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="2 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="3 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="4 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><span>最高</span></div></div>
+<div class="q"><div class="t">公共設施</div><div class="d">WIFI提供、無障礙設施及其他設施(健身房、游泳池)等</div><div class="stars"><span>最低</span><button type="button" aria-label="1 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="2 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="3 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><button type="button" aria-label="4 星"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7L18.5 22 12 18l-6.5 4 1.8-7.7L2 9.6 9 9z"/></svg></button><span>最高</span></div></div>
+<label class="lb" for="note" style="font-size:20px;font-weight:700;margin-top:14px">備註/其他評論</label><input class="in" id="note" type="text" placeholder="請輸入">
+</section>
+<section class="sec">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><h2>上傳照片</h2><span style="font-size:17px;color:#333">0張</span></div>
+<button type="button" style="width:370px;height:280px;border:1px solid #ddd;border-radius:6px;background:#F5F5F5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-size:18px;color:#999;margin-top:10px"><span style="font-size:30px;line-height:1">+</span>選擇照片</button>
+</section>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#F5F5F5;display:flex;align-items:center;padding:0 20px">
+<a href="Daily3.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:#E8363D;color:#fff;font-size:21px;font-weight:700">確定</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1960}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

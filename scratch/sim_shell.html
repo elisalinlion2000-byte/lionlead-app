@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>導領 APP 流程模擬器</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="LION LEAD">
+<meta name="theme-color" content="#E8363D">
+<link rel="apple-touch-icon" href="appicon.png">
+<link rel="icon" href="appicon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+*{box-sizing:border-box}
+html{min-height:100%}
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif;background:#F5F5F5;color:#222;min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+.ctl{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #ddd;padding:12px 20px;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:center}
+.ctl .g{display:flex;align-items:center;gap:10px;font-size:15px}
+.sw{position:relative;width:52px;height:30px;border-radius:15px;background:#ccc;border:0;padding:0;transition:.2s}
+.sw.on{background:#E8363D}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:12px;background:#fff;transition:.2s}
+.sw.on::after{left:25px}
+.btn{height:36px;padding:0 16px;border-radius:8px;border:1px solid #E8363D;background:#fff;color:#E8363D;font-size:15px;font-weight:700}
+.btn.fill{background:#E8363D;color:#fff}.btn:disabled{opacity:.4;cursor:default}
+.note{font-size:13px;color:#777}
+.bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:10px 20px 0;font-size:12px;color:#666}
+.bar span{padding:3px 10px;border-radius:12px;background:#fff}.bar span.on{background:#E8363D;color:#fff}
+.log{max-width:820px;margin:8px auto 0;font-size:13px;color:#666;background:#fff;border-radius:8px;padding:8px 12px}
+.stage{display:flex;justify-content:center;padding:8px 0 24px}
+.screen nav[aria-label="主選單"]{display:none!important}
+#gnav{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;width:330px;max-width:90vw;box-sizing:border-box;height:64px;border-radius:40px;background:#3b3b3b;display:none;align-items:center;justify-content:space-between;padding:3px;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+#gnav .gmid{display:flex;background:#fff;border-radius:27px;height:54px;align-items:center}
+.gtab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:54px;border-radius:27px;font-size:12px;color:#333;background:#fff;border:0;font-family:inherit;cursor:pointer;padding:0}
+.gtab.on{background:#E8363D;color:#fff}
+.gtab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.screen.fixed{display:none;justify-content:center;align-items:flex-start}.screen.fixed.cur{display:flex}
+.screen.fixed .mount{transform-origin:top center}
+.screen{display:none}.screen.cur{display:block}
+.screen.fixed .mount{width:820px;overflow:hidden;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.screen.fixed .mount > *{width:820px}
+.screen.fluid .mount{width:min(1100px,96vw);min-height:720px;background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.15);overflow:hidden}
+.screen.fluid .mount > *{min-height:720px}
+#s-Entry .mount > a{height:720px}
+a[href="#noop"]{cursor:default}
+/* 網路狀態 */
+body.offline [data-net]{background:#E5E5E5!important}
+body.offline [data-net] svg{stroke:#888!important}
+body.offline .net-need{background:#E5E5E5!important;color:#aaa!important;pointer-events:none}
+/* 出團前：四團＝四種狀態固定展示，狀態樣式由各卡片 class 控制（見 PreTour scoped CSS） */
+/* 帶團中卡片：紙本交班沒有線上交班 */
+body.paper .ho-tour{display:none!important}
+/* 交班文件無誤 */
+.ho-cta.en{background:#E8363D!important;color:#fff!important;cursor:pointer}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60}
+#rxSheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:65}
+#rxSheet.show{display:flex}
+#rxSheet .rxs-panel{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:520px;box-sizing:border-box;padding:16px 20px 26px}
+#rxSheet .rxs-h{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+#rxSheet .rxs-h button{border:0;background:none;font-size:22px;color:#333;cursor:pointer;padding:0}
+#rxSheet .rxs-h span{font-size:19px;font-weight:700}
+#rxSheet .rxs-opt{display:block;width:100%;box-sizing:border-box;padding:16px 0;margin-top:12px;border:1px solid #e0e0e0;border-radius:10px;background:#fff;font-size:19px;font-family:inherit;color:#222;cursor:pointer}
+#rxSheet .rxs-opt.red{border-color:#E8363D;color:#E8363D;font-weight:700}
+#rxToast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:24px;font-size:16px;display:none;z-index:80;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+#rxToast.show{display:block}
+#roStick{position:fixed;top:0;left:0;right:0;display:none;z-index:55;background:#e9ecef;padding:13px 20px;font-size:17px;color:#222;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+#roStick .rs-txt .ro-i{color:#aaa;font-size:15px;font-weight:400}
+#roOrderSheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:66}
+#roOrderSheet.show{display:flex}
+#roOrderSheet .ros-panel{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:520px;box-sizing:border-box;padding:16px 22px 24px}
+#roOrderSheet .ros-h{display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px}
+#roOrderSheet .ros-h button{position:absolute;left:0;border:0;background:none;font-size:22px;color:#333;cursor:pointer;padding:0}
+#roOrderSheet .ros-h span{font-size:19px;font-weight:700}
+#roOrderSheet .ros-no{font-size:18px;color:#222;font-weight:600;margin-bottom:6px}
+#roOrderSheet .ros-hr{border:0;border-top:1px solid #eee;margin:14px 0}
+#roOrderSheet .ros-k{font-size:14px;color:#999;margin-bottom:4px}
+#roOrderSheet .ros-v{font-size:18px;color:#222;font-weight:600}
+#roOrderSheet .ros-sub{font-size:16px;color:#555;margin-top:4px}
+#roOrderSheet .lk{color:#1a56c4}
+#roOrderSheet .ros-ok{width:100%;margin-top:20px;padding:14px 0;background:#E8363D;border:0;border-radius:10px;color:#fff;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer}
+#roSheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:65}
+#roSheet.show{display:flex}
+#roSheet .ro-panel{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:520px;box-sizing:border-box;padding:16px 20px 24px}
+#roSheet .ro-ph{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+#roSheet .ro-ph button{border:0;background:none;font-size:22px;color:#333;cursor:pointer;padding:0}
+#roSheet .ro-ph span{font-size:19px;font-weight:700}
+#roSheet .ro-chips{display:flex;flex-wrap:wrap;gap:10px}
+#roSheet .ro-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ddd;background:#fff;color:#777;border-radius:22px;padding:9px 16px;font-size:16px;font-family:inherit;cursor:pointer}
+#roSheet .ro-chip .ck{width:18px;height:18px;border:1.5px solid #ccc;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:transparent;flex:none}
+#roSheet .ro-chip.on{border-color:#E8363D;color:#E8363D;background:#fff;font-weight:600}
+#roSheet .ro-chip.on .ck{background:#E8363D;border-color:#E8363D;color:#fff}
+#roSheet .ro-ok{width:100%;margin-top:18px;padding:13px 0;background:#E8363D;border:0;border-radius:10px;color:#fff;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer}
+#rxDaySheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:65}
+#rxDaySheet.show{display:flex}
+#rxDaySheet .rxds-panel{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:520px;box-sizing:border-box;padding:16px 20px 24px;max-height:80%;overflow:auto}
+#rxDaySheet .rxds-h{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+#rxDaySheet .rxds-h button{border:0;background:none;font-size:22px;color:#333;cursor:pointer;padding:0}
+#rxDaySheet .rxds-h span{font-size:19px;font-weight:700}
+#rxDaySheet .rxds-day{display:flex;align-items:center;justify-content:space-between;padding:14px 2px;border-bottom:1px solid #f0f0f0;font-size:17px;cursor:pointer}
+#rxDaySheet .rxds-add{display:flex;align-items:center;gap:8px;color:#E8363D;font-size:17px;padding:16px 2px}
+#rxDaySheet .rxds-ok{width:100%;padding:13px 0;background:#E8363D;border:0;border-radius:10px;color:#fff;font-size:18px;font-weight:600;font-family:inherit;cursor:pointer}
+.overlay.show{display:flex}
+.overlay .box{width:340px;background:#fff;border-radius:18px;padding:30px 26px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;font-size:20px;font-weight:700;line-height:1.5}
+.overlay .box small{display:block;font-size:14px;font-weight:400;color:#777;margin-top:4px}
+.overlay .box button{width:110px;height:40px;border-radius:8px;border:0;background:#E8363D;color:#fff;font-size:18px;font-weight:700}
+@media (max-width:600px){
+  .ctl{padding:8px 10px;gap:7px 12px}
+  .ctl .g{gap:6px;font-size:13px}
+  .ctl .g b{font-size:13px}
+  .btn{height:32px;padding:0 10px;font-size:13px}
+  .sw{width:46px;height:26px}
+  .sw::after{width:20px;height:20px}
+  .sw.on::after{left:23px}
+  .stage{padding:12px 0 48px}
+  .overlay .box{width:86vw;max-width:340px}
+  #btnSkip{right:6px;bottom:6px}
+}
+/*SCREEN_CSS*/
+</style>
+</head>
+<body class="online st-unsigned">
+<div class="ctl">
+  <div class="g"><b style="display:flex;align-items:center;gap:6px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M4.5 11.5a11 11 0 0 1 15 0"/><path d="M8 15a6 6 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1.1" fill="#222"/></svg>Wifi</b><button class="sw on" id="swNet" aria-label="Wifi 開關"></button></div>
+  <div class="g"><b id="hoLbl">線上交班</b><button class="sw on" id="swOnline" aria-label="線上/紙本交班"></button></div>
+  <button class="btn" id="btnProd">產品部完成</button>
+  <button class="btn" id="btn18">出發前1天18:00</button>
+  <button class="btn" id="btn24">回團日24:00</button>
+  <div class="g"><button class="btn" id="btnBack">◂ 上一步</button><button class="btn" id="btnEntry" aria-label="回入口（首頁）" title="回入口" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg></button><button class="btn" id="btnReset" aria-label="重置" title="重置模擬狀態" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v6h-6"/></svg></button></div>
+</div>
+<div class="stage" id="stage">
+<!--SCREENS-->
+</div>
+<nav id="gnav" aria-label="主選單">
+<button class="gtab" data-go="Home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg>首頁</button>
+<div class="gmid">
+<button class="gtab" data-go="PreTour"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM8 11h8M8 15h8"/></svg>出團前</button>
+<button class="gtab" data-go="Tour"><svg viewBox="0 0 24 24"><path d="M6 21V4h12l-3 4 3 4H6"/></svg>帶團中</button>
+<button class="gtab" data-go="PostTour"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12l3 3 5-6"/></svg>回團後</button>
+</div>
+<button class="gtab" data-go="Mine"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>我的</button>
+</nav>
+<button id="btnSkip" aria-label="skip" title="測試：跳過委任契約書／交班" style="position:fixed;right:10px;bottom:10px;z-index:100;width:28px;height:28px;border:0;border-radius:6px;background:rgba(0,0,0,.05);color:#ccc;font-size:15px;line-height:1;cursor:pointer">›</button>
+<div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
+<div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
+<div class="overlay" id="rxEmail"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">請輸入飯店的Email <span style="color:#E8363D">*</span></div><textarea id="rxEmailInput" placeholder="請輸入" style="width:100%;box-sizing:border-box;height:90px;border:1px solid #d7d7d7;border-radius:8px;padding:10px;font-size:16px;font-family:inherit;resize:none"></textarea><div style="display:flex;gap:14px"><button type="button" id="rxEmailCancel" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="rxEmailOk" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
+<div id="rxDaySheet"><div class="rxds-panel">
+<div class="rxds-h"><button type="button" class="rxds-x">✕</button><span>切換住宿日期</span></div>
+<div class="rxds-day" data-d="1" data-dt="12/26"><span><b style="color:#E8363D">第 1 天</b>　|　12/26</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="2" data-dt="12/27"><span><b style="color:#E8363D">第 2 天</b>　|　12/27</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="3" data-dt="12/28"><span><b style="color:#E8363D">第 3 天</b>　|　12/28</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="4" data-dt="12/29"><span><b style="color:#E8363D">第 4 天</b>　|　12/29</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="5" data-dt="12/30"><span><b style="color:#E8363D">第 5 天</b>　|　12/30</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="6" data-dt="12/31"><span><b style="color:#E8363D">第 6 天</b>　|　12/31</span><span class="rxd-radio"></span></div>
+<div class="rxds-day" data-d="7" data-dt="01/01"><span><b style="color:#E8363D">第 7 天</b>　|　01/01</span><span class="rxd-radio"></span></div>
+<div class="rxds-add">＋ 新增一天</div>
+<button type="button" class="rxds-ok rxds-x">確認</button>
+</div></div>
+<div id="roStick"><span class="rs-txt"></span></div>
+<div id="roOrderSheet"><div class="ros-panel">
+<div class="ros-h"><button type="button" class="ros-x">✕</button><span>訂單詳細資料</span></div>
+<div class="ros-no"><b class="ros-ono">No. —</b> ｜ <span class="ros-cnt">— 位旅客</span></div>
+<hr class="ros-hr">
+<div class="ros-f"><div class="ros-k">同行公司</div><div class="ros-v">CompanyName</div></div>
+<hr class="ros-hr">
+<div class="ros-f"><div class="ros-k">訂單聯絡人</div><div class="ros-v">王文文　<a target="_top" href="tel:0912345678" class="lk">0912-345-678</a></div></div>
+<hr class="ros-hr">
+<div class="ros-f"><div class="ros-k">業務員</div><div class="ros-v">王文文（內湖）</div><div class="ros-sub">公司　<a target="_top" href="tel:0277292600" class="lk">02-7729-2600</a> #9999</div><div class="ros-sub">手機　<a target="_top" href="tel:0912345678" class="lk">0912-345-678</a></div></div>
+<button type="button" class="ros-ok ros-x">確認</button>
+</div></div>
+<div id="roSheet"><div class="ro-panel">
+<div class="ro-ph"><button type="button" class="ro-x">✕</button><span>設定顯示項目</span></div>
+<div class="ro-chips">
+<button type="button" class="ro-chip on" data-f="f-pp"><span class="ck">✓</span>護照</button>
+<button type="button" class="ro-chip on" data-f="f-pnr"><span class="ck">✓</span>PNR</button>
+<button type="button" class="ro-chip on" data-f="f-remark"><span class="ck">✓</span>備註</button>
+<button type="button" class="ro-chip" data-f="f-id"><span class="ck">✓</span>身分證</button>
+<button type="button" class="ro-chip" data-f="f-tb"><span class="ck">✓</span>台胞證</button>
+<button type="button" class="ro-chip" data-f="f-contact"><span class="ck">✓</span>旅客詳</button>
+<button type="button" class="ro-chip" data-f="f-order"><span class="ck">✓</span>訂單詳</button>
+<button type="button" class="ro-chip" data-f="f-ds"><span class="ck">✓</span>電說</button>
+</div>
+<button type="button" class="ro-ok ro-x">確認</button>
+</div></div>
+<div id="rxToast"></div>
+<div class="overlay" id="ovRep"><div class="box" style="align-items:stretch;text-align:left;gap:14px">
+<div style="font-size:18px;font-weight:700">請簡述您遇到的問題 <span style="color:#E8363D">*</span></div>
+<textarea id="ovRepText" placeholder="請輸入" style="width:100%;height:150px;border:1px solid #ddd;border-radius:6px;padding:10px;font-family:inherit;font-size:15px;resize:none;box-sizing:border-box;background:#F2F2F2"></textarea>
+<div style="display:flex;gap:12px;justify-content:center">
+<button id="ovRepCancel" style="width:100px;height:40px;border-radius:8px;border:1px solid #E8363D;background:#fff;color:#E8363D;font-size:17px;font-weight:700;cursor:pointer">取消</button>
+<button id="ovRepOk" style="width:100px;height:40px;border-radius:8px;border:0;background:#E8363D;color:#fff;font-size:17px;font-weight:700;cursor:pointer">確定</button>
+</div>
+</div></div>
+<script>
+class DCLogic { constructor(){ this.state = {}; this.props = {}; } setState(s){ Object.assign(this.state, s); } }
+const LOGIC = { /*LOGIC*/ };
+const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, screen: 'Entry', hdChecked: {} };
+let navHist = [], goingBack = false;
+let rxVer = '1';
+let rxRoomNos = [];
+const HD_ITEMS = ['交班總覽','收件一覽表','開票名單','PNR','保單','合約書／手配書','說明會資料','Q 信箱','分房表','其他交班文件'];
+const inTour = () => S.after18 && !S.after24;
+const log = (m) => { const el = document.getElementById('log'); if (el) el.textContent = m; };
+
+function lookup(path, scope) {
+  if (path === 'true') return true; if (path === 'false') return false;
+  const parts = path.split('.'); let v = scope;
+  for (const p of parts) { if (v == null) return ''; v = v[p]; }
+  return v == null ? '' : v;
+}
+function tpl(html, scope) {
+  html = html.replace(/<sc-for list="\{\{\s*([\w.$]+)\s*\}\}" as="(\w+)"[^>]*>([\s\S]*?)<\/sc-for>/g, (m, list, as, body) => {
+    const arr = lookup(list, scope) || [];
+    return arr.map((item, i) => tpl(body, Object.assign({}, scope, { [as]: item, $index: i }))).join('');
+  });
+  html = html.replace(/<sc-if value="\{\{\s*([\w.$]+)\s*\}\}"[^>]*>([\s\S]*?)<\/sc-if>/g, (m, cond, body) => lookup(cond, scope) ? tpl(body, scope) : '');
+  return html.replace(/\{\{\s*([\w.$]+)\s*\}\}/g, (m, p) => { const v = lookup(p, scope); return typeof v === 'function' ? '' : String(v); });
+}
+function renderScreen(name) {
+  const sec = document.getElementById('s-' + name); if (!sec) return;
+  const t = sec.querySelector('template').innerHTML;
+  const vals = LOGIC[name] ? new LOGIC[name]().renderVals() : {};
+  sec.querySelector('.mount').innerHTML = tpl(t, vals);
+}
+function phaseClass() {
+  const b = document.body.classList;
+  ['st-unsigned','st-grey','st-ready','st-paper','st-done','st-intour','paper','online','offline','docok','signed'].forEach(c => b.remove(c));
+  b.add(S.online ? 'online' : 'offline'); if (S.paper) b.add('paper'); if (S.docOk) b.add('docok'); if (S.signed) b.add('signed');
+  if (inTour()) b.add('st-intour');
+  else if (!S.signed) b.add('st-unsigned');
+  else if (S.paper) b.add('st-paper');
+  else if (!S.productReady) b.add('st-grey');
+  else if (!S.handoverDone) b.add('st-ready');
+  else b.add('st-done');
+}
+function show(name) {
+  if (name === 'Tour' && !inTour()) name = 'TourEmpty';
+  if (name === 'TourEmpty' && inTour()) name = 'Tour';
+  if (name === 'Consent' && !S.online) name = 'ConsentOffline';
+  if (name === 'HandoverLocked' || name === 'HandoverPartial') name = 'HandoverDone';
+  if (!document.getElementById('s-' + name)) return;
+  if (!goingBack && S.screen && S.screen !== name) navHist.push(S.screen);
+  S.screen = name;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('cur'));
+  renderScreen(name);
+  document.getElementById('s-' + name).classList.add('cur');
+  phaseClass(); window.scrollTo({ top: 0 });
+  // 帶團中卡片的交班文件按鈕改成「線上交班」
+  if (name === 'Tour' || name === 'TourDialog') document.querySelectorAll('#s-' + name + ' .fn').forEach(el => { const t = el.textContent.trim(); if (t === '交班文件' || t === '線上交班') { el.style.display = ''; el.style.cursor = 'pointer'; el.classList.add('ho-tour'); el.classList.remove('off'); el.lastChild.textContent = '交班文件'; el.setAttribute('href', '#HandoverDone'); el.onclick = (ev) => { ev.preventDefault(); show('HandoverDone'); }; } });
+  if (name === 'HandoverDone') {
+    const allHd = HD_ITEMS.every(i => S.hdChecked[i]);
+    document.querySelectorAll('#s-HandoverDone span').forEach(el => { const t = el.textContent.trim(); if (t === '交班文件無誤' || t === '已完成交班') { el.classList.add('ho-cta'); el.dataset.act = 'handoverDone'; el.classList.toggle('en', allHd || S.handoverDone); if (S.handoverDone) el.textContent = '已完成交班'; } });
+    document.querySelectorAll('#s-HandoverDone .it').forEach(el => { const lb = el.querySelector('span'); if (lb && S.hdChecked[lb.textContent.trim()] && !lb.querySelector('.chk')) lb.insertAdjacentHTML('beforeend', '<span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-9"/></svg></span>'); });
+  }
+  if (name === 'HandoverOverview') document.querySelectorAll('#s-HandoverOverview .confchk').forEach(c => c.checked = S.docOk);
+  if (name === 'HandoverOverview' || name.startsWith('Hd')) wireConfirm('#s-' + name);
+  if (name === 'PreTour') {
+    const card = document.getElementById('preLive'); const b = document.getElementById('pbLive');
+    if (card && b) {
+      card.classList.toggle('signed', S.signed);
+      card.classList.toggle('ready', S.signed && !S.paper && S.productReady);
+      card.classList.toggle('done', S.signed && !S.paper && S.handoverDone);
+      b.style.pointerEvents = ''; b.removeAttribute('href');
+      if (!S.signed) { b.textContent = '填寫委任契約書'; b.style.background = '#E8363D'; b.style.color = '#fff'; b.setAttribute('href', '#Contract'); }
+      else if (S.paper) { b.textContent = '準備出發'; b.style.background = '#E5E5E5'; b.style.color = '#777'; b.style.pointerEvents = 'none'; }
+      else if (!S.productReady) { b.textContent = '線上交班準備中'; b.style.background = '#E5E5E5'; b.style.color = '#aaa'; b.style.pointerEvents = 'none'; }
+      else if (!S.handoverDone) { b.textContent = '線上交班'; b.style.background = '#E8363D'; b.style.color = '#fff'; b.setAttribute('href', '#HandoverDone'); }
+      else { b.textContent = '準備出發'; b.style.background = '#E5E5E5'; b.style.color = '#777'; b.style.pointerEvents = 'none'; }
+    }
+  }
+  if (name === 'Main') setTimeout(() => { if (S.screen === 'Main') show('Login'); }, 500);
+  if (name === 'Consent') wireConsent();
+  if (name === 'Notify') wireNotify();
+  if (name === 'HdRoom') wireRoom();
+  if (name === 'RoomExt' || name === 'RoomExtPreview') wireRoomExt(name);
+  if (name === 'Roster') wireRoster();
+  if (name === 'Daily2') wireDaily2();
+  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
+  if (name === 'PostTour') {
+    const pl = document.getElementById('postLive');
+    if (pl) pl.style.display = S.after24 ? '' : 'none';
+    const pc = document.getElementById('postCount');
+    if (pc) pc.textContent = S.after24 ? '共4筆' : '共3筆';
+  }
+  const gnav = document.getElementById('gnav');
+  const hadNav = !!document.querySelector('.screen.cur nav[aria-label="主選單"]');
+  gnav.style.display = hadNav ? 'flex' : 'none';
+  const grp = { Home: 'Home', HomeCalendar: 'Home', Notify: 'Home', PreTour: 'PreTour', PreTourDev: 'PreTour', Tour: 'Tour', TourEmpty: 'Tour', TourDialog: 'Tour', PostTour: 'PostTour', Mine: 'Mine' }[S.screen];
+  gnav.querySelectorAll('.gtab').forEach(t => t.classList.toggle('on', t.dataset.go === grp));
+  const cm = document.querySelector('.screen.cur .mount'); const rt = cm && cm.firstElementChild;
+  if (rt) { const bg = getComputedStyle(rt).backgroundColor; if (bg && bg !== 'rgba(0, 0, 0, 0)') document.body.style.background = bg; }
+  bar(); fit(); roSticky();
+}
+function wireRoom(){
+  const sc=document.getElementById('s-HdRoom'); if(!sc) return;
+  sc.querySelectorAll('.rmhead').forEach(h=>{ h.onclick=()=>{ const b=sc.querySelector('#'+h.dataset.t); if(!b) return; const open=b.style.display!=='none'; b.style.display=open?'none':'block'; const c=h.querySelector('.chev'); if(c) c.textContent=open?'⌄':'⌃'; }; });
+  const sheet=sc.querySelector('.roomsheet'); const trig=sc.querySelector('.rstrigger');
+  if(trig&&sheet) trig.onclick=()=>{ sheet.style.display='flex'; };
+  sc.querySelectorAll('.rsclose').forEach(b=>{ b.onclick=()=>{ if(sheet) sheet.style.display='none'; }; });
+  // 切換住宿日期：點日期列即選取並更新上方日期
+  const RON='<span style="width:20px;height:20px;border:1.5px solid #E8363D;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none"><span style="width:11px;height:11px;background:#E8363D;border-radius:50%"></span></span>';
+  const ROFF='<span style="width:20px;height:20px;border:1.5px solid #c4c4c4;border-radius:50%;display:inline-block;flex:none"></span>';
+  // 飯店／版型依天數自動帶入：第 2 天＝版型2＋湯之川溫泉，其餘＝版型1
+  const v1=sc.querySelector('.rm-v1'), v2=sc.querySelector('.rm-v2'), lab=sc.querySelector('.rm-vlabel'), nm=sc.querySelector('.rm-hotel-name');
+  const HOTEL={'1':'HF 伊帕內瑪花園飯店 HF IPANEMA PARK','2':'湯之川溫泉 平成館 潮騷亭'};
+  function applyVer(day){ const toV2=(String(day)==='2'); if(v1) v1.style.display=toV2?'none':'flex'; if(v2) v2.style.display=toV2?'flex':'none'; if(lab) lab.textContent=toV2?'版型2':'版型1'; if(nm) nm.textContent=HOTEL[toV2?'2':'1']; }
+  sc.querySelectorAll('.rsday').forEach(r=>{ r.onclick=()=>{ sc.querySelectorAll('.rsday .rsradio').forEach(x=>x.innerHTML=ROFF); const rr=r.querySelector('.rsradio'); if(rr) rr.innerHTML=RON; if(trig) trig.innerHTML='第 '+r.dataset.d+' 天 | '+r.dataset.dt+' <span style="color:#999">⌄</span>'; applyVer(r.dataset.d); if(sheet) sheet.style.display='none'; }; });
+  applyVer(1);
+  // 分房Final：點擊展開／收合房型與飯店摘要
+  const fin=sc.querySelector('.rsfinal'), finbox=sc.querySelector('.rsfinalbox');
+  if(fin&&finbox){ fin.onclick=()=>{ const open=finbox.style.display!=='none'; finbox.style.display=open?'none':'block'; const c=fin.querySelector('.rsfchev'); if(c) c.textContent=open?'⌄':'⌃'; }; }
+}
+function roSticky(){
+  const st=document.getElementById('roStick'); if(!st) return;
+  const sc=document.getElementById('s-Roster');
+  if(!sc||S.screen!=='Roster'){ st.style.display='none'; return; }
+  const heads=[...sc.querySelectorAll('.ro-ghead')]; if(!heads.length){ st.style.display='none'; return; }
+  const barH=st.offsetHeight||44; let cur=null, nextTop=null;
+  for(const h of heads){ const r=h.getBoundingClientRect(); if(r.top<=0){ cur=h; } else if(nextTop===null){ nextTop=r.top; } }
+  if(!cur){ st.style.display='none'; return; }
+  st.querySelector('.rs-txt').innerHTML=cur.querySelector('.ro-gno').innerHTML;
+  st.style.display='block';
+  st.style.transform=(nextTop!==null&&nextTop<barH)?('translateY('+(nextTop-barH)+'px)'):'translateY(0)';
+}
+window.addEventListener('scroll', roSticky, {passive:true});
+function wireRoster(){
+  const sc=document.getElementById('s-Roster'); if(!sc) return;
+  // 訂單群組展開／收合（預設全展開）
+  sc.querySelectorAll('.ro-ghead').forEach(h=>{ h.onclick=(e)=>{ if(e.target.closest('.ro-oinfo')) return; const b=sc.querySelector('#'+h.dataset.t); if(!b) return; const open=b.style.display!=='none'; b.style.display=open?'none':'block'; const c=h.querySelector('.ro-chev'); if(c) c.textContent=open?'⌄':'⌃'; roSticky(); }; });
+  // 點擊訂單 ⓘ 顯示訂單詳細資料
+  const osheet=document.getElementById('roOrderSheet');
+  if(osheet){ sc.querySelectorAll('.ro-oinfo').forEach(ic=>{ ic.onclick=(e)=>{ e.stopPropagation(); osheet.querySelector('.ros-ono').textContent='No. '+ic.dataset.order; osheet.querySelector('.ros-cnt').textContent=ic.dataset.cnt+' 位旅客'; osheet.classList.add('show'); }; });
+    osheet.querySelectorAll('.ros-x').forEach(b=>b.onclick=()=>osheet.classList.remove('show')); }
+  // 設定顯示項目：勾選要顯示的欄位
+  const sheet=document.getElementById('roSheet');
+  const setbtn=sc.querySelector('.ro-settings'); if(setbtn&&sheet) setbtn.onclick=()=>sheet.classList.add('show');
+  if(sheet){
+    sheet.querySelectorAll('.ro-x').forEach(b=>b.onclick=()=>sheet.classList.remove('show'));
+    sheet.querySelectorAll('.ro-chip').forEach(ch=>{ if(!ch.classList.contains('on')){ sc.querySelectorAll('.'+ch.dataset.f).forEach(el=>el.style.display='none'); } });
+    sheet.querySelectorAll('.ro-chip').forEach(ch=>{ ch.onclick=()=>{ const on=ch.classList.toggle('on'); sc.querySelectorAll('.'+ch.dataset.f).forEach(el=>el.style.display=on?'':'none'); }; });
+  }
+}
+function rxToast(msg){ const t=document.getElementById('rxToast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>{ t.classList.remove('show'); },1900); }
+function wireRoomExt(name){
+  const sc=document.getElementById('s-'+name); if(!sc) return;
+  const RON='<span style="width:20px;height:20px;border:1.5px solid #E8363D;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none"><span style="width:11px;height:11px;background:#E8363D;border-radius:50%"></span></span>';
+  const ROFF='<span style="width:20px;height:20px;border:1.5px solid #c4c4c4;border-radius:50%;display:inline-block;flex:none"></span>';
+  if(name==='RoomExt'){
+    // 切換住宿日期（沿用 交班文件>分房表 格式，預設第 1 天）
+    const dtrig=sc.querySelector('.rx-daytrig'), dsheet=document.getElementById('rxDaySheet');
+    // 版型／飯店依天數帶入：第 2 天＝版型2＋鹿之湯集團 定山溪 花紅葉，其餘＝版型1
+    const vlab=sc.querySelector('.rx-vlabel'), vname=sc.querySelector('.rx-hotel-name');
+    const roomsV1=sc.querySelector('.rx-rooms-v1'), roomsV2=sc.querySelector('.rx-rooms-v2');
+    const RXHOTEL={'1':'HF 伊帕內瑪花園飯店 HF IPANEMA PARK','2':'鹿之湯集團 定山溪 花紅葉'};
+    function rxApplyVer(day){ const v2=(String(day)==='2'); rxVer=v2?'2':'1'; if(vlab) vlab.textContent=v2?'版型2':'版型1'; if(vname) vname.textContent=RXHOTEL[v2?'2':'1']; if(roomsV1) roomsV1.style.display=v2?'none':'flex'; if(roomsV2) roomsV2.style.display=v2?'flex':'none'; }
+    const curD=((dtrig?dtrig.textContent:'').match(/第 (\d) 天/)||[])[1]||'1';
+    if(dsheet){ dsheet.querySelectorAll('.rxds-day').forEach(r=>{ r.querySelector('.rxd-radio').innerHTML=(r.dataset.d===curD)?RON:ROFF; }); }
+    rxApplyVer(curD);
+    if(dtrig&&dsheet) dtrig.onclick=()=>dsheet.classList.add('show');
+    // 分房Final 展開（與交班文件>分房表相同內容）
+    const fin=sc.querySelector('.rsfinal'), finbox=sc.querySelector('.rsfinalbox');
+    if(fin&&finbox){ fin.onclick=()=>{ const open=finbox.style.display!=='none'; finbox.style.display=open?'none':'block'; const c=fin.querySelector('.rsfchev'); if(c) c.textContent=open?'⌄':'⌃'; }; }
+    if(dsheet){ dsheet.querySelectorAll('.rxds-x').forEach(b=>b.onclick=()=>dsheet.classList.remove('show'));
+      dsheet.querySelectorAll('.rxds-day').forEach(r=>{ r.onclick=()=>{ dsheet.querySelectorAll('.rxds-day .rxd-radio').forEach(x=>x.innerHTML=ROFF); r.querySelector('.rxd-radio').innerHTML=RON; if(dtrig) dtrig.innerHTML='第 '+r.dataset.d+' 天 | '+r.dataset.dt+' <span style="color:#999">⌄</span>'; rxApplyVer(r.dataset.d); dsheet.classList.remove('show'); }; }); }
+    // 展開／收合房間
+    sc.querySelectorAll('.rx-head').forEach(h=>{ h.onclick=(e)=>{ if(e.target.closest('.rx-no')) return; const b=h.parentNode.querySelector('.rx-body'); if(!b) return; const open=b.style.display!=='none'; b.style.display=open?'none':'block'; const c=h.querySelector('.rxchev'); if(c) c.textContent=open?'⌄':'⌃'; }; });
+    // 沿用：套用前一天房號
+    const apply=sc.querySelector('.rx-apply'); const carry=sc.querySelector('.rx-carry');
+    if(apply) apply.onclick=()=>{ const seq=[2501,2502,2503,2505,2506,2507,2508,2510,2511,2512,2515,2516,2517,2518]; sc.querySelectorAll('.rx-no').forEach((inp,i)=>{ inp.value=seq[i]!=null?seq[i]:(2501+i); inp.classList.remove('err'); }); if(carry) carry.style.display='none'; rxToast('已套用前一天房號'); };
+    const cx=sc.querySelector('.rx-carry-x'); if(cx) cx.onclick=()=>{ if(carry) carry.style.display='none'; rxToast('已取消沿用分房內容'); };
+    // 輸出分房表：驗證房號是否填寫完整
+    const exp=sc.querySelector('.rx-export');
+    if(exp) exp.onclick=()=>{ const rooms=[...sc.querySelectorAll('.rx-rooms')].find(r=>r.style.display!=='none')||sc.querySelector('.rx-rooms'); const cards=[...rooms.querySelectorAll('.rx-card')]; const empties=cards.filter(c=>{ const n=c.querySelector('.rx-no'); return !n.value.trim(); });
+      if(empties.length){ empties.forEach(c=>{ c.querySelector('.rx-no').classList.add('err'); }); empties.slice().reverse().forEach(c=>rooms.insertBefore(c, rooms.firstChild)); window.scrollTo({top:0,behavior:'smooth'}); modal('還有房號尚未填寫'); }
+      else { rxRoomNos=cards.map(c=>{ const nn=c.querySelector('.rx-no'); return nn?nn.value.trim():''; }); show('RoomExtPreview'); } };
+  } else {
+    // 輸出預覽
+    const t1=sc.querySelector('.rp-v1'), t2=sc.querySelector('.rp-v2'); if(t1) t1.style.display=(rxVer==='2')?'none':''; if(t2) t2.style.display=(rxVer==='2')?'':'none';
+    const tbl=(rxVer==='2')?t2:t1; if(tbl) tbl.querySelectorAll('.rp-no').forEach(cell=>{ const ri=+cell.dataset.room; cell.textContent=(rxRoomNos[ri]!=null?rxRoomNos[ri]:''); });
+    const f1=sc.querySelector('.rp-fin-v1'), f2=sc.querySelector('.rp-fin-v2'); if(f1) f1.style.display=(rxVer==='2')?'none':'inline-block'; if(f2) f2.style.display=(rxVer==='2')?'inline-block':'none';
+    const rpback=sc.querySelector('.rp-back'); if(rpback) rpback.onclick=()=>{ if(navHist.length){ goingBack=true; show(navHist.pop()); goingBack=false; } else { show('RoomExt'); } };
+    const sheet=document.getElementById('rxSheet'), email=document.getElementById('rxEmail');
+    const out=sc.querySelector('.rp-out'); if(out&&sheet) out.onclick=()=>{ sheet.classList.add('show'); };
+    if(sheet) sheet.querySelectorAll('.rxs-x').forEach(b=>{ b.onclick=()=>sheet.classList.remove('show'); });
+    const pdf=document.getElementById('rxsPdf'); if(pdf) pdf.onclick=()=>{ if(sheet) sheet.classList.remove('show'); rxToast('已成功儲存到手機中'); };
+    const mail=document.getElementById('rxsMail'); if(mail&&email) mail.onclick=()=>{ if(sheet) sheet.classList.remove('show'); email.classList.add('show'); };
+    const mc=document.getElementById('rxEmailCancel'); if(mc&&email) mc.onclick=()=>email.classList.remove('show');
+    const mo=document.getElementById('rxEmailOk'); if(mo&&email) mo.onclick=()=>{ email.classList.remove('show'); rxToast('已寄出郵件至指定Email'); };
+  }
+}
+function dragList(sc, rowSel, gripSel){
+  sc.querySelectorAll(gripSel).forEach(g=>{ g.style.cursor='grab'; g.style.touchAction='none';
+    g.addEventListener('pointerdown', e=>{ e.preventDefault(); const row=g.closest(rowSel); if(!row) return; const cont=row.parentNode; row.style.opacity='.5';
+      const move=ev=>{ const rows=[...cont.querySelectorAll(rowSel)]; for(const o of rows){ if(o===row) continue; const r=o.getBoundingClientRect(); if(ev.clientY>r.top&&ev.clientY<r.bottom){ cont.insertBefore(row, (ev.clientY<r.top+r.height/2)?o:o.nextSibling); break; } } };
+      const up=()=>{ row.style.opacity=''; document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up); };
+      document.addEventListener('pointermove',move); document.addEventListener('pointerup',up); });
+  });
+}
+function wireDaily2(){ const sc=document.getElementById('s-Daily2'); if(!sc) return; dragList(sc, '.tl', '.grip'); }
+function wireDays(sc){ if(!sc) return; const trig=sc.querySelector('.daytrigger'); const sheet=sc.querySelector('.daysheet'); if(trig&&sheet) trig.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); sheet.style.display='flex'; }; if(sheet) sheet.querySelectorAll('.dsclose').forEach(b=>b.onclick=()=>{ sheet.style.display='none'; }); }
+function wireNotify(){
+  const sc=document.getElementById('s-Notify'); if(!sc) return;
+  sc.querySelectorAll('.card').forEach(c=>{ c.style.cursor='pointer'; c.onclick=()=>{ const d=c.querySelector('span'); if(d) d.remove(); }; });
+  const all=[...sc.querySelectorAll('button')].find(b=>b.textContent.trim()==='全部已讀'); if(all) all.onclick=()=>{ sc.querySelectorAll('.card span').forEach(d=>{ if(d.getAttribute('style')&&d.getAttribute('style').indexOf('background:#E8363D')>-1) d.remove(); }); };
+}
+function wireConsent(){
+  const sc=document.getElementById('s-Consent'); if(!sc) return;
+  sc.querySelectorAll('.ac-exp').forEach(b=>{ b.onclick=()=>{ const t=sc.querySelector('#'+b.dataset.t); if(!t) return; const open=t.style.display!=='none'; t.style.display=open?'none':'flex'; b.textContent=open?'＋':'－'; }; });
+  const all=sc.querySelector('.ac-all'); if(all) all.onclick=()=>{ sc.querySelectorAll('.ord-chk').forEach(c=>c.checked=all.checked); };
+  sc.querySelectorAll('.ac-rc input[type="radio"]').forEach(r=>{ r.onchange=()=>{ const sub=sc.querySelector('#'+r.dataset.sub); const exp=sc.querySelector('.ac-exp[data-t="'+r.dataset.sub+'"]'); if(sub){ sub.style.display='flex'; if(exp) exp.textContent='－'; sub.querySelectorAll('.ac-cb').forEach(c=>c.checked=(r.dataset.role==='order')); } const row=r.closest('.ac-orow'); const oc=row&&row.querySelector('.ord-chk'); if(oc) oc.checked=true; }; });
+  const next=sc.querySelector('.ac-next'); if(next) next.onclick=()=>{ const t=sc.querySelector('input[name="ac-type"]:checked'); const map={'行程變更同意書':'ConsentForm','脫隊確認書':'ConsentDrop','不就醫同意書':'ConsentNoMed','不報案同意書':'ConsentNoRep','代金領取同意書':'ConsentCash'}; const lbl=t?t.parentElement.textContent.trim():'行程變更同意書'; show(map[lbl]||'ConsentForm'); };
+}
+function fit(){
+  const sec=document.querySelector('.screen.fixed.cur'); if(!sec) return;
+  const m=sec.querySelector('.mount'); m.style.transform='none';
+  const nat=m.offsetHeight;
+  const ctl=document.querySelector('.ctl');
+  const ctlH=ctl?ctl.offsetHeight:0;
+  const widthFit=(window.innerWidth-24)/820;
+  let sc;
+  if(nat<=1260){
+    // 單頁畫面：填滿視窗（控制列與底部頁簽之間），取寬/高較小者
+    const availH=window.innerHeight-ctlH-92;
+    sc=Math.min(widthFit, availH/nat);
+  } else {
+    // 長內容：依寬度縮放、可往下捲動
+    sc=Math.min(1.9, widthFit);
+  }
+  sc=Math.max(sc,0.1);
+  m.style.transform='scale('+sc+')';
+  sec.style.height=(nat*sc)+'px';
+}
+window.addEventListener('resize', fit);
+function bar() {
+  document.getElementById('swNet').classList.toggle('on', S.online);
+  document.getElementById('swOnline').classList.toggle('on', !S.paper);
+  document.getElementById('hoLbl').textContent = S.paper ? '紙本交班' : '線上交班';
+  const bp = document.getElementById('btnProd');
+  bp.style.display = S.paper ? 'none' : '';
+  bp.disabled = S.productReady;
+  bp.classList.toggle('fill', S.productReady);
+  bp.textContent = S.productReady ? '產品部已完成' : '產品部完成';
+  document.getElementById('btn18').classList.toggle('fill', S.after18);
+  document.getElementById('btn24').classList.toggle('fill', S.after24);
+  document.getElementById('btnBack').disabled = navHist.length === 0;
+}
+function wireConfirm(scope) { const box = document.querySelector(scope); if (!box) return; const chks = box.querySelectorAll('.confchk'); const ok = box.querySelector('.ovok'); const upd = () => { if (ok) ok.classList.toggle('en', [...chks].every(c => c.checked)); }; chks.forEach(c => { c.onchange = upd; }); upd(); }
+function allConfirmed(scope) { const box = document.querySelector(scope); if (!box) return true; return [...box.querySelectorAll('.confchk')].every(c => c.checked); }
+function modal(msg) { document.getElementById('ovMsg').innerHTML = msg; document.getElementById('ov').classList.add('show'); }
+document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
+document.getElementById('ovRepCancel').onclick = () => document.getElementById('ovRep').classList.remove('show');
+document.getElementById('ovRepOk').onclick = () => { document.getElementById('ovRep').classList.remove('show'); document.getElementById('ovRepText').value = ''; modal('問題回報完成'); };
+
+document.getElementById('stage').addEventListener('click', (e) => {
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    e.preventDefault();
+    const a2 = act.dataset.act, q = (s) => document.querySelector('#s-Contract ' + s);
+    // 委任契約書：自檢表 / 簽名板（本機 UI，不需連線）
+    if (a2 === 'acc') { const w = act.closest('.accwrap'); if (w) w.classList.toggle('open'); act.classList.add('read'); const items = document.querySelectorAll('#s-Contract .accitem'); const allRead = [...items].every(i => i.classList.contains('read')); const btn = q('.mbtn'); if (btn) btn.classList.toggle('en', allRead); return; }
+    if (a2 === 'closeChk') { q('.checklist').classList.add('hide'); return; }
+    if (a2 === 'ackList') { if (!act.classList.contains('en')) { modal('尚未閱讀完成<small>請逐項展開並閱讀後再點我已閱讀</small>'); return; } q('.checklist').classList.add('hide'); q('.ctoast').classList.remove('hide'); return; }
+    if (a2 === 'signPad') { q('.signpad').classList.remove('hide'); return; }
+    if (a2 === 'closePad') { q('.signpad').classList.add('hide'); return; }
+    if (a2 === 'padRedo') { q('.sigpad').classList.toggle('empty'); return; }
+    if (a2 === 'padOk') { const box = q('.sigbox'); box.classList.add('done'); box.innerHTML = SIGN_SVG; q('.signpad').classList.add('hide'); q('.ctoast').classList.add('hide'); const ok = q('.cbar .ok'); if (ok) ok.classList.add('en'); return; }
+    // 以下需連線
+    if (a2 === 'sign') { if (!q('.sigbox.done')) { modal('尚未簽章<small>請先點擊「簽章處（請點擊）」完成簽名</small>'); return; } if (!S.online) { modal('需連線才能送出<small>請先開啟 Wifi</small>'); return; } S.signed = true; show('PreTour'); const c = document.querySelector('#s-PreTour .pcard'); if (c) { c.style.transition = 'none'; c.style.opacity = '0'; setTimeout(() => { c.style.transition = 'opacity .35s'; c.style.opacity = '1'; }, 500); } return; }
+    if (a2 === 'hdReport') { document.getElementById('ovRep').classList.add('show'); return; }
+    if (!S.online) { modal('交班狀態，只支援連線操作<small>請先開啟網路</small>'); return; }
+    if (a2 === 'hdOk') { if (!allConfirmed('#s-' + S.screen)) { modal('請先勾選確認項目<small>勾選完成後才能送出「資料無誤」</small>'); return; } const it = act.dataset.item; if (it) S.hdChecked[it] = true; show('HandoverDone'); return; }
+    if (a2 === 'docOk') { if (!allConfirmed('#s-HandoverOverview')) { modal('請先勾選確認項目<small>兩項都勾選後才能送出「資料無誤」</small>'); return; } S.docOk = true; S.hdChecked['交班總覽'] = true; show('HandoverDone'); return; }
+    if (a2 === 'handoverDone') { if (!HD_ITEMS.every(i => S.hdChecked[i])) { modal('請先完成所有交班文件<small>每一份都需確認「資料無誤」打勾</small>'); return; } S.handoverDone = true; show('PreTour'); return; }
+  }
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  e.preventDefault();
+  const to = a.getAttribute('href').slice(1);
+  if (to === 'noop') return;
+  if (to === 'back') { if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } return; }
+  show(to);
+});
+document.getElementById('swNet').onclick = () => { S.online = !S.online; log(S.online ? 'Wifi 已開啟：右上角 icon 變回粉紅色。' : 'Wifi 已關閉：右上角 icon 變灰色，簽署與交班操作會被擋下。'); show(S.screen); };
+document.getElementById('swOnline').onclick = () => { S.paper = !S.paper; S.productReady = false; S.handoverDone = false; S.docOk = false; log(S.paper ? '切換為紙本交班團：簽完委任契約書即可，不會出現「可交班」與「線上交班」。' : '切換為線上交班團：簽約後需產品部完成、再完成線上交班才能進帶團中。'); show(S.screen); };
+document.getElementById('btnProd').onclick = () => {
+  if (S.paper) return;
+  if (!S.signed) { modal('尚未簽署委任契約書<small>請先完成委任契約書簽署</small>'); return; }
+  S.productReady = true; log('產品部完成：灰色「可交班」已變成紅色「可交班」，可點進去做交班文件。'); show('PreTour');
+};
+document.getElementById('btn18').onclick = () => {
+  S.after18 = !S.after18;
+  if (S.after18) { log('出發前1天18:00：此團已移入「帶團中」，帶團中頁面出現此團、日報表功能開放。'); show('Tour'); }
+  else { log('已取消 18:00：按鈕恢復白色，團回到出團前狀態。'); show('PreTour'); }
+};
+document.getElementById('btn24').onclick = () => {
+  S.after24 = !S.after24;
+  if (S.after24) { log('回團日24:00：進入回團後，顯示四種情境的團。'); show('PostTour'); }
+  else { log('已取消 回團日24:00：按鈕恢復白色，回到前一個頁面。'); show(S.after18 ? 'Tour' : 'PreTour'); }
+};
+document.getElementById('btnBack').onclick = () => {
+  if (S.screen === 'PreTour' && S.signed && !S.paper && !S.productReady && !inTour()) { goingBack = true; show('Contract'); goingBack = false; return; }
+  if (!navHist.length) return; goingBack = true; show(navHist.pop()); goingBack = false;
+};
+document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
+document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, screen: 'Entry', hdChecked: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+let skipN = 0;
+document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
+show('Entry');
+</script>
+</body>
+</html>

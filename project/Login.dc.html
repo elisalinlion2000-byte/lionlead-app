@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>登入</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#fff;text-decoration:none}a:hover{color:#fff}
+.bg{background-image:url(/_blob/ded9e556750bd49e79cc013301aa5e1a);background-size:cover;background-position:center}
+input::placeholder{color:#8a8a8a}
+</style>
+</helmet>
+<div class="bg" style="width:820px;height:1180px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding-top:170px;background-color:#1d2a3a;position:relative">
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+<svg role="img" aria-label="LION LEAD 標誌" width="130" height="86" viewBox="0 0 100 70"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#F7A233"/><stop offset="1" stop-color="#F2552F"/></linearGradient><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#F2225F"/><stop offset="1" stop-color="#C81D5E"/></linearGradient></defs><path d="M8 8 L30 30 L52 8" stroke="url(#g1)" stroke-width="16" fill="none"/><path d="M48 8 L70 30 L92 8" stroke="url(#g2)" stroke-width="16" fill="none"/><path d="M30 30 L52 8 L66 22 L52 36 Z" fill="#F5386C"/></svg>
+<div style="font-size:30px;font-weight:700;color:#fff;letter-spacing:3px;line-height:1">LION LEAD</div>
+</div>
+<form style="display:flex;flex-direction:column;gap:16px;width:320px;margin-top:70px">
+<label for="acct" style="position:absolute;left:-9999px">帳號</label>
+<input id="acct" type="text" value="0902731888" placeholder="請輸入手機、E-mail、員工編號" style="box-sizing:border-box;width:320px;height:48px;border:1px solid #ddd;border-radius:4px;padding:0 12px;font-size:17px;font-family:inherit;background:#fff">
+<label for="pwd" style="position:absolute;left:-9999px">密碼</label>
+<input id="pwd" type="password" value="Lion2731888" placeholder="請輸入密碼、OTP通行碼" style="box-sizing:border-box;width:320px;height:48px;border:1px solid #ddd;border-radius:4px;padding:0 12px;font-size:17px;font-family:inherit;background:#fff">
+<a href="Home.dc.html" style="display:flex;align-items:center;justify-content:center;height:48px;border-radius:24px;background:#E8363D;color:#fff;font-size:19px;font-weight:700">登入</a>
+</form>
+<a href="#top" style="margin-top:34px;font-size:19px;color:#fff;border-bottom:2px dashed #fff;line-height:1.4">忘記密碼</a>
+<div style="display:flex;align-items:center;gap:10px;margin-top:80px">
+<svg aria-hidden="true" width="44" height="34" viewBox="0 0 80 64"><path d="M12 48c-6-10 0-30 16-34 8-2 18 2 26 10 6 6 8 14 6 22-2 8-10 12-18 12H20c-4 0-6-4-8-10z" fill="none" stroke="#fff" stroke-width="4"/><circle cx="48" cy="30" r="3" fill="#fff"/></svg>
+<div style="display:flex;flex-direction:column;gap:2px">
+<div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:1px;line-height:1.1">LION TRAVEL</div>
+<div style="font-size:16px;font-weight:500;color:#fff;letter-spacing:3px;line-height:1.1">雄獅旅遊</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

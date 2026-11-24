@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+scratch/_backup/
+.DS_Store
+
+xlsx/

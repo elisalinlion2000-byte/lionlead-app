@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>團體大表 點名模式</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.card{position:relative;background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.06);padding:14px 16px 12px;display:flex;flex-direction:column;gap:8px}
+.card::before{content:"";position:absolute;left:0;top:14px;width:4px;height:22px;background:#E8363D;border-radius:0 2px 2px 0}
+.r{display:flex;font-size:18px;line-height:1.3}
+.r .k{width:90px;color:#333;flex:none}
+.chk{position:absolute;right:16px;top:18px;display:flex;align-items:center;gap:8px;background:#F2F2F2;border-radius:8px;padding:8px 12px;font-size:18px}
+.chk input{width:18px;height:18px;margin:0;accent-color:#E8363D}
+.note{box-sizing:border-box;width:100%;height:44px;border:1px solid #bbb;border-radius:4px;padding:0 12px;font-size:17px;font-family:inherit;margin-top:4px}
+.note::placeholder{color:#999}
+</style>
+</helmet>
+<div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
+<a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a>
+<h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">團體大表</h1>
+<div style="display:flex;gap:12px">
+<a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a>
+<button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button>
+</div>
+</header>
+<div style="display:flex;margin:6px 20px 0;background:#fff;border-radius:18px;height:34px">
+<a href="Roster.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;color:#E8363D;font-size:19px">團體大表</a>
+<a href="RosterRollcall.dc.html" style="flex:1;display:flex;align-items:center;justify-content:center;background:#E8363D;color:#fff;border-radius:18px;font-size:19px">點名模式</a>
+</div>
+<div style="height:1px;background:#e5e5e5;margin-top:10px"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 20px 0 30px">
+<label style="display:flex;align-items:center;gap:8px;font-size:18px"><input type="checkbox" checked style="width:18px;height:18px;margin:0;accent-color:#E8363D">顯示完整姓名</label>
+<button type="button" style="border:0;background:none;padding:0 0 2px;font-family:inherit;font-size:18px;color:#222;border-bottom:2px dashed #999;display:flex;align-items:center;gap:6px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></svg>重新點名</button>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;margin:18px 20px 0">
+<sc-for list="{{pax}}" as="p" hint-placeholder-count="5">
+<div class="card">
+<div class="r"><span class="k">中文姓名</span><span>{{p.cn}}</span></div>
+<div class="r"><span class="k">英文姓名</span><span>{{p.en}}</span></div>
+<div class="r"><span class="k">生日</span><span>{{p.bd}}</span></div>
+<label class="chk"><input type="checkbox">未到</label>
+<label for="{{p.nid}}" style="position:absolute;left:-9999px">備註</label>
+<input id="{{p.nid}}" class="note" type="text" placeholder="例：不吃牛、需提醒吃藥...">
+</div>
+</sc-for>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:70px;background:#fff;border-top:1px solid #e5e5e5;display:flex;align-items:center;justify-content:space-around;font-size:20px;color:#333">
+<span>全部 <b style="color:#E8363D">28</b></span><span>已到 <b style="color:#E8363D">0</b></span><span>未到 <b style="color:#E8363D">28</b></span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() {
+  return { pax: [
+    { nid: 'n1', cn: '吳伯良', en: 'MR WU /PO LIANG', bd: '1978/04/30(48)' },
+    { nid: 'n2', cn: '藍建豪', en: 'MR LAN /CHIEN HAO', bd: '1987/04/25(39)' },
+    { nid: 'n3', cn: '李逸婕', en: 'MS LI /YI CHIEH', bd: '1981/06/11(45)' },
+    { nid: 'n4', cn: '李浩然', en: 'CHD LI /HAO JAN', bd: '2016/07/13(10)' },
+    { nid: 'n5', cn: '李沛芸', en: 'CHD LI /PEI YUN', bd: '2018/03/02(8)' },
+    { nid: 'n6', cn: '林欣怡', en: 'MS LIN /HSIN YI', bd: '1990/09/18(36)' }
+  ] };
+}
+}
+</script>
+</body>
+</html>

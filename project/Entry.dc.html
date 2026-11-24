@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>導領 APP 示範入口</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif;background:#F0F0F0}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.cred{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 18px}
+.cred code{font-family:'Noto Sans TC',monospace;font-size:22px;letter-spacing:1px;color:#222}
+.cred button{height:38px;padding:0 14px;border:1px solid #E8363D;border-radius:8px;background:#fff;color:#E8363D;font-family:inherit;font-size:15px;cursor:pointer}
+.cred button:hover{background:#FDE4E6}
+</style>
+</helmet>
+<div style="min-height:100vh;box-sizing:border-box;background:#F0F0F0;display:flex;align-items:center;justify-content:center;padding:48px 24px">
+<div style="display:flex;flex-wrap:wrap;gap:64px;align-items:center;justify-content:center;max-width:1000px">
+<a href="Main.dc.html" aria-label="開啟導領 APP" style="display:flex;flex-direction:column;align-items:center;gap:16px">
+<img src="/_blob/28cc5208405c081ca4eaf1cc7f53e26d" alt="LION LEAD 導領 APP 圖示" style="width:180px;height:180px;border-radius:40px;box-shadow:0 10px 30px rgba(240,60,90,.3);display:block">
+<span style="font-size:24px;font-weight:700;color:#222">點擊 APP 體驗功能</span>
+<span style="font-size:16px;color:#888">點一下圖示即可開始體驗</span>
+</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

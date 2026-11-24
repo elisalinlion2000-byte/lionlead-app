@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>交班總覽</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Noto Sans TC',system-ui,sans-serif}
+a{color:#222;text-decoration:none}a:hover{color:#222}
+.sec{position:relative;background:#fff;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.sec::before{content:"";position:absolute;left:0;top:18px;width:4px;height:24px;background:#E8363D;border-radius:0 2px 2px 0}
+.sec h2{margin:0 0 4px;font-size:20px;font-weight:700}
+.r{display:flex;font-size:17px;line-height:1.6}.r .k{width:90px;flex:none;color:#333}
+.li{font-size:17px;line-height:1.7}
+.cb{display:flex;align-items:flex-start;gap:10px;font-size:16px;color:#999;line-height:1.5}
+.cb input{width:18px;height:18px;margin:3px 0 0;flex:none;accent-color:#E8363D}
+.ovbtn{flex:1;height:44px;border-radius:8px;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:inherit;border:0}
+.ovbtn.rep{background:#fff;border:1px solid #ccc;color:#888}
+.ovok{background:#E5E5E5;color:#aaa}
+.ovok.en{background:#E8363D;color:#fff;cursor:pointer}
+</style>
+</helmet>
+<div style="width:820px;height:1400px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
+<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative"><a href="#back" aria-label="返回" style="width:42px;height:42px;border-radius:21px;background:#3b3b3b;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></a><h1 style="position:absolute;left:0;right:0;text-align:center;margin:0;font-size:22px;font-weight:700;color:#222;pointer-events:none">交班總覽</h1><div style="display:flex;gap:12px"><a href="Notify.dc.html" aria-label="通知" style="position:relative;width:42px;height:42px;border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:4px;background:#E8363D"></span></a><button type="button" aria-label="離線模式" style="width:42px;height:42px;border-radius:21px;border:0;background:#FDE4E6;display:flex;align-items:center;justify-content:center;padding:0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg></button></div></header>
+<div style="margin:0 20px;display:flex;flex-direction:column;gap:12px">
+<section class="sec"><h2>基本資料</h2>
+<div class="r"><span class="k">團號</span><span>24XI929SL</span></div>
+<div class="r"><span class="k">領隊</span><span>林○○</span></div>
+<div class="r"><span class="k">總人數</span><span>15+1大、1嬰、1小</span></div>
+<div class="r"><span class="k">出發地與人數</span><span>台北出發 16人</span></div></section>
+<section class="sec"><h2>餐食特別需求</h2><div class="li">1.蛋奶素</div><div class="li">2.忌牛</div></section>
+<section class="sec"><h2>特別回程 / 特殊安排</h2><div class="li">1.全團台北來回</div><div class="li" style="color:#E8363D">2.電扶梯問卷：12人 陪同坐 8位/長者樓 4位</div><div class="li">3.艦票自帶(含領隊)：19人</div></section>
+<section class="sec"><h2>領隊注意事項</h2><div class="li">1.提醒帶回ED卡</div><div class="li">2.核對護照證件</div><div class="li">3.嚴禁託帶菸酒等規定</div></section>
+<section class="sec"><h2>緊急聯絡電話</h2>
+<div class="r"><span class="k">團控</span><span>林秀輪 0987-675-836</span></div>
+<div class="r"><span class="k">線控</span><span>高文娟 0929-991-030</span></div>
+<div class="r"><span class="k">主管</span><span>施俊佑 0955-183-158</span></div></section>
+<section style="background:#F2F2F2;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px"><h2 style="margin:0;font-size:18px;color:#E8363D">請確認交班文件</h2>
+<label class="cb" style="color:#222"><input type="checkbox" class="confchk">已核對護照、簽證之旅客英文姓名須相符</label>
+<label class="cb" style="color:#222"><input type="checkbox" class="confchk">已確認護照、簽證之效期足夠</label></section>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:110px;background:#fff;border-top:1px solid #eee;display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:8px">
+<span style="color:#E8363D;font-size:15px">ⓘ 請務必仔細閱讀交班文件，完成交班作業！</span>
+<div style="display:flex;gap:14px;width:780px"><button type="button" class="ovbtn rep" data-act="hdReport">問題回報</button><button type="button" class="ovbtn ovok" data-act="docOk">資料無誤</button></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":820,"height":1400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
