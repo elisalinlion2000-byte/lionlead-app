@@ -1,0 +1,13 @@
+{
+  "name": "LION LEAD 導領 APP",
+  "short_name": "LION LEAD",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F5F5",
+  "theme_color": "#E8363D",
+  "icons": [
+    { "src": "appicon.png", "sizes": "420x420", "type": "image/png", "purpose": "any" }
+  ]
+}
