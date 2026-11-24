@@ -599,7 +599,7 @@ for fn2, title2, item2 in [('HdAgr.dc.html','合約書／手配書','合約書�
 # 分房表（名單帶入團體名單、房號順序、人數依卡牌）
 PAX28 = [
  ('吳伯良','WU /PO LIANG',1978,1),('藍建豪','LAN /CHIEN HAO',1987,1),('李逸婕','LI /YI CHIEH',1981,0),
- ('李沛芸','LI /PEI YUN',2001,0),('李浩然','LI /HAO JAN',1996,1),('劉承翰','LIU /CHENG HAN',1990,1),
+ ('劉承翰','LIU /CHENG HAN',1991,1),('李浩然','LI /HAO JAN',1996,1),('李沛芸','LI /PEI YUN',2001,0),
  ('林欣怡','LIN /HSIN YI',2001,0),('黃俊傑','HUANG /CHUN CHIEH',1979,1),('劉佩君','LIU /PEI CHUN',1992,0),
  ('蔡嘉倫','TSAI /CHIA LUN',1985,1),('楊欣穎','YANG /HSIN YING',1991,0),('許志銘','HSU /CHIH MING',1977,1),
  ('鄭郁琪','CHENG /YU CHI',1986,0),('謝宇霖','HSIEH /YU LIN',1982,1),('洪淑萍','HUNG /SHU PING',1980,0),
@@ -730,16 +730,16 @@ RX_CSS = '''
 .rp-back{background:#fff;border:1.5px solid #E8363D;color:#E8363D}
 .rp-out{background:#E8363D;border:0;color:#fff}
 '''
-def rx_pax(p):
+def rx_pax(p, notes):
     cn, en, yr, g = p
     icon = '<span style="color:#2E7CF6">♂</span>' if g else '<span style="color:#E8368A">♀</span>'
     return (f'<div class="rx-pax"><div style="font-size:18px;color:#222">{cn}　<span style="color:#999;font-size:15px">{2026-yr}歲</span>　{icon}</div>'
             f'<div style="font-size:14px;color:#999">{en}</div>'
-            f'<div style="font-size:13px;color:#bbb;margin-top:2px">備註　—</div></div>')
-def rx_card(idx, members, first=False):
+            f'<div style="font-size:13px;color:#bbb;margin-top:2px">備註　{notes.get(p, "—")}</div></div>')
+def rx_card(idx, members, notes, first=False):
     disp = 'block' if first else 'none'
     chev = '⌃' if first else '⌄'
-    paxes = ''.join(rx_pax(p) for p in members)
+    paxes = ''.join(rx_pax(p, notes) for p in members)
     return (f'<div class="rx-card">'
             f'<div class="rx-head"><input class="rx-no" inputmode="numeric" placeholder="999" aria-label="房號">'
             f'<span class="fang">房</span><span class="cnt">{len(members)} 人</span>'
@@ -747,13 +747,17 @@ def rx_card(idx, members, first=False):
             f'<div class="rx-body" id="rx{idx}" style="display:{disp}">{paxes}'
             f'<textarea class="rx-note" rows="2" placeholder="輸入房間備註"></textarea></div></div>')
 # 分房分組（共 6 間）：僅第 2 天第 1 間為三人房（多出李浩然），其餘天第 1 間為雙人房
-LI_HAO = ('李浩然', 'LI /HAO JAN', 1984, 1)
-_rest_ppl = PAX28[3:]
-_pairs = [_rest_ppl[i:i+2] for i in range(0, 10, 2)]   # 5 間雙人房
-V1_GROUPS = [[PAX28[0], PAX28[1]]] + _pairs            # 非第2天：第1間雙人（無李浩然）
-V2_GROUPS = [[PAX28[0], PAX28[1], LI_HAO]] + _pairs    # 第2天：第1間三人（含李浩然）
-RX_ROOMS_V1 = ''.join(rx_card(i+1, g, first=True) for i, g in enumerate(V1_GROUPS))
-RX_ROOMS_V2 = ''.join(rx_card(i+1, g, first=True) for i, g in enumerate(V2_GROUPS))
+_A, _B = PAX28[0], PAX28[1]                             # 吳伯良, 藍建豪
+_LCH = PAX28[3]                                         # 劉承翰 35
+_LHJ = PAX28[4]                                         # 李浩然 30
+_rest2 = PAX28[5:13]                                    # 其餘 8 位 → 4 間雙人
+_pairs2 = [_rest2[i:i+2] for i in range(0, 8, 2)]
+V1_GROUPS = [[_A, _B], [_LCH, _LHJ]] + _pairs2         # 第1天：第2間 劉承翰+李浩然（DBL）
+V2_GROUPS = [[_A, _B, _LHJ], [_LCH]] + _pairs2         # 第2天：第1間三人（含李浩然）、第2間 劉承翰 單人（SGL）
+RX_NOTES_V1 = {_LCH: 'DBL'}                             # 第 1 天（版型1）備註
+RX_NOTES_V2 = {_LCH: 'SGL'}                             # 第 2 天（版型2）備註
+RX_ROOMS_V1 = ''.join(rx_card(i+1, g, RX_NOTES_V1, first=True) for i, g in enumerate(V1_GROUPS))
+RX_ROOMS_V2 = ''.join(rx_card(i+1, g, RX_NOTES_V2, first=True) for i, g in enumerate(V2_GROUPS))
 rx_inner = (header_center('分房表', 'Tour.dc.html') + f'''
 <div class="rx-wrap">
   <div class="rx-top">
@@ -765,10 +769,6 @@ rx_inner = (header_center('分房表', 'Tour.dc.html') + f'''
     <div style="display:flex;justify-content:space-between;align-items:center"><span class="rx-vlabel">版型1</span></div>
     <div style="font-size:14px;color:#888;margin-top:10px">地址</div>
     <div class="rx-hotel-name" style="font-size:17px;color:#222;margin-top:2px;line-height:1.5">HF 伊帕內瑪花園飯店 HF IPANEMA PARK</div>
-  </div>
-  <div class="rx-carry">
-    <span class="q">沿用前一天已經分好的房號？</span>
-    <span style="display:flex;gap:10px;align-items:center"><button type="button" class="rx-apply">套用</button><button type="button" class="rx-carry-x">✕</button></span>
   </div>
   <div class="rx-rooms rx-rooms-v1">{RX_ROOMS_V1}</div>
   <div class="rx-rooms rx-rooms-v2" style="display:none">{RX_ROOMS_V2}</div>
@@ -920,7 +920,6 @@ def ro_pax(i, cn, en, yr, g):
         + row('身分證', rid, 'f-id')
         + row('PNR', _pnr(i), 'f-pnr')
         + '</div><hr class="ro-hr f-remark"><div class="ro-sec f-remark">'
-        + row('備註', _remarks[i % len(_remarks)])
         + row('需求', _reqs[i % len(_reqs)])
         + row('飲食', _foods[i % len(_foods)])
         + '</div><hr class="ro-hr f-order"><div class="ro-sec f-order">'
