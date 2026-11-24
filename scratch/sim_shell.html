@@ -66,6 +66,13 @@ body.paper .ho-tour{display:none!important}
 #rxSheet .rxs-opt.red{border-color:#E8363D;color:#E8363D;font-weight:700}
 #rxToast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:24px;font-size:16px;display:none;z-index:80;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 #rxToast.show{display:block}
+#dlProg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:75}
+#dlProg.show{display:flex}
+#dlProg .dlp-box{background:#fff;border-radius:16px;padding:30px 44px;text-align:center;min-width:200px;box-shadow:0 12px 44px rgba(0,0,0,.28)}
+#dlProg .dlp-spin{width:46px;height:46px;border:4px solid #f3d7db;border-top-color:#E8363D;border-radius:50%;margin:0 auto 18px;animation:dlspin .8s linear infinite}
+@keyframes dlspin{to{transform:rotate(360deg)}}
+#dlProg .dlp-t{font-size:17px;color:#333;margin-bottom:6px}
+#dlProg .dlp-n{font-size:15px;color:#999}
 #roStick{position:fixed;top:0;left:0;right:0;display:none;z-index:55;background:#e9ecef;padding:13px 20px;font-size:17px;color:#222;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 #roStick .rs-txt .ro-i{color:#aaa;font-size:15px;font-weight:400}
 #roOrderSheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:66}
@@ -184,6 +191,7 @@ body.paper .ho-tour{display:none!important}
 </div>
 <button type="button" class="ro-ok ro-x">確認</button>
 </div></div>
+<div id="dlProg"><div class="dlp-box"><div class="dlp-spin"></div><div class="dlp-t">正在下載...</div><div class="dlp-n">0/12 (0%)</div></div></div>
 <div id="rxToast"></div>
 <div class="overlay" id="ovRep"><div class="box" style="align-items:stretch;text-align:left;gap:14px">
 <div style="font-size:18px;font-weight:700">請簡述您遇到的問題 <span style="color:#E8363D">*</span></div>
@@ -197,7 +205,7 @@ body.paper .ho-tour{display:none!important}
 class DCLogic { constructor(){ this.state = {}; this.props = {}; } setState(s){ Object.assign(this.state, s); } }
 const LOGIC = { /*LOGIC*/ };
 const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, screen: 'Entry', hdChecked: {} };
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {} };
 let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
@@ -250,6 +258,7 @@ function show(name) {
   phaseClass(); window.scrollTo({ top: 0 });
   // 帶團中卡片的交班文件按鈕改成「線上交班」
   if (name === 'Tour' || name === 'TourDialog') document.querySelectorAll('#s-' + name + ' .fn').forEach(el => { const t = el.textContent.trim(); if (t === '交班文件' || t === '線上交班') { el.style.display = ''; el.style.cursor = 'pointer'; el.classList.add('ho-tour'); el.classList.remove('off'); el.lastChild.textContent = '交班文件'; el.setAttribute('href', '#HandoverDone'); el.onclick = (ev) => { ev.preventDefault(); show('HandoverDone'); }; } });
+  if (name === 'Tour' || name === 'TourDialog') wireDl(name);
   if (name === 'HandoverDone') {
     const allHd = HD_ITEMS.every(i => S.hdChecked[i]);
     document.querySelectorAll('#s-HandoverDone span').forEach(el => { const t = el.textContent.trim(); if (t === '交班文件無誤' || t === '已完成交班') { el.classList.add('ho-cta'); el.dataset.act = 'handoverDone'; el.classList.toggle('en', allHd || S.handoverDone); if (S.handoverDone) el.textContent = '已完成交班'; } });
@@ -450,6 +459,22 @@ function bar() {
 function wireConfirm(scope) { const box = document.querySelector(scope); if (!box) return; const chks = box.querySelectorAll('.confchk'); const ok = box.querySelector('.ovok'); const upd = () => { if (ok) ok.classList.toggle('en', [...chks].every(c => c.checked)); }; chks.forEach(c => { c.onchange = upd; }); upd(); }
 function allConfirmed(scope) { const box = document.querySelector(scope); if (!box) return true; return [...box.querySelectorAll('.confchk')].every(c => c.checked); }
 function modal(msg) { document.getElementById('ovMsg').innerHTML = msg; document.getElementById('ov').classList.add('show'); }
+function wireDl(name){
+  const sc=document.getElementById('s-'+name); if(!sc) return;
+  const btn=sc.querySelector('.dlbtn'); if(!btn) return;
+  const icDl=btn.querySelector('.ic-dl'), icDone=btn.querySelector('.ic-done');
+  function render(){ const d=S.offlineDl; if(icDl) icDl.style.display=d?'none':'inline-flex'; if(icDone) icDone.style.display=d?'inline-flex':'none'; }
+  render();
+  btn.onclick=()=>{
+    if(S.offlineDl) return;                       // 已下載，不重複
+    if(!S.online){ modal('部分下載失敗，請稍後重新點擊下載'); return; }   // Wifi 關 → 失敗光箱
+    const prog=document.getElementById('dlProg'); const num=prog.querySelector('.dlp-n');
+    prog.classList.add('show'); let i=0; const total=12; if(num) num.textContent='0/'+total+' (0%)';
+    clearInterval(btn._t);
+    btn._t=setInterval(()=>{ i++; if(num) num.textContent=i+'/'+total+' ('+Math.round(i/total*100)+'%)';
+      if(i>=total){ clearInterval(btn._t); setTimeout(()=>{ prog.classList.remove('show'); S.offlineDl=true; render(); },350); } }, 150);
+  };
+}
 document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
 document.getElementById('ovRepCancel').onclick = () => document.getElementById('ovRep').classList.remove('show');
 document.getElementById('ovRepOk').onclick = () => { document.getElementById('ovRep').classList.remove('show'); document.getElementById('ovRepText').value = ''; modal('問題回報完成'); };
@@ -505,7 +530,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, screen: 'Entry', hdChecked: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
