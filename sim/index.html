@@ -41,8 +41,8 @@ button{font-family:inherit;cursor:pointer}
 .gtab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:54px;border-radius:27px;font-size:12px;color:#333;background:#fff;border:0;font-family:inherit;cursor:pointer;padding:0}
 .gtab.on{background:#E8363D;color:#fff}
 .gtab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
-.screen.fixed{display:none;justify-content:center;align-items:flex-start}.screen.fixed.cur{display:flex}
-.screen.fixed .mount{transform-origin:top center}
+.screen.fixed{display:none;justify-content:flex-start;align-items:flex-start;overflow:hidden}.screen.fixed.cur{display:flex}
+.screen.fixed .mount{transform-origin:top left}
 .screen{display:none}.screen.cur{display:block}
 .screen.fixed .mount{width:820px;overflow:hidden;border-radius:0;box-shadow:none}
 .screen.fixed .mount > *{width:820px}
@@ -1871,6 +1871,7 @@ body.paper .ho-tour{display:none!important}
 </div>
 <div style="margin:16px 14px 0 28px;display:flex;flex-direction:column;gap:18px">
 <div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Spot">橫濱紅磚倉庫<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Restaurant"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span>嚴選和牛涮涮鍋或壽喜燒吃到飽&amp;軟飲暢飲(餐標 6000日幣)<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="#Hotel" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>橫濱威斯汀酒店</a>
 </div>
@@ -1929,7 +1930,7 @@ body.paper .ho-tour{display:none!important}
 </div>
 <div style="margin:16px 14px 0 28px;display:flex;flex-direction:column;gap:18px">
 <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
-<div class="{{r.cls}}"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#noop">{{r.name}}<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="{{r.cls}}"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#noop"><sc-if value="{{r.meal}}" hint-placeholder-val="{{true}}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span></sc-if>{{r.name}}<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
 </sc-for>
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="#Hotel" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>時之栖高原飯店</a>
@@ -2544,27 +2545,36 @@ RosterRollcall: class extends DCLogic { renderVals() {
 } },
 Daily2: class extends DCLogic { renderVals() {
   return { rows: [
+    { cls: 'tl', name: '飯店內早餐', meal: true, href: '#Restaurant' },
     { cls: 'tl', name: '西湖里根場合掌村聚落', meal: false, href: '#Spot' },
     { cls: 'tl', name: '鶴岡八幡宮', meal: false, href: '#Spot' },
     { cls: 'tl', name: '鶴岡八幡小町通', meal: false, href: '#Spot' },
+    { cls: 'tl', name: '鎌倉地元名物料理 或 日式天婦羅小鍋御膳 (餐標 2500日幣)', meal: true, href: '#Restaurant' },
     { cls: 'tl', name: '十国峠斜面登山纜車', meal: false, href: '#Spot' },
-    { cls: 'tl last', name: '麗莎＆卡斯柏小鎮', meal: false, href: '#Spot' }
+    { cls: 'tl', name: '麗莎＆卡斯柏小鎮', meal: false, href: '#Spot' },
+    { cls: 'tl last', name: '鄉土和洋風味自助餐 或 日式精緻迷你會席料理', meal: true, href: '#Restaurant' }
   ] };
 } },
 DailyAdd: class extends DCLogic { renderVals() {
   return { rows: [
+    { cls: 'tl', name: '飯店內早餐', meal: true },
     { cls: 'tl', name: '西湖里根場合掌村聚落', meal: false },
     { cls: 'tl', name: '鶴岡八幡宮', meal: false },
     { cls: 'tl', name: '鶴岡八幡小町通', meal: false },
+    { cls: 'tl', name: '鎌倉地元名物料理 或 日式天婦羅小鍋御膳 (餐標 2500日幣)', meal: true },
     { cls: 'tl', name: '十国峠斜面登山纜車', meal: false },
-    { cls: 'tl last', name: '麗莎＆卡斯柏小鎮', meal: false }
+    { cls: 'tl', name: '麗莎＆卡斯柏小鎮', meal: false },
+    { cls: 'tl last', name: '鄉土和洋風味自助餐 或 日式精緻迷你會席料理', meal: true }
   ] };
 } },
 Daily3: class extends DCLogic { renderVals() {
   return { rows: [
+    { name: '飯店內早餐', meal: true, href: '#Restaurant' },
     { name: '河口湖富士山全景纜車', meal: false, href: '#Spot' },
+    { name: '山梨寶刀麵名物料理 或 富士鄉土風味御膳 (餐標 2500日幣)', meal: true, href: '#Restaurant' },
     { name: '光伸免稅店', meal: false, href: '#Spot' },
-    { name: 'DiverCity Tokyo Plaza 台場購物廣場', meal: false, href: '#Spot' }
+    { name: 'DiverCity Tokyo Plaza 台場購物廣場', meal: false, href: '#Spot' },
+    { name: '方便遊玩～敬請自理', meal: true, href: '#Restaurant' }
   ] };
 } },
 Qbox: class extends DCLogic { renderVals() {
@@ -2820,10 +2830,13 @@ function fit(){
   const sec=document.querySelector('.screen.fixed.cur'); if(!sec) return;
   const m=sec.querySelector('.mount'); m.style.transform='none';
   const nat=m.offsetHeight;
-  // 一律以視窗寬度縮放、置中 → 每個畫面都滿版、同一比例（搭配 body overflow-x:hidden 防止水平歪移）
+  // 左上角錨定縮放：整段寬度 = 視窗寬度，避免置中造成的負邊距與水平歪移 / 傾斜
   const sc=Math.max(window.innerWidth/820, 0.1);
+  m.style.transformOrigin='top left';
   m.style.transform='scale('+sc+')';
+  sec.style.width=(820*sc)+'px';
   sec.style.height=(nat*sc)+'px';
+  sec.style.margin='0 auto';
 }
 window.addEventListener('resize', fit);
 function bar() {

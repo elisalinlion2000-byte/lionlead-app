@@ -46,7 +46,7 @@ a{color:#222;text-decoration:none}a:hover{color:#222}
 </div>
 <div style="margin:16px 14px 0 28px;display:flex;flex-direction:column;gap:18px">
 <sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
-<div class="{{r.cls}}"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#top">{{r.name}}<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="{{r.cls}}"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#top"><sc-if value="{{r.meal}}" hint-placeholder-val="{{true}}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span></sc-if>{{r.name}}<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
 </sc-for>
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="Hotel.dc.html" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>時之栖高原飯店</a>
@@ -68,11 +68,14 @@ a{color:#222;text-decoration:none}a:hover{color:#222}
 class Component extends DCLogic {
 renderVals() {
   return { rows: [
+    { cls: 'tl', name: '飯店內早餐', meal: true },
     { cls: 'tl', name: '西湖里根場合掌村聚落', meal: false },
     { cls: 'tl', name: '鶴岡八幡宮', meal: false },
     { cls: 'tl', name: '鶴岡八幡小町通', meal: false },
+    { cls: 'tl', name: '鎌倉地元名物料理 或 日式天婦羅小鍋御膳 (餐標 2500日幣)', meal: true },
     { cls: 'tl', name: '十国峠斜面登山纜車', meal: false },
-    { cls: 'tl last', name: '麗莎＆卡斯柏小鎮', meal: false }
+    { cls: 'tl', name: '麗莎＆卡斯柏小鎮', meal: false },
+    { cls: 'tl last', name: '鄉土和洋風味自助餐 或 日式精緻迷你會席料理', meal: true }
   ] };
 }
 }

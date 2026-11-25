@@ -61,11 +61,14 @@ a{color:#222;text-decoration:none}a:hover{color:#222}
 class Component extends DCLogic {
 renderVals() {
   return { rows: [
+    { cls: 'tl', name: '飯店內早餐', meal: true, href: 'Restaurant.dc.html' },
     { cls: 'tl', name: '西湖里根場合掌村聚落', meal: false, href: 'Spot.dc.html' },
     { cls: 'tl', name: '鶴岡八幡宮', meal: false, href: 'Spot.dc.html' },
     { cls: 'tl', name: '鶴岡八幡小町通', meal: false, href: 'Spot.dc.html' },
+    { cls: 'tl', name: '鎌倉地元名物料理 或 日式天婦羅小鍋御膳 (餐標 2500日幣)', meal: true, href: 'Restaurant.dc.html' },
     { cls: 'tl', name: '十国峠斜面登山纜車', meal: false, href: 'Spot.dc.html' },
-    { cls: 'tl last', name: '麗莎＆卡斯柏小鎮', meal: false, href: 'Spot.dc.html' }
+    { cls: 'tl', name: '麗莎＆卡斯柏小鎮', meal: false, href: 'Spot.dc.html' },
+    { cls: 'tl last', name: '鄉土和洋風味自助餐 或 日式精緻迷你會席料理', meal: true, href: 'Restaurant.dc.html' }
   ] };
 }
 }
