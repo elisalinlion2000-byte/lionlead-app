@@ -428,12 +428,18 @@ function wireRoomExt(name){
   }
 }
 function dragList(sc, rowSel, gripSel){
-  sc.querySelectorAll(gripSel).forEach(g=>{ g.style.cursor='grab'; g.style.touchAction='none';
-    g.addEventListener('pointerdown', e=>{ e.preventDefault(); e.stopPropagation(); const row=g.closest(rowSel); if(!row) return; const cont=row.parentNode; row.style.opacity='.5'; try{ g.setPointerCapture(e.pointerId); }catch(_){}
-      const move=ev=>{ ev.preventDefault(); const rows=[...cont.querySelectorAll(rowSel)].filter(r=>r.style.display!=='none'); for(const o of rows){ if(o===row) continue; const r=o.getBoundingClientRect(); if(ev.clientY>r.top&&ev.clientY<r.bottom){ cont.insertBefore(row, (ev.clientY<r.top+r.height/2)?o:o.nextSibling); break; } } };
-      const up=()=>{ row.style.opacity=''; try{ g.releasePointerCapture(e.pointerId); }catch(_){}; g.removeEventListener('pointermove',move); g.removeEventListener('pointerup',up); g.removeEventListener('pointercancel',up); };
-      g.addEventListener('pointermove',move); g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up); });
-  });
+  if(sc.dataset.dragWired) return; sc.dataset.dragWired='1';
+  // 事件綁在容器上（委派），用 touch + mouse，touchmove 以 passive:false 攔截捲動
+  sc.addEventListener('touchstart', e=>{ const g=e.target.closest(gripSel); if(!g) return; startDrag(e, g); }, {passive:false});
+  sc.addEventListener('mousedown', e=>{ const g=e.target.closest(gripSel); if(!g) return; startDrag(e, g); });
+  function startDrag(e, g){
+    e.preventDefault(); e.stopPropagation();
+    const row=g.closest(rowSel); if(!row) return; const cont=row.parentNode; row.style.opacity='.5'; row.style.background='#fff';
+    const getY=ev=> (ev.touches&&ev.touches[0]) ? ev.touches[0].clientY : ev.clientY;
+    const move=ev=>{ if(ev.cancelable) ev.preventDefault(); const y=getY(ev); const rows=[...cont.querySelectorAll(rowSel)].filter(r=>r.style.display!=='none'); for(const o of rows){ if(o===row) continue; const r=o.getBoundingClientRect(); if(y>r.top&&y<r.bottom){ cont.insertBefore(row, (y<r.top+r.height/2)?o:o.nextSibling); break; } } };
+    const end=()=>{ row.style.opacity=''; row.style.background=''; document.removeEventListener('touchmove',move,{passive:false}); document.removeEventListener('touchend',end); document.removeEventListener('touchcancel',end); document.removeEventListener('mousemove',move); document.removeEventListener('mouseup',end); };
+    document.addEventListener('touchmove',move,{passive:false}); document.addEventListener('touchend',end); document.addEventListener('touchcancel',end); document.addEventListener('mousemove',move); document.addEventListener('mouseup',end);
+  }
 }
 function wireDaily2(){ const sc=document.getElementById('s-Daily2'); if(!sc) return; dragList(sc, '.tl', '.grip'); }
 function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) return;
