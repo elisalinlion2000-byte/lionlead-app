@@ -218,7 +218,7 @@ body.paper .ho-tour{display:none!important}
 class DCLogic { constructor(){ this.state = {}; this.props = {}; } setState(s){ Object.assign(this.state, s); } }
 const LOGIC = { /*LOGIC*/ };
 const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {} };
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {}, extra: {}, addDay: null };
 let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
@@ -303,7 +303,7 @@ function show(name) {
   if (name === 'SpotSet') wireSpotSet();
   if (['Spot','Restaurant','Hotel','Guide'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
-  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') { applySpotOff(name); wireDailyTime(name); }
+  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') { applySpotOff(name); appendExtra(name); wireDailyTime(name); }
   if (name === 'PostTour') {
     const pl = document.getElementById('postLive');
     if (pl) pl.style.display = S.after24 ? '' : 'none';
@@ -431,6 +431,8 @@ function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) r
   const ab=sc.querySelector('[data-add]'); if(ab) ab.onclick=()=>{ const inp=sc.querySelector('.ss-in'); if(inp&&inp.value.trim()){ modal('已新增景點「'+inp.value.trim()+'」<small>可於評分清單中查看</small>'); inp.value=''; } }; }
 // 設定景點取消勾選 → 日報表該筆行程消失（非清單項目消失）
 function applySpotOff(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tl').forEach(row=>{ const a=row.querySelector('a.item'); if(!a) return; const t=a.textContent.replace('≡','').trim(); row.style.display=S.spotOff[t]?'none':''; }); }
+// 日報表：把新增的交通動態補進行程列
+function appendExtra(name){ const sc=document.getElementById('s-'+name); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const rows=S.extra[name]||[]; if(!rows.length) return; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); rows.forEach(r=>{ const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Transport"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="M4 11h16M8 18v2M16 18v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg></span>'+r.name+'<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); }); }
 // 日報表行程：點「時間未填寫」可填起訖時間
 let tmTarget=null;
 function wireDailyTime(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tm').forEach(tm=>{ tm.style.cursor='pointer'; tm.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); tmTarget=tm; const m=(tm.textContent||'').match(/(\d{1,2}:\d{2})\D+(\d{1,2}:\d{2})/); document.getElementById('tsFrom').value=m?m[1]:''; document.getElementById('tsTo').value=m?m[2]:''; document.getElementById('timeSheet').classList.add('show'); }; }); }
@@ -507,6 +509,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
   if (act) {
     e.preventDefault();
     const a2 = act.dataset.act, q = (s) => document.querySelector('#s-Contract ' + s);
+    if (a2 === 'addTransport') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const gv = (id) => { const el = document.querySelector('#s-Transport #' + id); return el ? el.value.trim() : ''; }; const plate = gv('plate'), drv = gv('drv'); const label = '交通' + (plate ? ('　' + plate) : (drv ? ('　' + drv) : '（巴士）')); (S.extra[day] = S.extra[day] || []).push({ name: label }); show(day); return; }
     // 委任契約書：自檢表 / 簽名板（本機 UI，不需連線）
     if (a2 === 'acc') { const w = act.closest('.accwrap'); if (w) w.classList.toggle('open'); act.classList.add('read'); const items = document.querySelectorAll('#s-Contract .accitem'); const allRead = [...items].every(i => i.classList.contains('read')); const btn = q('.mbtn'); if (btn) btn.classList.toggle('en', allRead); return; }
     if (a2 === 'closeChk') { q('.checklist').classList.add('hide'); return; }
@@ -534,6 +537,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
     if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; }
     else { S.formTitle[to] = null; }
   }
+  if (to === 'DailyAdd' && /^Daily[123]$/.test(S.screen)) S.addDay = S.screen;
   show(to);
 });
 document.getElementById('ctlToggle').onclick = () => { const c=document.querySelector('.ctl'); const col=c.classList.toggle('collapsed'); document.getElementById('ctlArrow').textContent = col ? '⌄' : '⌃'; fit(); };
@@ -560,7 +564,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {}, extra: {}, addDay: null }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
