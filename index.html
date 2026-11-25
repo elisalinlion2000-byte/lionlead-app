@@ -34,7 +34,7 @@ button{font-family:inherit;cursor:pointer}
 .bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:10px 20px 0;font-size:12px;color:#666}
 .bar span{padding:3px 10px;border-radius:12px;background:#fff}.bar span.on{background:#E8363D;color:#fff}
 .log{max-width:820px;margin:8px auto 0;font-size:13px;color:#666;background:#fff;border-radius:8px;padding:8px 12px}
-.stage{display:flex;justify-content:center;padding:8px 0 24px}
+.stage{display:flex;justify-content:center;padding:0}
 .screen nav[aria-label="主選單"]{display:none!important}
 #gnav{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;width:330px;max-width:90vw;box-sizing:border-box;height:64px;border-radius:40px;background:#3b3b3b;display:none;align-items:center;justify-content:space-between;padding:3px;box-shadow:0 6px 20px rgba(0,0,0,.28)}
 #gnav .gmid{display:flex;background:#fff;border-radius:27px;height:54px;align-items:center}
@@ -44,11 +44,11 @@ button{font-family:inherit;cursor:pointer}
 .screen.fixed{display:none;justify-content:center;align-items:flex-start}.screen.fixed.cur{display:flex}
 .screen.fixed .mount{transform-origin:top center}
 .screen{display:none}.screen.cur{display:block}
-.screen.fixed .mount{width:820px;overflow:hidden;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.screen.fixed .mount{width:820px;overflow:hidden;border-radius:0;box-shadow:none}
 .screen.fixed .mount > *{width:820px}
-.screen.fluid .mount{width:min(1100px,96vw);min-height:720px;background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.15);overflow:hidden}
-.screen.fluid .mount > *{min-height:720px}
-#s-Entry .mount > a{height:720px}
+.screen.fluid .mount{width:100vw;min-height:calc(100dvh - 150px);background:#fff;border-radius:0;box-shadow:none;overflow:hidden}
+.screen.fluid .mount > *{min-height:calc(100dvh - 150px)}
+#s-Entry .mount > a{min-height:calc(100dvh - 150px)}
 a[href="#noop"]{cursor:default}
 /* 網路狀態 */
 body.offline [data-net]{background:#E5E5E5!important}
@@ -2766,19 +2766,8 @@ function fit(){
   const sec=document.querySelector('.screen.fixed.cur'); if(!sec) return;
   const m=sec.querySelector('.mount'); m.style.transform='none';
   const nat=m.offsetHeight;
-  const ctl=document.querySelector('.ctl');
-  const ctlH=ctl?ctl.offsetHeight:0;
-  const widthFit=(window.innerWidth-24)/820;
-  let sc;
-  if(nat<=1260){
-    // 單頁畫面：填滿視窗（控制列與底部頁簽之間），取寬/高較小者
-    const availH=window.innerHeight-ctlH-92;
-    sc=Math.min(widthFit, availH/nat);
-  } else {
-    // 長內容：依寬度縮放、可往下捲動
-    sc=Math.min(1.9, widthFit);
-  }
-  sc=Math.max(sc,0.1);
+  // 一律以視窗寬度縮放 → 每個畫面都滿版、同一比例，不會跳動；內容過高則往下捲
+  const sc=Math.max(window.innerWidth/820, 0.1);
   m.style.transform='scale('+sc+')';
   sec.style.height=(nat*sc)+'px';
 }
