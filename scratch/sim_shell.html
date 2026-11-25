@@ -501,6 +501,8 @@ document.getElementById('ovRepCancel').onclick = () => document.getElementById('
 document.getElementById('ovRepOk').onclick = () => { document.getElementById('ovRep').classList.remove('show'); document.getElementById('ovRepText').value = ''; modal('問題回報完成'); };
 
 document.getElementById('stage').addEventListener('click', (e) => {
+  const star = e.target.closest('.stars button');
+  if (star) { e.preventDefault(); const wrap = star.parentNode; const btns = [...wrap.querySelectorAll('button')]; const idx = btns.indexOf(star); btns.forEach((b, i) => { const svg = b.querySelector('svg'); if (svg) svg.style.fill = i <= idx ? '#F5A623' : '#ddd'; }); return; }
   const act = e.target.closest('[data-act]');
   if (act) {
     e.preventDefault();
