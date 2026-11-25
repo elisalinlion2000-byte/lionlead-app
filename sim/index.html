@@ -2732,7 +2732,7 @@ function show(name) {
   if (name === 'Roster') wireRoster();
   if (name === 'RosterRollcall') wireRollcall();
   if (name === 'SpotSet') wireSpotSet();
-  if (['Spot','Restaurant','Hotel','Guide'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
+  if (['Spot','Restaurant','Hotel','Guide','Transport'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') { applyDaySpots(name); appendExtra(name); applyItemTime(name); wireDailyTime(name); dragList(document.getElementById('s-' + name), '.tl', '.grip'); }
   wireDayBar(name);
@@ -2999,7 +2999,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
   const to = a.getAttribute('href').slice(1);
   if (to === 'noop') return;
   if (to === 'back') { if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } return; }
-  if (['Spot','Restaurant','Hotel','Guide'].includes(to)) {
+  if (['Spot','Restaurant','Hotel','Guide','Transport'].includes(to)) {
     if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; }
     else { S.formTitle[to] = null; }
   }
