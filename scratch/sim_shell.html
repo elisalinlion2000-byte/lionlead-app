@@ -164,6 +164,7 @@ body.paper .ho-tour{display:none!important}
 <div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
 <div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
 <div class="overlay" id="rxEmail"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">請輸入飯店的Email <span style="color:#E8363D">*</span></div><textarea id="rxEmailInput" placeholder="請輸入" style="width:100%;box-sizing:border-box;height:90px;border:1px solid #d7d7d7;border-radius:8px;padding:10px;font-size:16px;font-family:inherit;resize:none"></textarea><div style="display:flex;gap:14px"><button type="button" id="rxEmailCancel" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="rxEmailOk" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
+<div class="overlay" id="delConfirm"><div class="box" style="gap:18px"><div style="font-size:19px;color:#222">確定要刪除這筆行程嗎？<small>刪除後將從日報表移除</small></div><div style="display:flex;gap:14px;width:100%"><button type="button" id="delCancel" style="flex:1;width:auto;height:44px;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="delOk" style="flex:1;width:auto;height:44px;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">刪除</button></div></div></div>
 <div class="overlay" id="timeSheet"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">填寫起訖時間</div><div><div style="font-size:14px;color:#777;margin-bottom:4px">開始時間</div><input id="tsFrom" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div><div style="font-size:14px;color:#777;margin-bottom:4px">結束時間</div><input id="tsTo" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div style="display:flex;gap:14px"><button type="button" id="tsCancel" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="tsOk" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
 <div id="rxDaySheet"><div class="rxds-panel">
 <div class="rxds-h"><button type="button" class="rxds-x">✕</button><span>切換住宿日期</span></div>
@@ -491,6 +492,8 @@ function wireDl(name){
   };
 }
 document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
+document.getElementById('delCancel').onclick = () => document.getElementById('delConfirm').classList.remove('show');
+document.getElementById('delOk').onclick = () => { if (S.curItem) S.spotOff[S.curItem] = true; document.getElementById('delConfirm').classList.remove('show'); const back = (S.curBack && document.getElementById('s-' + S.curBack)) ? S.curBack : null; if (back) { goingBack = true; show(back); goingBack = false; } else if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } };
 document.getElementById('tsCancel').onclick = () => document.getElementById('timeSheet').classList.remove('show');
 document.getElementById('tsOk').onclick = () => { const f=document.getElementById('tsFrom').value, t=document.getElementById('tsTo').value; if(tmTarget){ if(f&&t) tmTarget.textContent=f+' 〜 '+t; else if(f) tmTarget.textContent=f; else tmTarget.textContent='時間未填寫'; tmTarget.style.color=(f||t)?'#333':'#777'; } document.getElementById('timeSheet').classList.remove('show'); };
 document.getElementById('ovRepCancel').onclick = () => document.getElementById('ovRep').classList.remove('show');
@@ -517,11 +520,14 @@ document.getElementById('stage').addEventListener('click', (e) => {
     if (a2 === 'docOk') { if (!allConfirmed('#s-HandoverOverview')) { modal('請先勾選確認項目<small>兩項都勾選後才能送出「資料無誤」</small>'); return; } S.docOk = true; S.hdChecked['交班總覽'] = true; show('HandoverDone'); return; }
     if (a2 === 'handoverDone') { if (!HD_ITEMS.every(i => S.hdChecked[i])) { modal('請先完成所有交班文件<small>每一份都需確認「資料無誤」打勾</small>'); return; } S.handoverDone = true; show('PreTour'); return; }
   }
+  const del = e.target.closest('.del');
+  if (del) { e.preventDefault(); document.getElementById('delConfirm').classList.add('show'); return; }
   const a = e.target.closest('a[href^="#"]'); if (!a) return;
   e.preventDefault();
   const to = a.getAttribute('href').slice(1);
   if (to === 'noop') return;
   if (to === 'back') { if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } return; }
+  if (a.classList.contains('item') && /^Daily/.test(S.screen) && ['Spot','Restaurant','Hotel','Guide'].includes(to)) { S.curItem = a.textContent.replace('≡','').trim(); S.curBack = S.screen; }
   show(to);
 });
 document.getElementById('ctlToggle').onclick = () => { const c=document.querySelector('.ctl'); const col=c.classList.toggle('collapsed'); document.getElementById('ctlArrow').textContent = col ? '⌄' : '⌃'; fit(); };
