@@ -2702,6 +2702,7 @@ function show(name) {
   if (name === 'HdRoom') wireRoom();
   if (name === 'RoomExt' || name === 'RoomExtPreview') wireRoomExt(name);
   if (name === 'Roster') wireRoster();
+  if (name === 'RosterRollcall') wireRollcall();
   if (name === 'SpotSet') wireSpotSet();
   if (['Spot','Restaurant','Hotel','Guide'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
@@ -2754,6 +2755,13 @@ function roSticky(){
   st.style.transform=(nextTop!==null&&nextTop<barH)?('translateY('+(nextTop-barH)+'px)'):'translateY(0)';
 }
 window.addEventListener('scroll', roSticky, {passive:true});
+function wireRollcall(){ const sc=document.getElementById('s-RosterRollcall'); if(!sc) return;
+  const boxes=[...sc.querySelectorAll('.card .chk input[type="checkbox"]')];
+  const bar=[...sc.querySelectorAll('div')].find(d=>d.querySelectorAll('b').length===3 && /全部/.test(d.textContent) && /已到/.test(d.textContent));
+  const bs=bar?bar.querySelectorAll('b'):null; const total=boxes.length;
+  const upd=()=>{ const arr=boxes.filter(b=>b.checked).length; if(bs){ bs[0].textContent=total; bs[1].textContent=arr; bs[2].textContent=total-arr; } };
+  boxes.forEach(b=>{ const lab=b.closest('.chk'); b.onchange=()=>{ if(lab&&lab.lastChild) lab.lastChild.textContent=b.checked?'已到':'未到'; upd(); }; });
+  upd(); }
 function wireRoster(){
   const sc=document.getElementById('s-Roster'); if(!sc) return;
   // 訂單群組展開／收合（預設全展開）
