@@ -662,6 +662,13 @@ rsfinal_box = (
   '<div>※2歳未満のINFは食事不要です※</div>'
   '<div>※子供も大人と同食です※</div></div>'
   '</div>')
+# RoomExt 專用：分房Final 第一行依天數切換（第1天=版型1顯示 5 TWN + 1 DBL = 6 ROOMS）
+_rx_final_line = (
+  f'<span class="rsf-v1" style="{_mono}">FINAL&nbsp;&nbsp;5 TWN + 1 DBL = 6 ROOMS</span>'
+  f'<span class="rsf-v2" style="{_mono};display:none">FINAL&nbsp;&nbsp;09 TWIN + 0 DBL + 2 TRP + 1 SGL = 12 ROOMS</span>')
+rsfinal_box_rx = rsfinal_box.replace(
+  f'<div style="{_mono}">FINAL&nbsp;&nbsp;09 TWIN + 0 DBL + 2 TRP + 1 SGL = 12 ROOMS</div>',
+  f'<div>{_rx_final_line}</div>')
 room_inner = (f'<div style="padding:4px 16px 0">'
   f'<div style="display:flex;align-items:center;justify-content:space-between">'
   f'<div class="rstrigger" style="border:1px solid #ddd;border-radius:8px;padding:9px 14px;display:flex;gap:10px;align-items:center;font-size:16px;cursor:pointer">第 1 天 | 12/26 <span style="color:#999">⌄</span></div>'
@@ -764,7 +771,7 @@ rx_inner = (header_center('分房表', 'Tour.dc.html') + f'''
     <div class="rx-day rx-daytrig" style="cursor:pointer">第 1 天 | 12/26 <span style="color:#999">⌄</span></div>
     <span class="rx-final rsfinal" style="cursor:pointer">ⓘ 分房Final <span class="rsfchev" style="font-size:13px">⌄</span></span>
   </div>
-  {rsfinal_box}
+  {rsfinal_box_rx}
   <div class="rx-hotel">
     <div style="display:flex;justify-content:space-between;align-items:center"><span class="rx-vlabel">版型1</span></div>
     <div style="font-size:14px;color:#888;margin-top:10px">地址</div>

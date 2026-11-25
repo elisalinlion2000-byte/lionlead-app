@@ -391,7 +391,7 @@ function wireRoomExt(name){
     const vlab=sc.querySelector('.rx-vlabel'), vname=sc.querySelector('.rx-hotel-name');
     const roomsV1=sc.querySelector('.rx-rooms-v1'), roomsV2=sc.querySelector('.rx-rooms-v2');
     const RXHOTEL={'1':'HF 伊帕內瑪花園飯店 HF IPANEMA PARK','2':'鹿之湯集團 定山溪 花紅葉'};
-    function rxApplyVer(day){ const v2=(String(day)==='2'); rxVer=v2?'2':'1'; if(vlab) vlab.textContent=v2?'版型2':'版型1'; if(vname) vname.textContent=RXHOTEL[v2?'2':'1']; if(roomsV1) roomsV1.style.display=v2?'none':'flex'; if(roomsV2) roomsV2.style.display=v2?'flex':'none'; }
+    function rxApplyVer(day){ const v2=(String(day)==='2'); rxVer=v2?'2':'1'; if(vlab) vlab.textContent=v2?'版型2':'版型1'; if(vname) vname.textContent=RXHOTEL[v2?'2':'1']; if(roomsV1) roomsV1.style.display=v2?'none':'flex'; if(roomsV2) roomsV2.style.display=v2?'flex':'none'; const f1=sc.querySelector('.rsf-v1'), f2=sc.querySelector('.rsf-v2'); if(f1) f1.style.display=v2?'none':''; if(f2) f2.style.display=v2?'':'none'; }
     const curD=((dtrig?dtrig.textContent:'').match(/第 (\d) 天/)||[])[1]||'1';
     if(dsheet){ dsheet.querySelectorAll('.rxds-day').forEach(r=>{ r.querySelector('.rxd-radio').innerHTML=(r.dataset.d===curD)?RON:ROFF; }); }
     rxApplyVer(curD);
