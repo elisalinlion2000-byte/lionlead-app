@@ -141,7 +141,11 @@ body.paper .ho-tour{display:none!important}
 #daySheet .dsday{display:block;width:100%;border:0;background:#fff;font-family:inherit;font-size:18px;text-align:left;padding:15px 22px;border-top:1px solid #f0f0f0;cursor:pointer;color:#222}
 #daySheet .dsday b{color:#E8363D}
 .overlay.sheet{align-items:center}
-.overlay.sheet .box{width:86vw;max-width:420px;border-radius:18px;padding:22px;margin:auto;max-height:84vh;overflow:auto}
+.overlay.sheet .box{width:84vw;max-width:340px;border-radius:16px;padding:18px;margin:auto;max-height:80vh;overflow:auto;gap:12px}
+#timeSheet .box{gap:10px}
+#timeSheet .box>div{margin:0}
+#timeSheet input[type="time"]{height:44px!important;font-size:16px!important;padding:0 10px!important}
+#timeSheet .box>div:first-child{font-size:17px!important}
 @media (max-width:600px){
   .ctl{padding:6px 6px 0}
   .ctl-inner{gap:6px 8px}
@@ -257,6 +261,8 @@ let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
 const HD_ITEMS = ['交班總覽','收件一覽表','開票名單','PNR','保單','合約書／手配書','說明會資料','Q 信箱','分房表','其他交班文件'];
+function hdAllDone(){ const o={}; HD_ITEMS.forEach(i=>o[i]=true); return o; }
+S.hdChecked = hdAllDone(); // 交班文件預設全部已確認
 const inTour = () => S.after18 && !S.after24;
 const log = (m) => { const el = document.getElementById('log'); if (el) el.textContent = m; };
 
@@ -633,7 +639,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: hdAllDone(), spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
