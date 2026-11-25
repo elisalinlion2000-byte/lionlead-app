@@ -103,7 +103,7 @@ PRE_STATES = {
  'unsigned': ('', '<a href="#Contract" class="pb pb-main" style="background:#E8363D;color:#fff">填寫委任契約書</a>'),
  'grey':     ('signed', '<span class="pb pb-main" style="background:#E5E5E5;color:#aaa">線上交班準備中</span>'),
  'ready':    ('signed ready', '<a id="pbReady" href="#HandoverDone" class="pb pb-main" style="background:#E8363D;color:#fff">線上交班</a>'),
- 'done':     ('signed ready done', '<span class="pb pb-main" style="background:#E5E5E5;color:#777">準備出發</span>'),
+ 'done':     ('signed ready done roster-on', '<span class="pb pb-main" style="background:#E5E5E5;color:#777">準備出發</span>'),
 }
 PRE_TEAMS = [
  ('unsigned','2026/11/30(一)~2026/12/05(六)','26JPN30BRA','日本東京迪士尼遊透透','28人 / 0人'),
@@ -118,7 +118,7 @@ def pre_group(dep, no, name, pax):
 <div style="display:flex"><span class="k">旅客名單</span><span class="v">{pax} <span style="color:#999;font-size:14px">(KK/Join)</span></span></div>'''
 def pre_grid():
     return f'''<div class="fgrid">
-{fn('行程表','Itinerary','')}{fn('說明會資料','Meeting','sign')}{fn('團體大表','Roster','tour')}
+{fn('行程表','Itinerary','')}{fn('說明會資料','Meeting','sign')}{fn('團體大表','Roster','roster')}
 {fn('分房表','noop','tour')}{fn('交班文件','HandoverDone','ready')}{fn('同意書','Consent','done')}
 {fn('日報表','Daily3','tour')}{fn('發送簡訊','SmsSend','sign')}
 </div>'''
@@ -142,8 +142,8 @@ pre_css = TABCSS + '''
 .fn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:72px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#222;font-size:15px;text-decoration:none}
 .fn svg{width:30px;height:30px;stroke:#E8363D;fill:none;stroke-width:1.8}
 .pcard + .pcard{margin-top:14px}
-.pcard:not(.signed) .need-sign,.pcard .need-tour,.pcard:not(.ready) .need-ready,.pcard:not(.done) .need-done{color:#bbb;pointer-events:none}
-.pcard:not(.signed) .need-sign svg,.pcard .need-tour svg,.pcard:not(.ready) .need-ready svg,.pcard:not(.done) .need-done svg{stroke:#bbb}'''
+.pcard:not(.signed) .need-sign,.pcard .need-tour,.pcard:not(.roster-on) .need-roster,.pcard:not(.ready) .need-ready,.pcard:not(.done) .need-done{color:#bbb;pointer-events:none}
+.pcard:not(.signed) .need-sign svg,.pcard .need-tour svg,.pcard:not(.roster-on) .need-roster svg,.pcard:not(.ready) .need-ready svg,.pcard:not(.done) .need-done svg{stroke:#bbb}'''
 pre_cards = '\n'.join(pre_card(*t, live=(i == 0)) for i, t in enumerate(PRE_TEAMS))
 pre_body = f'''<header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 26px"><h1 style="margin:0;font-size:22px;font-weight:700;color:#222">出團前</h1><div style="display:flex;gap:12px">{BELL}{BCAST}</div></header>
 <div style="display:flex;align-items:center;justify-content:space-between;margin:0 20px"><div style="display:flex;align-items:center;gap:14px"><button type="button" style="display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border:1px solid #ddd;border-radius:21px;background:#fff;font-family:inherit;font-size:18px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>查找</button><span style="font-size:17px;color:#999">輸入團號或日期查找</span></div><span style="font-size:17px">共4筆</span></div>

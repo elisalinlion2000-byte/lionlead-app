@@ -337,8 +337,8 @@ function show(name) {
     // 26SKD01BRD 這張卡的「線上交班」按鈕：交班完成後也變灰色「準備出發」
     const pr = document.getElementById('pbReady');
     if (pr) {
-      if (S.handoverDone) { pr.textContent = '準備出發'; pr.style.background = '#E5E5E5'; pr.style.color = '#777'; pr.style.pointerEvents = 'none'; pr.removeAttribute('href'); pr.closest('.pcard') && pr.closest('.pcard').classList.add('done'); }
-      else { pr.textContent = '線上交班'; pr.style.background = '#E8363D'; pr.style.color = '#fff'; pr.style.pointerEvents = ''; pr.setAttribute('href', '#HandoverDone'); pr.closest('.pcard') && pr.closest('.pcard').classList.remove('done'); }
+      if (S.handoverDone) { pr.textContent = '準備出發'; pr.style.background = '#E5E5E5'; pr.style.color = '#777'; pr.style.pointerEvents = 'none'; pr.removeAttribute('href'); pr.closest('.pcard') && (pr.closest('.pcard').classList.add('done'), pr.closest('.pcard').classList.add('roster-on')); }
+      else { pr.textContent = '線上交班'; pr.style.background = '#E8363D'; pr.style.color = '#fff'; pr.style.pointerEvents = ''; pr.setAttribute('href', '#HandoverDone'); pr.closest('.pcard') && (pr.closest('.pcard').classList.remove('done'), pr.closest('.pcard').classList.remove('roster-on')); }
     }
   }
   if (name === 'Main') setTimeout(() => { if (S.screen === 'Main') show('Login'); }, 500);
