@@ -2652,8 +2652,8 @@ let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
 const HD_ITEMS = ['交班總覽','收件一覽表','開票名單','PNR','保單','合約書／手配書','說明會資料','Q 信箱','分房表','其他交班文件'];
-function hdAllDone(){ const o={}; HD_ITEMS.forEach(i=>o[i]=true); return o; }
-S.hdChecked = hdAllDone(); // 交班文件預設全部已確認
+function hdAllDone(){ const skip=['交班總覽','收件一覽表','開票名單']; const o={}; HD_ITEMS.forEach(i=>{ if(!skip.includes(i)) o[i]=true; }); return o; }
+S.hdChecked = hdAllDone(); // 交班文件預設已確認，但保留交班總覽/收件一覽表/開票名單未確認供領隊操作
 const inTour = () => S.after18 && !S.after24;
 const log = (m) => { const el = document.getElementById('log'); if (el) el.textContent = m; };
 
