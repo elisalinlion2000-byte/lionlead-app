@@ -118,14 +118,17 @@ body.paper .ho-tour{display:none!important}
 .overlay .box small{display:block;font-size:14px;font-weight:400;color:#777;margin-top:4px}
 .overlay .box button{width:110px;height:40px;border-radius:8px;border:0;background:#E8363D;color:#fff;font-size:18px;font-weight:700}
 @media (max-width:600px){
-  .ctl{padding:6px 8px 0}
-  .ctl-inner{gap:5px 9px}
+  .ctl{padding:6px 6px 0}
+  .ctl-inner{gap:6px 8px}
   .ctl .g{gap:5px;font-size:12px}
+  .ctl .g.gnav{gap:4px}
   .ctl .g b{font-size:12px}
   .btn{height:28px;padding:0 8px;font-size:12px;border-radius:7px}
-  .sw{width:40px;height:23px}
-  .sw::after{width:17px;height:17px;top:3px;left:3px}
-  .sw.on::after{left:20px}
+  .btn#btnBack,.btn#btnEntry,.btn#btnReset{padding:0 7px}
+  .btn#btnBack svg,.btn#btnEntry svg,.btn#btnReset svg{width:17px;height:17px}
+  .sw{width:38px;height:22px}
+  .sw::after{width:16px;height:16px;top:3px;left:3px}
+  .sw.on::after{left:19px}
   .stage{padding:12px 0 48px}
   .overlay .box{width:86vw;max-width:340px}
   #btnSkip{right:6px;bottom:6px}
@@ -1024,7 +1027,7 @@ body.paper .ho-tour{display:none!important}
   <button class="btn" id="btnProd">產品部完成</button>
   <button class="btn" id="btn18">出發前1天18:00</button>
   <button class="btn" id="btn24">回團日24:00</button>
-  <div class="g"><button class="btn" id="btnBack">◂ 上一步</button><button class="btn" id="btnEntry" aria-label="回入口（首頁）" title="回入口" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg></button><button class="btn" id="btnReset" aria-label="重置" title="重置模擬狀態" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v6h-6"/></svg></button></div>
+  <div class="g gnav"><button class="btn" id="btnBack" aria-label="上一步" title="上一步" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg></button><button class="btn" id="btnEntry" aria-label="回入口（首頁）" title="回入口" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg></button><button class="btn" id="btnReset" aria-label="重置" title="重置模擬狀態" style="display:flex;align-items:center;justify-content:center;padding:0 12px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v6h-6"/></svg></button></div>
   </div>
   <button type="button" class="ctl-toggle" id="ctlToggle" aria-label="收合或展開控制列"><span id="ctlArrow">⌃</span> 控制列</button>
 </div>
