@@ -69,10 +69,12 @@ PHOTO = '''<section class="sec">
 </section>
 '''
 
-def tail(back, h):
+def tail(back, h, act=None):
+    ok = (f'<button type="button" data-act="{act}" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:#E8363D;color:#fff;font-size:21px;font-weight:700;border:0;font-family:inherit;cursor:pointer">確定</button>' if act else
+          f'<a href="{back}" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:#E8363D;color:#fff;font-size:21px;font-weight:700">確定</a>')
     return f'''</div>
 <div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#F5F5F5;display:flex;align-items:center;padding:0 20px">
-<a href="{back}" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:#E8363D;color:#fff;font-size:21px;font-weight:700">確定</a>
+{ok}
 </div>
 </div>
 </x-dc>
@@ -85,8 +87,8 @@ renderVals() {{ return {{}}; }}
 </html>
 '''
 
-def build(fname, title, h, top, qs, note_label='備註/其他評論', back='#back', photo=True):
-    html = HEAD.format(title=title, h=h, back=back) + top + eval_sec(title, qs, note_label) + (PHOTO if photo else '') + tail(back, h)
+def build(fname, title, h, top, qs, note_label='備註/其他評論', back='#back', photo=True, act=None):
+    html = HEAD.format(title=title, h=h, back=back) + top + eval_sec(title, qs, note_label) + (PHOTO if photo else '') + tail(back, h, act)
     (P / fname).write_text(html, encoding='utf-8')
 
 # 導遊
@@ -100,7 +102,7 @@ build('Guide.dc.html', '導遊', 2120,
    ('解說專業與說話技巧','導覽內容、景點解說是否準確、有趣、引導有層次'),
    ('應對團員能力與親和力','可回應旅客提問、互動及處理臨時狀況的能力'),
    ('時間控管與節奏掌握','是否能掌控景點停留時間、不拖延'),
-   ('團隊氣氛營造能力','是否能帶動氛圍、說笑適當、處事圓融')])
+   ('團隊氣氛營造能力','是否能帶動氛圍、說笑適當、處事圓融')], act='addGuide')
 
 # 飯店
 build('Hotel.dc.html', '飯店', 1960,
