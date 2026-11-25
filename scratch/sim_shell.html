@@ -126,6 +126,9 @@ body.paper .ho-tour{display:none!important}
 #dayBar #dbSave,#dayBar #dbSubmit{flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;font-size:19px;font-weight:700;font-family:inherit}
 #dayBar #dbSave{border:1px solid #E8363D;color:#E8363D;background:#fff;cursor:pointer}
 #dayBar #dbSubmit{background:#e5e5e5;color:#999;border:0}
+#rollBar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;background:#fff;border-top:1px solid #e5e5e5;height:62px;align-items:center;justify-content:space-around;font-size:20px;color:#333;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 10px rgba(0,0,0,.06)}
+#rollBar.show{display:flex}
+#rollBar b{color:#E8363D}
 .overlay.sheet{align-items:center}
 .overlay.sheet .box{width:86vw;max-width:420px;border-radius:18px;padding:22px;margin:auto;max-height:84vh;overflow:auto}
 @media (max-width:600px){
@@ -172,6 +175,7 @@ body.paper .ho-tour{display:none!important}
 <button class="gtab" data-go="Mine"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>我的</button>
 </nav>
 <div id="dayBar"><button type="button" id="dbSave">儲存草稿</button><span id="dbSubmit">提交日報表</span></div>
+<div id="rollBar"><span>全部 <b id="rcAll">5</b></span><span>已到 <b id="rcIn">0</b></span><span>未到 <b id="rcOut">5</b></span></div>
 <button id="btnSkip" aria-label="skip" title="測試：跳過委任契約書／交班" style="position:fixed;right:10px;bottom:10px;z-index:100;width:28px;height:28px;border:0;border-radius:6px;background:rgba(0,0,0,.05);color:#ccc;font-size:15px;line-height:1;cursor:pointer">›</button>
 <div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
 <div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
@@ -370,12 +374,13 @@ function roSticky(){
   st.style.transform=(nextTop!==null&&nextTop<barH)?('translateY('+(nextTop-barH)+'px)'):'translateY(0)';
 }
 window.addEventListener('scroll', roSticky, {passive:true});
-function wireDayBar(name){ const bar=document.getElementById('dayBar'); const isDay=/^Daily[123]$/.test(name); bar.classList.toggle('show', isDay); document.body.style.paddingBottom=isDay?'74px':''; if(isDay){ const sc=document.getElementById('s-'+name); [...sc.querySelectorAll('div')].forEach(d=>{ if(d.children.length===2 && /儲存草稿/.test(d.textContent) && /提交日報表/.test(d.textContent)) d.style.display='none'; }); } }
+function wireDayBar(name){ const isDay=/^Daily[123]$/.test(name); const isRoll=(name==='RosterRollcall'); document.getElementById('dayBar').classList.toggle('show', isDay); document.getElementById('rollBar').classList.toggle('show', isRoll); document.body.style.paddingBottom=(isDay||isRoll)?'74px':''; if(isDay){ const sc=document.getElementById('s-'+name); [...sc.querySelectorAll('div')].forEach(d=>{ if(d.children.length===2 && /儲存草稿/.test(d.textContent) && /提交日報表/.test(d.textContent)) d.style.display='none'; }); } }
 function wireRollcall(){ const sc=document.getElementById('s-RosterRollcall'); if(!sc) return;
-  const boxes=[...sc.querySelectorAll('.card .chk input[type="checkbox"]')];
-  const bar=[...sc.querySelectorAll('div')].find(d=>d.querySelectorAll('b').length===3 && /全部/.test(d.textContent) && /已到/.test(d.textContent));
-  const bs=bar?bar.querySelectorAll('b'):null; const total=boxes.length;
-  const upd=()=>{ const arr=boxes.filter(b=>b.checked).length; if(bs){ bs[0].textContent=total; bs[1].textContent=arr; bs[2].textContent=total-arr; } };
+  const boxes=[...sc.querySelectorAll('.card .chk input[type="checkbox"]')]; const total=boxes.length;
+  // 隱藏畫板內的統計列，改用畫面固定底欄
+  [...sc.querySelectorAll('div')].forEach(d=>{ if(d.querySelectorAll('b').length===3 && /全部/.test(d.textContent) && /已到/.test(d.textContent)) d.style.display='none'; });
+  const all=document.getElementById('rcAll'), inb=document.getElementById('rcIn'), outb=document.getElementById('rcOut');
+  const upd=()=>{ const arr=boxes.filter(b=>b.checked).length; all.textContent=total; inb.textContent=arr; outb.textContent=total-arr; };
   boxes.forEach(b=>{ const lab=b.closest('.chk'); b.onchange=()=>{ if(lab&&lab.lastChild) lab.lastChild.textContent=b.checked?'已到':'未到'; upd(); }; });
   upd(); }
 function wireRoster(){
