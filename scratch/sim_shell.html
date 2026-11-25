@@ -252,7 +252,7 @@ body.paper .ho-tour{display:none!important}
 class DCLogic { constructor(){ this.state = {}; this.props = {}; } setState(s){ Object.assign(this.state, s); } }
 const LOGIC = { /*LOGIC*/ };
 const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} };
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {}, curTid: null };
 // 景點 → 預設所屬天；effectiveDay 用 spotDay 覆蓋（null=已刪除／未排入任何一天）
 const SPOT_DAY = { '橫濱紅磚倉庫':'Daily1', '西湖里根場合掌村聚落':'Daily2','鶴岡八幡宮':'Daily2','鶴岡八幡小町通':'Daily2','十国峠斜面登山纜車':'Daily2','麗莎＆卡斯柏小鎮':'Daily2', '河口湖富士山全景纜車':'Daily3','光伸免稅店':'Daily3','DiverCity Tokyo Plaza 台場購物廣場':'Daily3', '東京迪士尼度假園區':'Daily4','東京迪士尼海洋世界':'Daily4' };
 const dayNum = { Daily1:1, Daily2:2, Daily3:3, Daily4:4 };
@@ -352,6 +352,7 @@ function show(name) {
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') { applyDaySpots(name); appendExtra(name); applyItemTime(name); wireDailyTime(name); dragList(document.getElementById('s-' + name), '.tl', '.grip'); }
   wireDayBar(name);
   if (name === 'Spot' || name === 'Restaurant') wireFormTime(name);
+  if (name === 'Transport') { if (S.curTid) { const f = findTransport(S.curTid); writeTransport(f ? f.entry.data : {}); } else { writeTransport({}); } wireTransportSave(); }
   if (name === 'PostTour') {
     const pl = document.getElementById('postLive');
     if (pl) pl.style.display = S.after24 ? '' : 'none';
@@ -503,7 +504,12 @@ function applyDaySpots(dayName){ const sc=document.getElementById('s-'+dayName);
   const all=new Set([...Object.keys(SPOT_DAY), ...Object.keys(S.spotDay)]);
   all.forEach(t=>{ if(effectiveDay(t)===dayName && !present.has(t)){ present.add(t); const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Spot" draggable="false">'+t+'<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); } }); }
 // 日報表：把新增的交通動態補進行程列
-function appendExtra(name){ const sc=document.getElementById('s-'+name); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const rows=S.extra[name]||[]; if(!rows.length) return; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); rows.forEach(r=>{ const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Transport" draggable="false"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="M4 11h16M8 18v2M16 18v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg></span>'+r.name+'<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); }); }
+function appendExtra(name){ const sc=document.getElementById('s-'+name); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const rows=S.extra[name]||[]; if(!rows.length) return; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); rows.forEach(r=>{ const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Transport" draggable="false" data-tid="'+(r.id||'')+'"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="M4 11h16M8 18v2M16 18v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg></span>'+r.name+'<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); }); }
+// 交通表單資料的讀/寫/查找（新增後保留，點回去可編輯）
+function readTransport(){ const sc=document.getElementById('s-Transport'); if(!sc) return {}; const g=id=>{const e=sc.querySelector('#'+id);return e?e.value.trim():'';}; const stars=[...sc.querySelectorAll('.stars')].map(wp=>parseInt(wp.dataset.rating||'0',10)); return {drv:g('drv'),plate:g('plate'),abn:g('abn'),stars}; }
+function writeTransport(data){ const sc=document.getElementById('s-Transport'); if(!sc) return; data=data||{}; const s=id=>sc.querySelector('#'+id); if(s('drv')) s('drv').value=data.drv||''; if(s('plate')) s('plate').value=data.plate||''; if(s('abn')) s('abn').value=data.abn||''; const ws=[...sc.querySelectorAll('.stars')]; ws.forEach((wp,wi)=>{ const r=(data.stars&&data.stars[wi])||0; wp.dataset.rating=r; wp.querySelectorAll('button').forEach((b,i)=>{ const svg=b.querySelector('svg'); if(svg) svg.style.fill=(i<r)?'#F5A623':'#ddd'; }); }); }
+function findTransport(id){ for(const d in S.extra){ const arr=S.extra[d]||[]; const e=arr.find(x=>x.id===id); if(e) return {entry:e, day:d}; } return null; }
+function wireTransportSave(){ const sc=document.getElementById('s-Transport'); if(!sc) return; const save=()=>{ if(!S.curTid) return; const f=findTransport(S.curTid); if(f) f.entry.data=readTransport(); }; ['drv','plate','abn'].forEach(id=>{ const e=sc.querySelector('#'+id); if(e){ e.oninput=save; } }); }
 // 日報表行程：點「時間未填寫」可填起訖時間
 let tmTarget=null;
 function itemOf(tm){ const row=tm.closest('.tl'); const a=row&&row.querySelector('a.item'); return a?a.textContent.replace('≡','').trim():''; }
@@ -574,7 +580,7 @@ document.getElementById('ssDone').onclick = () => { const day = (S.addDay && doc
 document.getElementById('dsClose').onclick = () => document.getElementById('daySheet').classList.remove('show');
 document.getElementById('daySheet').addEventListener('click', (e) => { if (e.target.id === 'daySheet') { e.target.classList.remove('show'); return; } const d = e.target.closest('.dsday'); if (!d) return; document.getElementById('daySheet').classList.remove('show'); show(d.dataset.go); });
 document.getElementById('addClose').onclick = () => document.getElementById('addSheet').classList.remove('show');
-document.getElementById('addSheet').addEventListener('click', (e) => { if (e.target.id === 'addSheet') e.target.classList.remove('show'); const opt = e.target.closest('.add-opt'); if (!opt) return; const to = opt.dataset.addGo; document.getElementById('addSheet').classList.remove('show'); if (['Hotel','Restaurant','Guide'].includes(to)) S.formTitle[to] = null; show(to); });
+document.getElementById('addSheet').addEventListener('click', (e) => { if (e.target.id === 'addSheet') e.target.classList.remove('show'); const opt = e.target.closest('.add-opt'); if (!opt) return; const to = opt.dataset.addGo; document.getElementById('addSheet').classList.remove('show'); if (['Hotel','Restaurant','Guide'].includes(to)) S.formTitle[to] = null; if (to === 'Transport') { S.curTid = null; S.formTitle['Transport'] = null; } show(to); });
 document.getElementById('delCancel').onclick = () => document.getElementById('delConfirm').classList.remove('show');
 document.getElementById('delOk').onclick = () => { if (S.curItem && (S.curItem in SPOT_DAY || S.curItem in S.spotDay)) S.spotDay[S.curItem] = null; document.getElementById('delConfirm').classList.remove('show'); const back = (S.curBack && document.getElementById('s-' + S.curBack)) ? S.curBack : null; if (back) { goingBack = true; show(back); goingBack = false; } else if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } };
 document.getElementById('tsCancel').onclick = () => document.getElementById('timeSheet').classList.remove('show');
@@ -584,13 +590,15 @@ document.getElementById('ovRepOk').onclick = () => { document.getElementById('ov
 
 document.getElementById('stage').addEventListener('click', (e) => {
   const star = e.target.closest('.stars button');
-  if (star) { e.preventDefault(); const wrap = star.parentNode; const btns = [...wrap.querySelectorAll('button')]; const idx = btns.indexOf(star); btns.forEach((b, i) => { const svg = b.querySelector('svg'); if (svg) svg.style.fill = i <= idx ? '#F5A623' : '#ddd'; }); return; }
+  if (star) { e.preventDefault(); const wrap = star.parentNode; const btns = [...wrap.querySelectorAll('button')]; const idx = btns.indexOf(star); btns.forEach((b, i) => { const svg = b.querySelector('svg'); if (svg) svg.style.fill = i <= idx ? '#F5A623' : '#ddd'; }); wrap.dataset.rating = idx + 1; if (S.curTid) { const f = findTransport(S.curTid); if (f) f.entry.data = readTransport(); } return; }
   const act = e.target.closest('[data-act]');
   if (act) {
     e.preventDefault();
     const a2 = act.dataset.act, q = (s) => document.querySelector('#s-Contract ' + s);
     if (a2 === 'spotsetDone') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; show(day); return; }
-    if (a2 === 'addTransport') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const gv = (id) => { const el = document.querySelector('#s-Transport #' + id); return el ? el.value.trim() : ''; }; const plate = gv('plate'), drv = gv('drv'); const label = '交通' + (plate ? ('　' + plate) : (drv ? ('　' + drv) : '（巴士）')); (S.extra[day] = S.extra[day] || []).push({ name: label }); show(day); rxToast('已新增交通'); return; }
+    if (a2 === 'addTransport') { const data = readTransport(); const label = '交通' + (data.plate ? ('　' + data.plate) : (data.drv ? ('　' + data.drv) : '（巴士）'));
+      if (S.curTid) { const f = findTransport(S.curTid); if (f) { f.entry.name = label; f.entry.data = data; } const back = (S.curBack && document.getElementById('s-' + S.curBack)) ? S.curBack : (f ? f.day : 'Daily2'); show(back); return; }
+      const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const id = 't' + Date.now(); (S.extra[day] = S.extra[day] || []).push({ id: id, name: label, data: data }); show(day); rxToast('已新增交通'); return; }
     // 委任契約書：自檢表 / 簽名板（本機 UI，不需連線）
     if (a2 === 'acc') { const w = act.closest('.accwrap'); if (w) w.classList.toggle('open'); act.classList.add('read'); const items = document.querySelectorAll('#s-Contract .accitem'); const allRead = [...items].every(i => i.classList.contains('read')); const btn = q('.mbtn'); if (btn) btn.classList.toggle('en', allRead); return; }
     if (a2 === 'closeChk') { q('.checklist').classList.add('hide'); return; }
@@ -615,7 +623,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
   if (to === 'noop') return;
   if (to === 'back') { if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } return; }
   if (['Spot','Restaurant','Hotel','Guide','Transport'].includes(to)) {
-    if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; }
+    if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; if (to === 'Transport') S.curTid = a.dataset.tid || null; }
     else { S.formTitle[to] = null; }
   }
   if (to === 'DailyAdd') { if (/^Daily[123]$/.test(S.screen)) S.addDay = S.screen; document.getElementById('addSheet').classList.add('show'); return; }
@@ -645,7 +653,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: hdAllDone(), spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: hdAllDone(), spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {}, curTid: null }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
