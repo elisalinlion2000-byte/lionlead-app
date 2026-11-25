@@ -129,6 +129,9 @@ body.paper .ho-tour{display:none!important}
 #rollBar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;background:#fff;border-top:1px solid #e5e5e5;height:62px;align-items:center;justify-content:space-around;font-size:20px;color:#333;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 10px rgba(0,0,0,.06)}
 #rollBar.show{display:flex}
 #rollBar b{color:#E8363D}
+#spotDoneBar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;background:#fff;border-top:1px solid #e5e5e5;padding:8px 16px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,0,0,.06)}
+#spotDoneBar.show{display:flex}
+#spotDoneBar #ssDone{flex:1;height:46px;border:0;border-radius:8px;background:#E8363D;color:#fff;font-size:20px;font-weight:700;font-family:inherit;cursor:pointer}
 .overlay.sheet{align-items:center}
 .overlay.sheet .box{width:86vw;max-width:420px;border-radius:18px;padding:22px;margin:auto;max-height:84vh;overflow:auto}
 @media (max-width:600px){
@@ -2491,6 +2494,7 @@ body.paper .ho-tour{display:none!important}
 </nav>
 <div id="dayBar"><button type="button" id="dbSave">儲存草稿</button><span id="dbSubmit">提交日報表</span></div>
 <div id="rollBar"><span>全部 <b id="rcAll">5</b></span><span>已到 <b id="rcIn">0</b></span><span>未到 <b id="rcOut">5</b></span></div>
+<div id="spotDoneBar"><button type="button" id="ssDone">完成</button></div>
 <button id="btnSkip" aria-label="skip" title="測試：跳過委任契約書／交班" style="position:fixed;right:10px;bottom:10px;z-index:100;width:28px;height:28px;border:0;border-radius:6px;background:rgba(0,0,0,.05);color:#ccc;font-size:15px;line-height:1;cursor:pointer">›</button>
 <div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
 <div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
@@ -2765,7 +2769,7 @@ function roSticky(){
   st.style.transform=(nextTop!==null&&nextTop<barH)?('translateY('+(nextTop-barH)+'px)'):'translateY(0)';
 }
 window.addEventListener('scroll', roSticky, {passive:true});
-function wireDayBar(name){ const isDay=/^Daily[123]$/.test(name); const isRoll=(name==='RosterRollcall'); document.getElementById('dayBar').classList.toggle('show', isDay); document.getElementById('rollBar').classList.toggle('show', isRoll); document.body.style.paddingBottom=(isDay||isRoll)?'74px':''; if(isDay){ const sc=document.getElementById('s-'+name); [...sc.querySelectorAll('div')].forEach(d=>{ if(d.children.length===2 && /儲存草稿/.test(d.textContent) && /提交日報表/.test(d.textContent)) d.style.display='none'; }); } }
+function wireDayBar(name){ const isDay=/^Daily[123]$/.test(name); const isRoll=(name==='RosterRollcall'); const isSpot=(name==='SpotSet'); document.getElementById('dayBar').classList.toggle('show', isDay); document.getElementById('rollBar').classList.toggle('show', isRoll); document.getElementById('spotDoneBar').classList.toggle('show', isSpot); document.body.style.paddingBottom=(isDay||isRoll||isSpot)?'74px':''; if(isDay){ const sc=document.getElementById('s-'+name); [...sc.querySelectorAll('div')].forEach(d=>{ if(d.children.length===2 && /儲存草稿/.test(d.textContent) && /提交日報表/.test(d.textContent)) d.style.display='none'; }); } if(isSpot){ const b=document.querySelector('#s-SpotSet [data-act="spotsetDone"]'); if(b&&b.parentElement) b.parentElement.style.display='none'; } }
 function wireRollcall(){ const sc=document.getElementById('s-RosterRollcall'); if(!sc) return;
   const boxes=[...sc.querySelectorAll('.card .chk input[type="checkbox"]')]; const total=boxes.length;
   // 隱藏畫板內的統計列（僅比對統計列本身：剛好 3 個 span 子項、各含一個 b），改用畫面固定底欄
@@ -2936,6 +2940,7 @@ function wireDl(name){
 }
 document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
 document.getElementById('dbSave').onclick = () => show('Tour');
+document.getElementById('ssDone').onclick = () => { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; show(day); };
 document.getElementById('addClose').onclick = () => document.getElementById('addSheet').classList.remove('show');
 document.getElementById('addSheet').addEventListener('click', (e) => { if (e.target.id === 'addSheet') e.target.classList.remove('show'); const opt = e.target.closest('.add-opt'); if (!opt) return; const to = opt.dataset.addGo; document.getElementById('addSheet').classList.remove('show'); if (['Hotel','Restaurant','Guide'].includes(to)) S.formTitle[to] = null; show(to); });
 document.getElementById('delCancel').onclick = () => document.getElementById('delConfirm').classList.remove('show');
