@@ -41,8 +41,8 @@ button{font-family:inherit;cursor:pointer}
 .gtab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:56px;height:54px;border-radius:27px;font-size:12px;color:#333;background:#fff;border:0;font-family:inherit;cursor:pointer;padding:0}
 .gtab.on{background:#E8363D;color:#fff}
 .gtab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
-.screen.fixed{display:none;justify-content:flex-start;align-items:flex-start}.screen.fixed.cur{display:flex}
-.screen.fixed .mount{transform-origin:top left}
+.screen.fixed{display:none;justify-content:center;align-items:flex-start}.screen.fixed.cur{display:flex}
+.screen.fixed .mount{transform-origin:top center}
 .screen{display:none}.screen.cur{display:block}
 .screen.fixed .mount{width:820px;overflow:hidden;border-radius:0;box-shadow:none}
 .screen.fixed .mount > *{width:820px}
@@ -2766,9 +2766,8 @@ function fit(){
   const sec=document.querySelector('.screen.fixed.cur'); if(!sec) return;
   const m=sec.querySelector('.mount'); m.style.transform='none';
   const nat=m.offsetHeight;
-  // 一律以視窗寬度縮放（排除捲軸）→ 每個畫面都滿版、同一比例、靠左對齊，不會歪斜或跳動
-  const vw=document.documentElement.clientWidth || window.innerWidth;
-  const sc=Math.max(vw/820, 0.1);
+  // 一律以視窗寬度縮放、置中 → 每個畫面都滿版、同一比例（搭配 body overflow-x:hidden 防止水平歪移）
+  const sc=Math.max(window.innerWidth/820, 0.1);
   m.style.transform='scale('+sc+')';
   sec.style.height=(nat*sc)+'px';
 }
