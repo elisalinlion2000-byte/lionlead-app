@@ -382,6 +382,8 @@ function wireRollcall(){ const sc=document.getElementById('s-RosterRollcall'); i
   const all=document.getElementById('rcAll'), inb=document.getElementById('rcIn'), outb=document.getElementById('rcOut');
   const upd=()=>{ const arr=boxes.filter(b=>b.checked).length; all.textContent=total; inb.textContent=arr; outb.textContent=total-arr; };
   boxes.forEach(b=>{ const lab=b.closest('.chk'); b.onchange=()=>{ if(lab&&lab.lastChild) lab.lastChild.textContent=b.checked?'已到':'未到'; upd(); }; });
+  const resetBtn=[...sc.querySelectorAll('button')].find(b=>/重新點名/.test(b.textContent));
+  if(resetBtn) resetBtn.onclick=()=>{ boxes.forEach(b=>{ b.checked=false; const lab=b.closest('.chk'); if(lab&&lab.lastChild) lab.lastChild.textContent='未到'; }); upd(); };
   upd(); }
 function wireRoster(){
   const sc=document.getElementById('s-Roster'); if(!sc) return;
