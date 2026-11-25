@@ -1,6 +1,6 @@
 import re, pathlib, json
 P = pathlib.Path('/home/claude/lionlead/project')
-ORDER = ['Entry','Main','Login','Home','HomeCalendar','Notify','PreTour','Contract','HandoverLocked','HandoverPartial','HandoverDone','HandoverOverview','HdRecv','HdTicket','HdPnr','HdIns','HdAgr','HdBrief','HdQ','HdRoom','HdList','HdContact','HdOther','RoomExt','RoomExtPreview','PreTourDev','Mine','TourEmpty','Tour','TourDialog','PostTour','Consent','ConsentOffline','ConsentView','ConsentForm','ConsentDrop','ConsentNoMed','ConsentNoRep','ConsentCash','ConsentQR','Roster','RosterRollcall','Daily1','Daily2','DailyAdd','Daily3','WakeTime','Qbox','Transport','Guide','Hotel','Spot','Restaurant','SmsList','SmsEdit','SmsSend','SmsResult','Itinerary','Meeting']
+ORDER = ['Entry','Main','Login','Home','HomeCalendar','Notify','PreTour','Contract','HandoverLocked','HandoverPartial','HandoverDone','HandoverOverview','HdRecv','HdTicket','HdPnr','HdIns','HdAgr','HdBrief','HdQ','HdRoom','HdList','HdContact','HdOther','RoomExt','RoomExtPreview','PreTourDev','Mine','TourEmpty','Tour','TourDialog','PostTour','Consent','ConsentOffline','ConsentView','ConsentForm','ConsentDrop','ConsentNoMed','ConsentNoRep','ConsentCash','ConsentQR','Roster','RosterRollcall','Daily1','Daily2','DailyAdd','SpotSet','Daily3','WakeTime','Qbox','Transport','Guide','Hotel','Spot','Restaurant','SmsList','SmsEdit','SmsSend','SmsResult','Itinerary','Meeting']
 FLUID = {'Entry','Itinerary','Meeting','RoomExtPreview'}
 
 def scope_css(css, sid):

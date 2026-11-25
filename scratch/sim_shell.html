@@ -298,6 +298,7 @@ function show(name) {
   if (name === 'RoomExt' || name === 'RoomExtPreview') wireRoomExt(name);
   if (name === 'Roster') wireRoster();
   if (name === 'Daily2') wireDaily2();
+  if (name === 'SpotSet') wireSpotSet();
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
   if (name === 'PostTour') {
     const pl = document.getElementById('postLive');
@@ -420,6 +421,10 @@ function dragList(sc, rowSel, gripSel){
   });
 }
 function wireDaily2(){ const sc=document.getElementById('s-Daily2'); if(!sc) return; dragList(sc, '.tl', '.grip'); }
+function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) return;
+  sc.querySelectorAll('.ss-tab').forEach(t=>{ t.onclick=()=>{ sc.querySelectorAll('.ss-tab').forEach(x=>x.classList.toggle('on',x===t)); sc.querySelectorAll('.ss-pane').forEach(p=>p.style.display=(p.dataset.pane===t.dataset.tab)?'':'none'); }; });
+  sc.querySelectorAll('.ss-chk').forEach(c=>{ c.onclick=()=>c.classList.toggle('on'); });
+  const ab=sc.querySelector('[data-add]'); if(ab) ab.onclick=()=>{ const inp=sc.querySelector('.ss-in'); if(inp&&inp.value.trim()){ modal('已新增景點「'+inp.value.trim()+'」<small>可於評分清單中查看</small>'); inp.value=''; } }; }
 function wireDays(sc){ if(!sc) return; const trig=sc.querySelector('.daytrigger'); const sheet=sc.querySelector('.daysheet'); if(trig&&sheet) trig.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); sheet.style.display='flex'; }; if(sheet) sheet.querySelectorAll('.dsclose').forEach(b=>b.onclick=()=>{ sheet.style.display='none'; }); }
 function wireNotify(){
   const sc=document.getElementById('s-Notify'); if(!sc) return;
