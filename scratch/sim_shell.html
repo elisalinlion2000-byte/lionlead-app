@@ -164,6 +164,7 @@ body.paper .ho-tour{display:none!important}
 <div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
 <div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
 <div class="overlay" id="rxEmail"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">請輸入飯店的Email <span style="color:#E8363D">*</span></div><textarea id="rxEmailInput" placeholder="請輸入" style="width:100%;box-sizing:border-box;height:90px;border:1px solid #d7d7d7;border-radius:8px;padding:10px;font-size:16px;font-family:inherit;resize:none"></textarea><div style="display:flex;gap:14px"><button type="button" id="rxEmailCancel" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="rxEmailOk" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
+<div class="overlay" id="timeSheet"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">填寫起訖時間</div><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><div style="font-size:14px;color:#777;margin-bottom:4px">開始</div><input id="tsFrom" type="time" style="width:100%;box-sizing:border-box;height:46px;border:1px solid #d7d7d7;border-radius:8px;padding:0 10px;font-size:18px;font-family:inherit"></div><span style="color:#999;padding-top:18px">〜</span><div style="flex:1"><div style="font-size:14px;color:#777;margin-bottom:4px">結束</div><input id="tsTo" type="time" style="width:100%;box-sizing:border-box;height:46px;border:1px solid #d7d7d7;border-radius:8px;padding:0 10px;font-size:18px;font-family:inherit"></div></div><div style="display:flex;gap:14px"><button type="button" id="tsCancel" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="tsOk" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
 <div id="rxDaySheet"><div class="rxds-panel">
 <div class="rxds-h"><button type="button" class="rxds-x">✕</button><span>切換住宿日期</span></div>
 <div class="rxds-day" data-d="1" data-dt="12/26"><span><b style="color:#E8363D">第 1 天</b>　|　12/26</span><span class="rxd-radio"></span></div>
@@ -300,7 +301,7 @@ function show(name) {
   if (name === 'Daily2') wireDaily2();
   if (name === 'SpotSet') wireSpotSet();
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
-  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') applySpotOff(name);
+  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') { applySpotOff(name); wireDailyTime(name); }
   if (name === 'PostTour') {
     const pl = document.getElementById('postLive');
     if (pl) pl.style.display = S.after24 ? '' : 'none';
@@ -428,6 +429,9 @@ function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) r
   const ab=sc.querySelector('[data-add]'); if(ab) ab.onclick=()=>{ const inp=sc.querySelector('.ss-in'); if(inp&&inp.value.trim()){ modal('已新增景點「'+inp.value.trim()+'」<small>可於評分清單中查看</small>'); inp.value=''; } }; }
 // 設定景點取消勾選 → 日報表該筆行程消失（非清單項目消失）
 function applySpotOff(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tl').forEach(row=>{ const a=row.querySelector('a.item'); if(!a) return; const t=a.textContent.replace('≡','').trim(); row.style.display=S.spotOff[t]?'none':''; }); }
+// 日報表行程：點「時間未填寫」可填起訖時間
+let tmTarget=null;
+function wireDailyTime(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tm').forEach(tm=>{ tm.style.cursor='pointer'; tm.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); tmTarget=tm; const m=(tm.textContent||'').match(/(\d{1,2}:\d{2})\D+(\d{1,2}:\d{2})/); document.getElementById('tsFrom').value=m?m[1]:''; document.getElementById('tsTo').value=m?m[2]:''; document.getElementById('timeSheet').classList.add('show'); }; }); }
 function wireDays(sc){ if(!sc) return; const trig=sc.querySelector('.daytrigger'); const sheet=sc.querySelector('.daysheet'); if(trig&&sheet) trig.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); sheet.style.display='flex'; }; if(sheet) sheet.querySelectorAll('.dsclose').forEach(b=>b.onclick=()=>{ sheet.style.display='none'; }); }
 function wireNotify(){
   const sc=document.getElementById('s-Notify'); if(!sc) return;
@@ -487,6 +491,8 @@ function wireDl(name){
   };
 }
 document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
+document.getElementById('tsCancel').onclick = () => document.getElementById('timeSheet').classList.remove('show');
+document.getElementById('tsOk').onclick = () => { const f=document.getElementById('tsFrom').value, t=document.getElementById('tsTo').value; if(tmTarget){ if(f&&t) tmTarget.textContent=f+' 〜 '+t; else if(f) tmTarget.textContent=f; else tmTarget.textContent='時間未填寫'; tmTarget.style.color=(f||t)?'#333':'#777'; } document.getElementById('timeSheet').classList.remove('show'); };
 document.getElementById('ovRepCancel').onclick = () => document.getElementById('ovRep').classList.remove('show');
 document.getElementById('ovRepOk').onclick = () => { document.getElementById('ovRep').classList.remove('show'); document.getElementById('ovRepText').value = ''; modal('問題回報完成'); };
 
