@@ -85,7 +85,7 @@ renderVals() {{ return {{}}; }}
 </html>
 '''
 
-def build(fname, title, h, top, qs, note_label='備註/其他評論', back='Daily3.dc.html', photo=True):
+def build(fname, title, h, top, qs, note_label='備註/其他評論', back='#back', photo=True):
     html = HEAD.format(title=title, h=h, back=back) + top + eval_sec(title, qs, note_label) + (PHOTO if photo else '') + tail(back, h)
     (P / fname).write_text(html, encoding='utf-8')
 
@@ -140,11 +140,11 @@ build('Restaurant.dc.html', '餐廳', 2220,
    ('動線與集合安排','團體進出動線順暢、集合點明確，無障礙設施/電梯?')])
 
 # 起床及出發時間
-wake = HEAD.format(title='起床及出發時間', h=1180, back='Daily3.dc.html') + f'''<section class="sec">
+wake = HEAD.format(title='起床及出發時間', h=1180, back='#back') + f'''<section class="sec">
 <h2>第1天</h2>
 <label class="lb" for="w1">起床時間</label><div class="tw"><input class="in" id="w1" type="text" placeholder="09:00(預計)">{CLOCK}</div>
 <label class="lb" for="w2">出發時間</label><div class="tw"><input class="in" id="w2" type="text" placeholder="09:00(預計)">{CLOCK}</div>
 </section>
-''' + tail('Daily3.dc.html', 1180)
+''' + tail('#back', 1180)
 (P / 'WakeTime.dc.html').write_text(wake, encoding='utf-8')
 print('ok')
