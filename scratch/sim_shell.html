@@ -423,7 +423,7 @@ function dragList(sc, rowSel, gripSel){
 function wireDaily2(){ const sc=document.getElementById('s-Daily2'); if(!sc) return; dragList(sc, '.tl', '.grip'); }
 function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) return;
   sc.querySelectorAll('.ss-tab').forEach(t=>{ t.onclick=()=>{ sc.querySelectorAll('.ss-tab').forEach(x=>x.classList.toggle('on',x===t)); sc.querySelectorAll('.ss-pane').forEach(p=>p.style.display=(p.dataset.pane===t.dataset.tab)?'':'none'); }; });
-  sc.querySelectorAll('.ss-chk').forEach(c=>{ c.onclick=()=>c.classList.toggle('on'); });
+  sc.querySelectorAll('.ss-chk').forEach(c=>{ c.onclick=()=>{ c.classList.remove('on'); c.style.transition='opacity .18s,max-height .22s,padding .22s,margin .22s'; c.style.maxHeight=c.offsetHeight+'px'; requestAnimationFrame(()=>{ c.style.opacity='0'; c.style.maxHeight='0'; c.style.paddingTop='0'; c.style.paddingBottom='0'; c.style.margin='0'; c.style.overflow='hidden'; }); setTimeout(()=>{ c.style.display='none'; }, 240); }; });
   const ab=sc.querySelector('[data-add]'); if(ab) ab.onclick=()=>{ const inp=sc.querySelector('.ss-in'); if(inp&&inp.value.trim()){ modal('已新增景點「'+inp.value.trim()+'」<small>可於評分清單中查看</small>'); inp.value=''; } }; }
 function wireDays(sc){ if(!sc) return; const trig=sc.querySelector('.daytrigger'); const sheet=sc.querySelector('.daysheet'); if(trig&&sheet) trig.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); sheet.style.display='flex'; }; if(sheet) sheet.querySelectorAll('.dsclose').forEach(b=>b.onclick=()=>{ sheet.style.display='none'; }); }
 function wireNotify(){
