@@ -117,6 +117,12 @@ body.paper .ho-tour{display:none!important}
 .overlay .box{width:340px;background:#fff;border-radius:18px;padding:30px 26px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;font-size:20px;font-weight:700;line-height:1.5}
 .overlay .box small{display:block;font-size:14px;font-weight:400;color:#777;margin-top:4px}
 .overlay .box button{width:110px;height:40px;border-radius:8px;border:0;background:#E8363D;color:#fff;font-size:18px;font-weight:700}
+.overlay .box .add-opt{width:100%;height:auto;border-radius:0;background:#fff;color:#222;border:0;border-top:1px solid #f0f0f0;font-size:19px;font-weight:700;padding:16px 0;cursor:pointer}
+.overlay .box #addClose{border-top:0}
+.mount a{-webkit-user-drag:none;user-drag:none}
+.grip{cursor:grab;touch-action:none;-webkit-user-drag:none}
+.overlay.sheet{align-items:flex-end}
+.overlay.sheet .box{width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:18px 22px calc(20px + env(safe-area-inset-bottom));margin:0 auto;max-height:86vh;overflow:auto}
 @media (max-width:600px){
   .ctl{padding:6px 6px 0}
   .ctl-inner{gap:6px 8px}
@@ -1870,8 +1876,8 @@ body.paper .ho-tour{display:none!important}
 <a class="item" href="#WakeTime"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>起床及出發時間</a>
 </div>
 <div style="margin:16px 14px 0 28px;display:flex;flex-direction:column;gap:18px">
-<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Spot">橫濱紅磚倉庫<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
-<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Restaurant"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span>嚴選和牛涮涮鍋或壽喜燒吃到飽&amp;軟飲暢飲(餐標 6000日幣)<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Spot">橫濱紅磚倉庫<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Restaurant"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span>嚴選和牛涮涮鍋或壽喜燒吃到飽&amp;軟飲暢飲(餐標 6000日幣)<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="#Hotel" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>橫濱威斯汀酒店</a>
 </div>
@@ -1989,7 +1995,7 @@ body.paper .ho-tour{display:none!important}
 </div>
 
 <div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#fff;border-top:1px solid #e5e5e5;display:flex;padding:0 20px;align-items:center">
-<a href="#Daily2" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;color:#fff;font-size:20px;font-weight:700;background:#E8363D">完成</a>
+<button type="button" data-act="spotsetDone" style="flex:1;display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;color:#fff;font-size:20px;font-weight:700;background:#E8363D;border:0;font-family:inherit;cursor:pointer">完成</button>
 </div>
 </div></template><div class="mount"></div></section>
 <section class="screen fixed" id="s-Daily3" data-name="Daily3"><template><div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
@@ -2014,7 +2020,7 @@ body.paper .ho-tour{display:none!important}
 </div>
 <div style="margin:14px 14px 0 28px;display:flex;flex-direction:column;gap:14px">
 <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
-<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="{{r.href}}"><sc-if value="{{r.meal}}" hint-placeholder-val="{{true}}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span></sc-if>{{r.name}}<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
+<div class="tl"><svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="{{r.href}}"><sc-if value="{{r.meal}}" hint-placeholder-val="{{true}}"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8M10 3v8M8.5 11v10M16 3c-2 1-3 4-3 7h3v11"/></svg></span></sc-if>{{r.name}}<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a></div>
 </sc-for>
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="#Hotel" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>東京灣喜來登飯店</a>
@@ -2479,8 +2485,9 @@ body.paper .ho-tour{display:none!important}
 <div class="overlay" id="ov"><div class="box"><div id="ovMsg"></div><button id="ovOk">確定</button></div></div>
 <div id="rxSheet"><div class="rxs-panel"><div class="rxs-h"><button type="button" class="rxs-x">✕</button><span>選擇輸出方式</span></div><button type="button" class="rxs-opt" id="rxsPdf">儲存PDF檔案</button><button type="button" class="rxs-opt" id="rxsMail">寄送郵件給飯店</button><button type="button" class="rxs-opt red rxs-x">返回輸出預覽</button></div></div>
 <div class="overlay" id="rxEmail"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">請輸入飯店的Email <span style="color:#E8363D">*</span></div><textarea id="rxEmailInput" placeholder="請輸入" style="width:100%;box-sizing:border-box;height:90px;border:1px solid #d7d7d7;border-radius:8px;padding:10px;font-size:16px;font-family:inherit;resize:none"></textarea><div style="display:flex;gap:14px"><button type="button" id="rxEmailCancel" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="rxEmailOk" style="flex:1;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
+<div class="overlay sheet" id="addSheet"><div class="box" style="gap:0;align-items:stretch;overflow:hidden"><div style="position:relative;text-align:center;font-size:19px;font-weight:700;padding:16px 0">新增<button type="button" id="addClose" style="position:absolute;left:14px;top:12px;border:0;background:none;font-size:22px;line-height:1;cursor:pointer;width:auto;height:auto">✕</button></div><button type="button" class="add-opt" data-add-go="Hotel">飯店</button><button type="button" class="add-opt" data-add-go="SpotSet">景點</button><button type="button" class="add-opt" data-add-go="Restaurant">餐廳</button><button type="button" class="add-opt" data-add-go="Guide">導遊</button><button type="button" class="add-opt" data-add-go="Transport">交通</button></div></div>
 <div class="overlay" id="delConfirm"><div class="box" style="gap:18px"><div style="font-size:19px;color:#222">確定要刪除這筆行程嗎？<small>刪除後將從日報表移除</small></div><div style="display:flex;gap:14px;width:100%"><button type="button" id="delCancel" style="flex:1;width:auto;height:44px;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="delOk" style="flex:1;width:auto;height:44px;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">刪除</button></div></div></div>
-<div class="overlay" id="timeSheet"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">填寫起訖時間</div><div><div style="font-size:14px;color:#777;margin-bottom:4px">開始時間</div><input id="tsFrom" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div><div style="font-size:14px;color:#777;margin-bottom:4px">結束時間</div><input id="tsTo" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div style="display:flex;gap:14px"><button type="button" id="tsCancel" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="tsOk" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
+<div class="overlay sheet" id="timeSheet"><div class="box" style="align-items:stretch;text-align:left;gap:14px"><div style="font-size:18px;font-weight:700;color:#222">填寫起訖時間</div><div><div style="font-size:14px;color:#777;margin-bottom:4px">開始時間</div><input id="tsFrom" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div><div style="font-size:14px;color:#777;margin-bottom:4px">結束時間</div><input id="tsTo" type="time" style="width:100%;min-width:0;box-sizing:border-box;height:48px;border:1px solid #d7d7d7;border-radius:8px;padding:0 12px;font-size:18px;font-family:inherit"></div><div style="display:flex;gap:14px"><button type="button" id="tsCancel" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#fff;border:1.5px solid #E8363D;color:#E8363D">取消</button><button type="button" id="tsOk" style="flex:1;width:auto;padding:12px 0;border-radius:8px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;background:#E8363D;border:0;color:#fff">確定</button></div></div></div>
 <div id="rxDaySheet"><div class="rxds-panel">
 <div class="rxds-h"><button type="button" class="rxds-x">✕</button><span>切換住宿日期</span></div>
 <div class="rxds-day" data-d="1" data-dt="12/26"><span><b style="color:#E8363D">第 1 天</b>　|　12/26</span><span class="rxd-radio"></span></div>
@@ -2610,7 +2617,11 @@ SmsResult: class extends DCLogic { renderVals() {
   return { items: [ { phone: '0935175805', body }, { phone: '0972235626', body } ] };
 } } };
 const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {}, extra: {}, addDay: null };
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} };
+// 景點 → 預設所屬天；effectiveDay 用 spotDay 覆蓋（null=已刪除／未排入任何一天）
+const SPOT_DAY = { '橫濱紅磚倉庫':'Daily1', '西湖里根場合掌村聚落':'Daily2','鶴岡八幡宮':'Daily2','鶴岡八幡小町通':'Daily2','十国峠斜面登山纜車':'Daily2','麗莎＆卡斯柏小鎮':'Daily2', '河口湖富士山全景纜車':'Daily3','光伸免稅店':'Daily3','DiverCity Tokyo Plaza 台場購物廣場':'Daily3', '東京迪士尼度假園區':'Daily4','東京迪士尼海洋世界':'Daily4' };
+const dayNum = { Daily1:1, Daily2:2, Daily3:3, Daily4:4 };
+function effectiveDay(name){ return (name in S.spotDay) ? S.spotDay[name] : (SPOT_DAY[name] || null); }
 let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
@@ -2691,11 +2702,11 @@ function show(name) {
   if (name === 'HdRoom') wireRoom();
   if (name === 'RoomExt' || name === 'RoomExtPreview') wireRoomExt(name);
   if (name === 'Roster') wireRoster();
-  if (name === 'Daily2') wireDaily2();
   if (name === 'SpotSet') wireSpotSet();
   if (['Spot','Restaurant','Hotel','Guide'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
-  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') { applySpotOff(name); appendExtra(name); wireDailyTime(name); }
+  if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') { applyDaySpots(name); appendExtra(name); applyItemTime(name); wireDailyTime(name); dragList(document.getElementById('s-' + name), '.tl', '.grip'); }
+  if (name === 'Spot' || name === 'Restaurant') wireFormTime(name);
   if (name === 'PostTour') {
     const pl = document.getElementById('postLive');
     if (pl) pl.style.display = S.after24 ? '' : 'none';
@@ -2810,24 +2821,33 @@ function wireRoomExt(name){
 }
 function dragList(sc, rowSel, gripSel){
   sc.querySelectorAll(gripSel).forEach(g=>{ g.style.cursor='grab'; g.style.touchAction='none';
-    g.addEventListener('pointerdown', e=>{ e.preventDefault(); const row=g.closest(rowSel); if(!row) return; const cont=row.parentNode; row.style.opacity='.5';
-      const move=ev=>{ const rows=[...cont.querySelectorAll(rowSel)]; for(const o of rows){ if(o===row) continue; const r=o.getBoundingClientRect(); if(ev.clientY>r.top&&ev.clientY<r.bottom){ cont.insertBefore(row, (ev.clientY<r.top+r.height/2)?o:o.nextSibling); break; } } };
-      const up=()=>{ row.style.opacity=''; document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up); };
-      document.addEventListener('pointermove',move); document.addEventListener('pointerup',up); });
+    g.addEventListener('pointerdown', e=>{ e.preventDefault(); e.stopPropagation(); const row=g.closest(rowSel); if(!row) return; const cont=row.parentNode; row.style.opacity='.5'; try{ g.setPointerCapture(e.pointerId); }catch(_){}
+      const move=ev=>{ ev.preventDefault(); const rows=[...cont.querySelectorAll(rowSel)].filter(r=>r.style.display!=='none'); for(const o of rows){ if(o===row) continue; const r=o.getBoundingClientRect(); if(ev.clientY>r.top&&ev.clientY<r.bottom){ cont.insertBefore(row, (ev.clientY<r.top+r.height/2)?o:o.nextSibling); break; } } };
+      const up=()=>{ row.style.opacity=''; try{ g.releasePointerCapture(e.pointerId); }catch(_){}; g.removeEventListener('pointermove',move); g.removeEventListener('pointerup',up); g.removeEventListener('pointercancel',up); };
+      g.addEventListener('pointermove',move); g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up); });
   });
 }
 function wireDaily2(){ const sc=document.getElementById('s-Daily2'); if(!sc) return; dragList(sc, '.tl', '.grip'); }
 function wireSpotSet(){ const sc=document.getElementById('s-SpotSet'); if(!sc) return;
   sc.querySelectorAll('.ss-tab').forEach(t=>{ t.onclick=()=>{ sc.querySelectorAll('.ss-tab').forEach(x=>x.classList.toggle('on',x===t)); sc.querySelectorAll('.ss-pane').forEach(p=>p.style.display=(p.dataset.pane===t.dataset.tab)?'':'none'); }; });
-  sc.querySelectorAll('.ss-chk').forEach(c=>{ const sp=c.dataset.spot; c.classList.toggle('on', !S.spotOff[sp]); c.onclick=()=>{ const on=c.classList.toggle('on'); if(on) delete S.spotOff[sp]; else S.spotOff[sp]=true; }; });
+  sc.querySelectorAll('.ss-chk').forEach(c=>{ const sp=c.dataset.spot; const dl=c.querySelector('.ss-day'); const setDay=(d)=>{ if(dl&&d) dl.textContent='第'+dayNum[d]+'天'; }; const eff=effectiveDay(sp); c.classList.toggle('on', eff!==null); setDay(eff||SPOT_DAY[sp]);
+    c.onclick=()=>{ const on=c.classList.toggle('on'); if(on){ const target=(S.addDay&&dayNum[S.addDay])?S.addDay:(SPOT_DAY[sp]||'Daily2'); S.spotDay[sp]=target; setDay(target); } else { S.spotDay[sp]=null; } }; });
   const ab=sc.querySelector('[data-add]'); if(ab) ab.onclick=()=>{ const inp=sc.querySelector('.ss-in'); if(inp&&inp.value.trim()){ modal('已新增景點「'+inp.value.trim()+'」<small>可於評分清單中查看</small>'); inp.value=''; } }; }
 // 設定景點取消勾選 → 日報表該筆行程消失（非清單項目消失）
-function applySpotOff(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tl').forEach(row=>{ const a=row.querySelector('a.item'); if(!a) return; const t=a.textContent.replace('≡','').trim(); row.style.display=S.spotOff[t]?'none':''; }); }
+function applyDaySpots(dayName){ const sc=document.getElementById('s-'+dayName); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); const present=new Set();
+  // 既有景點列：只保留屬於本天的
+  col.querySelectorAll('.tl').forEach(row=>{ const a=row.querySelector('a.item'); if(!a) return; const t=a.textContent.replace('≡','').trim(); if(SPOT_DAY[t]!==undefined){ const eff=effectiveDay(t); row.style.display=(eff===dayName)?'':'none'; if(eff===dayName) present.add(t); } });
+  // 被排到本天、但原本不在本天模板的景點 → 動態補上
+  const all=new Set([...Object.keys(SPOT_DAY), ...Object.keys(S.spotDay)]);
+  all.forEach(t=>{ if(effectiveDay(t)===dayName && !present.has(t)){ present.add(t); const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Spot" draggable="false">'+t+'<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); } }); }
 // 日報表：把新增的交通動態補進行程列
-function appendExtra(name){ const sc=document.getElementById('s-'+name); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const rows=S.extra[name]||[]; if(!rows.length) return; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); rows.forEach(r=>{ const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Transport"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="M4 11h16M8 18v2M16 18v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg></span>'+r.name+'<span style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); }); }
+function appendExtra(name){ const sc=document.getElementById('s-'+name); if(!sc) return; const anchor=sc.querySelector('.tl'); if(!anchor) return; const col=anchor.parentNode; const rows=S.extra[name]||[]; if(!rows.length) return; const end=[...col.children].find(c=>/今日行程結束/.test(c.textContent||'')); rows.forEach(r=>{ const div=document.createElement('div'); div.className='tl'; div.innerHTML='<svg class="pin" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#E8363D" stroke-width="2"><path d="M12 21s6-6 6-11a6 6 0 0 0-12 0c0 5 6 11 6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="tm">時間未填寫</div><a class="item" href="#Transport" draggable="false"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="M4 11h16M8 18v2M16 18v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg></span>'+r.name+'<span class="grip" style="margin-left:auto;color:#F2B5B8;font-size:20px">≡</span></a>'; if(end) col.insertBefore(div,end); else col.appendChild(div); }); }
 // 日報表行程：點「時間未填寫」可填起訖時間
 let tmTarget=null;
-function wireDailyTime(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tm').forEach(tm=>{ tm.style.cursor='pointer'; tm.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); tmTarget=tm; const m=(tm.textContent||'').match(/(\d{1,2}:\d{2})\D+(\d{1,2}:\d{2})/); document.getElementById('tsFrom').value=m?m[1]:''; document.getElementById('tsTo').value=m?m[2]:''; document.getElementById('timeSheet').classList.add('show'); }; }); }
+function itemOf(tm){ const row=tm.closest('.tl'); const a=row&&row.querySelector('a.item'); return a?a.textContent.replace('≡','').trim():''; }
+function applyItemTime(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tl').forEach(row=>{ const tm=row.querySelector('.tm'); const a=row.querySelector('a.item'); if(!tm||!a) return; const key=a.textContent.replace('≡','').trim(); const t=S.itemTime[key]; if(t){ tm.textContent=t; tm.style.color='#333'; } }); }
+function wireDailyTime(name){ const sc=document.getElementById('s-'+name); if(!sc) return; sc.querySelectorAll('.tm').forEach(tm=>{ tm.style.cursor='pointer'; tm.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); tmTarget=tm; S.timeItem=itemOf(tm); const t=S.itemTime[S.timeItem]||tm.textContent||''; const m=t.match(/(\d{1,2}:\d{2})\D+(\d{1,2}:\d{2})/); document.getElementById('tsFrom').value=m?m[1]:''; document.getElementById('tsTo').value=m?m[2]:''; document.getElementById('timeSheet').classList.add('show'); }; }); }
+function wireFormTime(name){ if(name!=='Spot'&&name!=='Restaurant') return; const sc=document.getElementById('s-'+name); if(!sc) return; const p=name==='Spot'?'sp':'rs'; const s=sc.querySelector('#'+p+'s'), e=sc.querySelector('#'+p+'e'); if(!s||!e) return; const key=S.curItem; const t=(key&&S.itemTime[key])||''; const m=t.match(/(\d{1,2}:\d{2})\D+(\d{1,2}:\d{2})/); if(m){ s.value=m[1]; e.value=m[2]; } const save=()=>{ if(!key) return; const sv=s.value.trim(), ev=e.value.trim(); S.itemTime[key]= (sv&&ev)?(sv+' 〜 '+ev):(sv||ev||''); }; s.addEventListener('input',save); s.addEventListener('change',save); e.addEventListener('input',save); e.addEventListener('change',save); }
 function wireDays(sc){ if(!sc) return; const trig=sc.querySelector('.daytrigger'); const sheet=sc.querySelector('.daysheet'); if(trig&&sheet) trig.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); sheet.style.display='flex'; }; if(sheet) sheet.querySelectorAll('.dsclose').forEach(b=>b.onclick=()=>{ sheet.style.display='none'; }); }
 function wireNotify(){
   const sc=document.getElementById('s-Notify'); if(!sc) return;
@@ -2887,10 +2907,12 @@ function wireDl(name){
   };
 }
 document.getElementById('ovOk').onclick = () => document.getElementById('ov').classList.remove('show');
+document.getElementById('addClose').onclick = () => document.getElementById('addSheet').classList.remove('show');
+document.getElementById('addSheet').addEventListener('click', (e) => { if (e.target.id === 'addSheet') e.target.classList.remove('show'); const opt = e.target.closest('.add-opt'); if (!opt) return; const to = opt.dataset.addGo; document.getElementById('addSheet').classList.remove('show'); if (['Hotel','Restaurant','Guide'].includes(to)) S.formTitle[to] = null; show(to); });
 document.getElementById('delCancel').onclick = () => document.getElementById('delConfirm').classList.remove('show');
-document.getElementById('delOk').onclick = () => { if (S.curItem) S.spotOff[S.curItem] = true; document.getElementById('delConfirm').classList.remove('show'); const back = (S.curBack && document.getElementById('s-' + S.curBack)) ? S.curBack : null; if (back) { goingBack = true; show(back); goingBack = false; } else if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } };
+document.getElementById('delOk').onclick = () => { if (S.curItem && (S.curItem in SPOT_DAY || S.curItem in S.spotDay)) S.spotDay[S.curItem] = null; document.getElementById('delConfirm').classList.remove('show'); const back = (S.curBack && document.getElementById('s-' + S.curBack)) ? S.curBack : null; if (back) { goingBack = true; show(back); goingBack = false; } else if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } };
 document.getElementById('tsCancel').onclick = () => document.getElementById('timeSheet').classList.remove('show');
-document.getElementById('tsOk').onclick = () => { const f=document.getElementById('tsFrom').value, t=document.getElementById('tsTo').value; if(tmTarget){ if(f&&t) tmTarget.textContent=f+' 〜 '+t; else if(f) tmTarget.textContent=f; else tmTarget.textContent='時間未填寫'; tmTarget.style.color=(f||t)?'#333':'#777'; } document.getElementById('timeSheet').classList.remove('show'); };
+document.getElementById('tsOk').onclick = () => { const f=document.getElementById('tsFrom').value, t=document.getElementById('tsTo').value; const label=(f&&t)?(f+' 〜 '+t):(f||t||''); if(tmTarget){ tmTarget.textContent=label||'時間未填寫'; tmTarget.style.color=label?'#333':'#777'; } if(S.timeItem) S.itemTime[S.timeItem]=label; document.getElementById('timeSheet').classList.remove('show'); };
 document.getElementById('ovRepCancel').onclick = () => document.getElementById('ovRep').classList.remove('show');
 document.getElementById('ovRepOk').onclick = () => { document.getElementById('ovRep').classList.remove('show'); document.getElementById('ovRepText').value = ''; modal('問題回報完成'); };
 
@@ -2901,6 +2923,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
   if (act) {
     e.preventDefault();
     const a2 = act.dataset.act, q = (s) => document.querySelector('#s-Contract ' + s);
+    if (a2 === 'spotsetDone') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; show(day); return; }
     if (a2 === 'addTransport') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const gv = (id) => { const el = document.querySelector('#s-Transport #' + id); return el ? el.value.trim() : ''; }; const plate = gv('plate'), drv = gv('drv'); const label = '交通' + (plate ? ('　' + plate) : (drv ? ('　' + drv) : '（巴士）')); (S.extra[day] = S.extra[day] || []).push({ name: label }); show(day); rxToast('已新增交通'); return; }
     // 委任契約書：自檢表 / 簽名板（本機 UI，不需連線）
     if (a2 === 'acc') { const w = act.closest('.accwrap'); if (w) w.classList.toggle('open'); act.classList.add('read'); const items = document.querySelectorAll('#s-Contract .accitem'); const allRead = [...items].every(i => i.classList.contains('read')); const btn = q('.mbtn'); if (btn) btn.classList.toggle('en', allRead); return; }
@@ -2929,7 +2952,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
     if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; }
     else { S.formTitle[to] = null; }
   }
-  if (to === 'DailyAdd' && /^Daily[123]$/.test(S.screen)) S.addDay = S.screen;
+  if (to === 'DailyAdd') { if (/^Daily[123]$/.test(S.screen)) S.addDay = S.screen; document.getElementById('addSheet').classList.add('show'); return; }
   show(to);
 });
 document.getElementById('ctlToggle').onclick = () => { const c=document.querySelector('.ctl'); const col=c.classList.toggle('collapsed'); document.getElementById('ctlArrow').textContent = col ? '⌄' : '⌃'; fit(); };
@@ -2956,7 +2979,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {}, extra: {}, addDay: null }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotDay: {}, formTitle: {}, extra: {}, addDay: null, itemTime: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
