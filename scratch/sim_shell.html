@@ -509,7 +509,7 @@ document.getElementById('stage').addEventListener('click', (e) => {
   if (act) {
     e.preventDefault();
     const a2 = act.dataset.act, q = (s) => document.querySelector('#s-Contract ' + s);
-    if (a2 === 'addTransport') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const gv = (id) => { const el = document.querySelector('#s-Transport #' + id); return el ? el.value.trim() : ''; }; const plate = gv('plate'), drv = gv('drv'); const label = '交通' + (plate ? ('　' + plate) : (drv ? ('　' + drv) : '（巴士）')); (S.extra[day] = S.extra[day] || []).push({ name: label }); show(day); return; }
+    if (a2 === 'addTransport') { const day = (S.addDay && document.getElementById('s-' + S.addDay)) ? S.addDay : 'Daily2'; const gv = (id) => { const el = document.querySelector('#s-Transport #' + id); return el ? el.value.trim() : ''; }; const plate = gv('plate'), drv = gv('drv'); const label = '交通' + (plate ? ('　' + plate) : (drv ? ('　' + drv) : '（巴士）')); (S.extra[day] = S.extra[day] || []).push({ name: label }); show(day); rxToast('已新增交通'); return; }
     // 委任契約書：自檢表 / 簽名板（本機 UI，不需連線）
     if (a2 === 'acc') { const w = act.closest('.accwrap'); if (w) w.classList.toggle('open'); act.classList.add('read'); const items = document.querySelectorAll('#s-Contract .accitem'); const allRead = [...items].every(i => i.classList.contains('read')); const btn = q('.mbtn'); if (btn) btn.classList.toggle('en', allRead); return; }
     if (a2 === 'closeChk') { q('.checklist').classList.add('hide'); return; }
