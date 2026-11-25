@@ -1875,6 +1875,10 @@ body.paper .ho-tour{display:none!important}
 <div style="position:relative;padding-left:40px;font-size:15px;color:#777"><span aria-hidden="true" style="position:absolute;left:8px;top:3px;width:10px;height:10px;border:2px solid #E8363D;border-radius:7px;background:#fff"></span>今日行程結束</div>
 <a class="item" href="#Hotel" style="margin-left:-14px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 18V8h18v10M3 12h18M7 8V5h4v3"/></svg></span>橫濱威斯汀酒店</a>
 </div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#fff;border-top:1px solid #e5e5e5;display:flex;gap:12px;padding:0 20px;align-items:center">
+<a href="#Tour" style="flex:1;display:flex;align-items:center;justify-content:center;height:44px;border:1px solid #E8363D;border-radius:8px;color:#E8363D;font-size:20px;font-weight:700;background:#fff">儲存草稿</a>
+<span style="flex:1;display:flex;align-items:center;justify-content:center;height:44px;border-radius:8px;color:#999;font-size:20px;font-weight:700;background:#e5e5e5">提交日報表</span>
+</div>
 </div></template><div class="mount"></div></section>
 <section class="screen fixed" id="s-Daily2" data-name="Daily2"><template><div style="width:820px;height:1180px;box-sizing:border-box;background:#F5F5F5;position:relative;overflow:hidden">
 <header style="height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative">
@@ -2606,7 +2610,7 @@ SmsResult: class extends DCLogic { renderVals() {
   return { items: [ { phone: '0935175805', body }, { phone: '0972235626', body } ] };
 } } };
 const SIGN_SVG = '<svg viewBox="0 0 260 90" style="width:150px;height:52px"><path d="M30 68 C40 20 48 18 50 55 C52 72 58 40 66 38 C74 36 70 66 82 60 C96 54 92 24 104 26 M120 30 L120 70 M112 40 L150 40 M160 66 C150 40 176 30 182 46 C188 60 168 64 170 70 C172 74 196 66 210 44 C220 28 214 70 230 58" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {} };
+const S = { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {} };
 let navHist = [], goingBack = false;
 let rxVer = '1';
 let rxRoomNos = [];
@@ -2689,6 +2693,7 @@ function show(name) {
   if (name === 'Roster') wireRoster();
   if (name === 'Daily2') wireDaily2();
   if (name === 'SpotSet') wireSpotSet();
+  if (['Spot','Restaurant','Hotel','Guide'].includes(name) && S.formTitle[name]) { const fsc=document.getElementById('s-'+name); const h=fsc&&fsc.querySelector('.sec h2'); if(h){ const icon=h.querySelector('svg'); h.textContent=S.formTitle[name]; if(icon) h.appendChild(icon); } }
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3') wireDays(document.getElementById('s-' + name));
   if (name === 'Daily1' || name === 'Daily2' || name === 'Daily3' || name === 'DailyAdd') { applySpotOff(name); wireDailyTime(name); }
   if (name === 'PostTour') {
@@ -2915,7 +2920,10 @@ document.getElementById('stage').addEventListener('click', (e) => {
   const to = a.getAttribute('href').slice(1);
   if (to === 'noop') return;
   if (to === 'back') { if (navHist.length) { goingBack = true; show(navHist.pop()); goingBack = false; } return; }
-  if (a.classList.contains('item') && /^Daily/.test(S.screen) && ['Spot','Restaurant','Hotel','Guide'].includes(to)) { S.curItem = a.textContent.replace('≡','').trim(); S.curBack = S.screen; }
+  if (['Spot','Restaurant','Hotel','Guide'].includes(to)) {
+    if (a.classList.contains('item') && /^Daily/.test(S.screen)) { const nm = a.textContent.replace('≡','').trim(); S.curItem = nm; S.curBack = S.screen; S.formTitle[to] = nm; }
+    else { S.formTitle[to] = null; }
+  }
   show(to);
 });
 document.getElementById('ctlToggle').onclick = () => { const c=document.querySelector('.ctl'); const col=c.classList.toggle('collapsed'); document.getElementById('ctlArrow').textContent = col ? '⌄' : '⌃'; fit(); };
@@ -2942,7 +2950,7 @@ document.getElementById('btnBack').onclick = () => {
 };
 document.getElementById('btnEntry').onclick = () => { navHist = []; show('Entry'); };
 document.getElementById('gnav').addEventListener('click', e => { const b = e.target.closest('.gtab'); if (b) show(b.dataset.go); });
-document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
+document.getElementById('btnReset').onclick = () => { Object.assign(S, { online: true, paper: false, productReady: false, after18: false, after24: false, signed: false, docOk: false, handoverDone: false, offlineDl: false, screen: 'Entry', hdChecked: {}, spotOff: {}, formTitle: {} }); navHist = []; skipN = 0; log('已重置：所有狀態回到初始，回到入口頁。'); show('Entry'); };
 let skipN = 0;
 document.getElementById('btnSkip').onclick = () => { skipN++; if (skipN === 1) { S.signed = true; S.productReady = true; } else { S.docOk = true; S.hdChecked['交班總覽'] = true; S.handoverDone = true; } show(S.screen); };
 show('Entry');
