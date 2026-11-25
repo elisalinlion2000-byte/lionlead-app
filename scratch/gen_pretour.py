@@ -102,7 +102,7 @@ def fn(label, href, gate):
 PRE_STATES = {
  'unsigned': ('', '<a href="#Contract" class="pb pb-main" style="background:#E8363D;color:#fff">填寫委任契約書</a>'),
  'grey':     ('signed', '<span class="pb pb-main" style="background:#E5E5E5;color:#aaa">線上交班準備中</span>'),
- 'ready':    ('signed ready', '<a href="#HandoverDone" class="pb pb-main" style="background:#E8363D;color:#fff">線上交班</a>'),
+ 'ready':    ('signed ready', '<a id="pbReady" href="#HandoverDone" class="pb pb-main" style="background:#E8363D;color:#fff">線上交班</a>'),
  'done':     ('signed ready done', '<span class="pb pb-main" style="background:#E5E5E5;color:#777">準備出發</span>'),
 }
 PRE_TEAMS = [

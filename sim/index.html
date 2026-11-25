@@ -1252,7 +1252,7 @@ body.paper .ho-tour{display:none!important}
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px"><button type="button" style="border:0;background:none;padding:0;font-family:inherit;font-size:17px;color:#999">RC/TP/OP ⌄</button><a href="#Qbox" style="font-size:18px;color:#222;border-bottom:2px dashed #999;line-height:1.4">Q 信箱</a></div>
 </div>
 <div class="pcard signed ready" style="background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);box-sizing:border-box;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px">
-<a href="#HandoverDone" class="pb pb-main" style="background:#E8363D;color:#fff">線上交班</a>
+<a id="pbReady" href="#HandoverDone" class="pb pb-main" style="background:#E8363D;color:#fff">線上交班</a>
 <div style="display:flex"><span class="k">出團日</span><span class="v">2026/12/10(四)~2026/12/15(二)</span></div>
 <div style="display:flex"><span class="k">團號</span><a class="v" href="#Itinerary" style="color:#E8363D;text-decoration:underline">26SKD01BRD-T</a></div>
 <div style="display:flex"><span class="k">團名</span><span class="v">經典漫遊金邊吳哥(無購物)長榮6日</span></div>
@@ -2722,6 +2722,12 @@ function show(name) {
       else if (!S.productReady) { b.textContent = '線上交班準備中'; b.style.background = '#E5E5E5'; b.style.color = '#aaa'; b.style.pointerEvents = 'none'; }
       else if (!S.handoverDone) { b.textContent = '線上交班'; b.style.background = '#E8363D'; b.style.color = '#fff'; b.setAttribute('href', '#HandoverDone'); }
       else { b.textContent = '準備出發'; b.style.background = '#E5E5E5'; b.style.color = '#777'; b.style.pointerEvents = 'none'; }
+    }
+    // 26SKD01BRD 這張卡的「線上交班」按鈕：交班完成後也變灰色「準備出發」
+    const pr = document.getElementById('pbReady');
+    if (pr) {
+      if (S.handoverDone) { pr.textContent = '準備出發'; pr.style.background = '#E5E5E5'; pr.style.color = '#777'; pr.style.pointerEvents = 'none'; pr.removeAttribute('href'); pr.closest('.pcard') && pr.closest('.pcard').classList.add('done'); }
+      else { pr.textContent = '線上交班'; pr.style.background = '#E8363D'; pr.style.color = '#fff'; pr.style.pointerEvents = ''; pr.setAttribute('href', '#HandoverDone'); pr.closest('.pcard') && pr.closest('.pcard').classList.remove('done'); }
     }
   }
   if (name === 'Main') setTimeout(() => { if (S.screen === 'Main') show('Login'); }, 500);
